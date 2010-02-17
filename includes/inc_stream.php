@@ -1,0 +1,177 @@
+<?php
+
+global $vdrstreamdev, $vdrrecpath, $quality;
+
+// Check if we are running
+if (infostreamexist())
+{
+	// Get current stream info
+	list($type, $realname, $title, $desc, $mode, $category, $url) = readinfostream();
+
+	print "<body onorientationchange=\"updateOrientation();\" onload=\"ajax();\">\r\n";
+	
+	print "<div id=\"topbar\" class=\"transparent\">\r\n";
+	print "<div id=\"leftnav\">\r\n";
+	print "<a href=\"javascript:sendForm('stopstream');\">Stop Stream</a></div>\r\n";
+	print "<div id=\"title\">iStreamdev</div>\r\n";
+	print "</div>\r\n";
+
+	print "<div id=\"content\">\r\n";
+        print " <span class=\"graytitle\">Now streaming</span>\r\n";
+
+	// Print the right logo
+	print " <ul class=\"pageitem\">\r\n";
+	if ($type <= 2)
+	{
+		if (!file_exists('logos/'.$realname.'.png'))
+			print " <center><video id=\"videofeed\" poster=\"logos/nologo2.png\" width='80' height='80' /></center>\r\n";
+		else
+			print " <center><video id=\"videofeed\" poster=\"logos/{$realname}.png\" width='80' height='80' /></center>\r\n";
+	}
+	else
+		print " <center><video id=\"videofeed\" poster=\"logos/nologo2.png\" width='80' height='80' /></center>\r\n";
+	print " </ul>\r\n";
+
+	print " <ul class=\"pageitem\">\r\n";
+	print " <li class=\"textbox\"><span class=\"header\">{$realname}</span><p><strong>{$title}</strong>\r\n";
+	print " <br>{$desc}</p></li></ul>\r\n";
+	
+	print " <ul class=\"pageitem\">\r\n";
+	print " <li id=\"modetext\" class=\"textbox\"><span class=\"header\">Mode</span>\r\n";
+	print " <p id='streamtitle'>{$mode}</p></li></ul>\r\n";
+
+	print " </div>\r\n";
+
+	print " <form name=\"stopstream\" id=\"stopstream\" method=\"post\" action=\"index.php\">";
+	print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"stopstream\" />";
+	switch ($type)
+	{
+		case 1:
+			print "    <input name =\"actionafterstop\" type=\"hidden\" id=\"actionafterstop\" value=\"listchannels\" />";
+			print "    <input name =\"cat\"type=\"hidden\" id=\"cat\" value=\"{$category}\" />";
+			break;
+		default:
+		case 2:
+			$dir = dirname($url);
+			print "    <input name =\"actionafterstop\" type=\"hidden\" id=\"actionafterstop\" value=\"recordings\" />";
+			print "    <input name =\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
+			break;
+	}
+	print " </form>\r\n";
+}
+else
+{
+	$category = $_SESSION['currentcat'];
+
+        $type = $_REQUEST['type'];
+	$name = $_REQUEST['name'];
+
+	switch ($type)
+	{
+		// Live TV
+		case 1:
+			list($title, $desc, $realname) = vdrgetinfostream($name, 1);
+			$channum = vdrgetchannum($realname);
+			break;
+		// Recording
+		case 2:
+			list($title, $desc, $realname) = vdrgetinfostream($name, 0);
+			break;
+		case 3:
+		default:
+			$realname = "";
+			$title = "";
+			$desc = "";
+			$channame = $name;
+	}
+
+	print "<body onorientationchange=\"updateOrientation();\" onload=\"updateOrientation();\">\r\n";
+
+	print "<div id=\"topbar\" class=\"transparent\">\r\n";
+	print "<div id=\"leftnav\">\r\n";
+
+	print "<a href=\"javascript:sendForm('getback')\">Back</a></div>\r\n";
+	print "<div id=\"rightnav\">\r\n";
+	print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
+
+	print "<div id=\"title\">iStreamdev</div>\r\n";
+	print "</div>\r\n";
+
+	print "<div id=\"content\">\r\n";
+
+	print " <span class=\"graytitle\">Select stream mode</span>\r\n";
+
+	print " <ul class=\"pageitem\">\r\n";
+
+	// Print the right logo
+	if ($type <= 2)
+	{
+		if (!file_exists('logos/'.$realname.'.png'))
+			print " <center><img src=\"logos/nologo2.png\"></img></center>\r\n";
+		else
+			print " <center><img src=\"logos/{$realname}.png\"></img></center>\r\n";
+	}
+	else
+		print " <center><img src=\"logos/nologo2.png\"></img></center>\r\n";
+
+	print " </ul>\r\n";
+
+	// Check if running to display the start buttons
+	print " <div id=\"tributton\">\r\n";
+	print "         <div class=\"links\">\r\n";
+
+	foreach ($quality as $qname => $qparams)
+		print "<a href=\"javascript:sendForm('$qname')\">{$qname}</a>";
+	print "\r\n";
+
+	print " </div></div>\r\n";
+
+	print " <ul class=\"pageitem\">\r\n";
+	print " <li class=\"textbox\"><span class=\"header\">{$realname}</span><p><strong>{$title}</strong>\r\n";
+	print " <br>{$desc}</p></li></ul>\r\n";
+
+	print " </div>\r\n";
+
+	foreach ($quality as $qname => $qparams)
+	{
+		print " <form name=\"{$qname}\" id=\"{$qname}\" method=\"post\" action=\"index.php\">\r\n";
+		print "         <input name =\"action\" type=\"hidden\" id=\"action\" value=\"startstream\" />\r\n";
+		print "         <input name =\"type\" type=\"hidden\" id=\"type\" value={$type} />\r\n";
+		print "         <input name =\"name\" type=\"hidden\" id=\"name\" value=\"{$realname}\" />\r\n";
+		print "         <input name =\"title\" type=\"hidden\" id=\"title\" value=\"{$title}\" />\r\n";
+		print "         <input name =\"desc\" type=\"hidden\" id=\"desc\" value=\"{$desc}\" />\r\n";
+		print "         <input name =\"qname\" type=\"hidden\" id=\"qname\" value=\"{$qname}\" />\r\n";
+		print "         <input name =\"qparams\" type=\"hidden\" id=\"qparams\" value=\"{$qparams}\" />\r\n";
+		print "         <input name =\"category\" type=\"hidden\" id=\"category\" value=\"{$category}\" />\r\n";
+		switch ($type)
+		{
+			case 1:
+				print "         <input name =\"url\" type=\"hidden\" id=\"url\" value=\"{$vdrstreamdev}{$channum}\" />\r\n";
+				break;
+			case 2:
+			default:
+				print "         <input name =\"url\" type=\"hidden\" id=\"url\" value=\"{$vdrrecpath}{$name}\" />\r\n";
+				break;
+		}
+		print " </form>";
+	}
+
+	print " <form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.php\">";
+        switch ($type)
+        {
+                case 1:
+			print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"listchannels\" />";
+                        print "    <input name =\"cat\"type=\"hidden\" id=\"cat\" value=\"{$category}\" />";
+                        break;
+                default:
+                case 2:
+			$dir = dirname($vdrrecpath .$name);
+			print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"recordings\" />";
+                        print "    <input name =\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
+                        break;
+        }
+        print " </form>\r\n";
+
+}
+
+?>

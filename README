@@ -1,0 +1,101 @@
+ ________________________________________________________
+|                                                        |
+|                     [ iStreamdev ]                     |
+|________________________________________________________|
+
+ Written by:                  
+ Alib <aliboba@free.fr>
+ 
+ Contributors		      
+ The Troll
+
+ Project's homepage:          
+ http://xmltv.free.fr/istreamdev/
+ 
+
+ Latest version available at: 
+ http://xmltv.free.fr/istreamdev
+
+ See the file COPYING for license information.
+
+ About:
+ -----
+ 
+ iStreamdev lets you stream TV channels from VDR to your 
+ unjailbroken iPhone Quicktime player.
+
+ Your iPhone needs to have at least firmware 3.0 to support
+ HTTP Live Streaming protocol.
+			 
+ It gets vdr-streamdev plugins TS feeds, and recodes it   
+ to TS mux with h264 level 3.0 video and mp3 audio using 
+ ffmpeg. Segmenter receives output from pipe, cuts it in 
+ 10 seconds video file and updates the m3u8 playlist in
+ live.
+							 
+							 
+ Features:
+ ---------
+
+ - 100% webapp compatible user interface using iWebkit framework ( http://iwebkit.net )
+ - Channel selection throught categories
+ - Channels listed with logo and current epg.
+ - Streaming format selection: Edge, 3g, Wifi
+ - Recording streaming
+ 
+ Webapp:
+ -------
+
+ Add iStreamdev to your iPhone home menu to launch it in 
+ fullscreen mode as a normal app.
+
+ Usage:
+ ------
+
+ Really simple. Select a channels category, then a channel. 
+ Select your stream mode: Edge , 3g or Wifi. The Play icon
+ will appear automatically after few seconds when the feed is
+ ready.
+ To Stop the stream server, hit Stop stream button.
+ If a stream encoding is already running, to prevent multiple 
+ users asking for different channels, it will automaticaly 
+ redirect any access to iStreamdev on the current streaming 
+ channel page.
+
+ 
+ What you need:
+ --------------
+
+ - an http server with PHP5 enabled like apache or lighthttpd
+ - having "at" package.
+ - www-data user should allowed to use "at". 
+   Check on your /etc/at/deny if www-data is there, and remove it if so.
+ - PHP is allowed to use exec() function.
+ - ffmpeg compiled with x264 support
+ - segmenter: follow the instruction here to install it:
+   http://www.ioncannon.net/programming/452/iphone-http-streaming-with-ffmpeg-and-an-open-source-segmenter/
+
+
+ Install iStreamdev:
+ -------------------
+
+ Copy the file in your webfolder. /istreamdev for example.
+ Edit config.php. 
+ $httpath can  point to your istreamdev http path or the full url 
+ ( '/istreamdev/' or "http://mydomain.com/istreamdev/' )
+
+ the ram folder should be writable. If you want to prevent hard disk 
+ usage, you can mount it as ram disk.
+ 
+ Check everything is ok with ffmpeg by launching the above 
+ command logued as your http server user ( www-data ) :
+
+ ./istream.sh http://localhost:3000/TS/1 512 64 480x360 ram/
+
+ You should see ffmpeg access streamdev http://localhost:3000/TS/1 and 
+ encode the stream.
+ 
+ Now everything is ok you can login from your iphone: http://yourip/istreamdev
+
+ 
+  

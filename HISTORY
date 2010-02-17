@@ -1,0 +1,61 @@
+iStreamdev History
+------------------
+
+
+dev:
+
+- fix SHELL environment necessary for apache account when login shell is /sbin/nologin (cf. cron manual) ( thanks alex )
+- fix logos channels oversized in channels list ( thanks alex )
+- fix memory buffer issue in svdrp php implementation causing timeout ( thanks hendrikw01 )
+- backend rework to ease future evolutions ( TheTroll )
+-  No more 'ps aux | grep segmenter' calls to check if server is running, and less svdrp call.  Now a status file is present in ram folder while broadcast is running. ( TheTroll )
+
+
+15.02.2010 - V.0.3.3
+
+- added support for VDR recordings (recordings in sub folders are supported)
+- fixed channels with ' char
+- better handling of stream availibility. Now based on first ts file ready and not m3u8 playlist. Should always works now.
+- changed stream timeout to 25 seconds in case of vdr can't tune to the channel.
+- no more svdrpsend.pl dependency. Now svdrp request are made with svdrpphp lib.
+
+
+15.02.2010 - V.0.3.2
+
+- fixed problem with some channels name with a "," in the name
+- added default background for channels without logos.
+
+
+15.02.2010 - V.0.3.1
+
+- fixed error in README for testing istream.sh
+- added Ajax based server callback for stream availibility. Now if after 15 seconds VDR still send nothing, it redirect to an error page. When stream is available, the play icon appear based on ajax server push.
+
+
+14.02.2010 - v.0.3.0
+
+- Massive rewrite & optimisations.
+- added Category page
+- added Channel list per Category with channels logo & epg
+- adapted in php many shell call.
+- configuration from config.php file only
+- encoding bitrate and resolution configurable
+- solved many race conditions with simultaneous users.
+- channel list now parsed from channels.conf and not streamdev version dependant anymore
+- better video quality for low bitrates
+- menu icons
+- remove loading.ts temporary video.
+- now the video play button appear only when the video feed is ready, no need of the loading trick anymore.
+
+
+09.02.2010 - v. 0.2
+
+- Initial revision
+
+
+To do:
+
+ - Access to vdr recordings
+ - Access to stored media ( xvid, mp3, etc )
+
+
