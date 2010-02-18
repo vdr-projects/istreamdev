@@ -21,5 +21,5 @@
 			);
 
 	// Version
-	$isdversion = "0.3.5-dev";
+	$isdversion = "0.3.5";
 ?>
