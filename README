@@ -10,11 +10,14 @@
  The Troll
 
  Project's homepage:          
- http://xmltv.free.fr/istreamdev/
+ http://projects.vdr-developer.org/projects/show/istreamdev
  
 
  Latest version available at: 
- http://xmltv.free.fr/istreamdev
+ http://projects.vdr-developer.org/projects/list_files/istreamdev
+
+ git repository:
+ git://projects.vdr-developer.org/istreamdev.git
 
  See the file COPYING for license information.
 
@@ -90,7 +93,7 @@
  Check everything is ok with ffmpeg by launching the above 
  command logued as your http server user ( www-data ) :
 
- ./istream.sh http://localhost:3000/TS/1 512k 64k 1 480x320 ./
+ ./istream.sh http://localhost:3000/TS/1 512k 64k 1 480x320 ./ 3
 
 
  You should see ffmpeg access streamdev http://localhost:3000/TS/1 and 
