@@ -90,7 +90,8 @@
  Check everything is ok with ffmpeg by launching the above 
  command logued as your http server user ( www-data ) :
 
- ./istream.sh http://localhost:3000/TS/1 512 64 480x360 ram/
+ ./istream.sh http://localhost:3000/TS/1 512k 64k 1 480x320 ./
+
 
  You should see ffmpeg access streamdev http://localhost:3000/TS/1 and 
  encode the stream.
