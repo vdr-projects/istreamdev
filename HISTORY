@@ -2,7 +2,7 @@ iStreamdev History
 ------------------
 
 
-dev:
+18.02.2010 - V.0.3.5
 
 - fix SHELL environment necessary for apache account when login shell is /sbin/nologin (cf. cron manual) ( thanks alex )
 - fix logos channels oversized in channels list ( thanks alex )
@@ -10,6 +10,12 @@ dev:
 - backend rework to ease future evolutions ( TheTroll )
 -  No more 'ps aux | grep segmenter' calls to check if server is running, and less svdrp call.  Now a status file is present in ram folder while broadcast is running. ( TheTroll )
 
+17.02.2010 - V.0.3.4
+
+- changed apps icon, boot picture and menu pics.
+- now handles old vdr recordings ( PES )
+- mono or stereo sound now configurable in config.php
+- less bugs with special characters in path & names
 
 15.02.2010 - V.0.3.3
 
