@@ -41,7 +41,7 @@ function selectpage()
 			$type = $_REQUEST['type'];
 			$name = $_REQUEST['name'];
 			$title = $_REQUEST['title'];
-			$desc = $_REQUEST['desc'];
+			$desc = stripslashes ($_REQUEST['desc']);
 			$qname = $_REQUEST['qname'];
 			$qparams = $_REQUEST['qparams'];
 			$category = $_REQUEST['category'];
