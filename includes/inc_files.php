@@ -28,7 +28,7 @@ function mediagetinfostream($stream = "")
 
 	// Extract a thumbnail
 	exec("rm ram/stream-tb.png");
-	exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s 80x80 -f mjpeg ram/stream-tb.png");
+	exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s 128x72 -f mjpeg ram/stream-tb.png");
 	
 	return array($title, $info);
 }
