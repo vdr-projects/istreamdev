@@ -40,7 +40,7 @@ while ($recname = readdir($dir_handle))
 		print "<form name=\"$recname\" id=\"$recname\" method=\"post\" action=\"index.php\">";
 		print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
                 print "   <input name=\"type\" type=\"hidden\" id=\"type\" value=2 />";
-                print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$subdir}/{$recname}\" />";
+                print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$dir}/{$recname}\" />";
 		print "</form>\r\n";
 	}
 	else

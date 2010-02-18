@@ -3,7 +3,7 @@ include ('includes/inc_svdrp.php');
 
 function vdrgetinfostream($stream = "NULL", $ischan = 1)
 {
-	global $allepg, $allepgfilled, $svdrpip, $svdrpport, $vdrrecpath;
+	global $allepg, $allepgfilled, $svdrpip, $svdrpport;
 
 	if ($ischan)
 	{
@@ -21,12 +21,12 @@ function vdrgetinfostream($stream = "NULL", $ischan = 1)
 	}
 	else
 	{
-		$infofile = $vdrrecpath .$stream ."/info"; 
+		$infofile = $stream ."/info"; 
 		if (file_exists($infofile))
 			$info= file_get_contents($infofile);
 		else
 		{
-			$infofile = $vdrrecpath .$stream ."/info.vdr";
+			$infofile = $stream ."/info.vdr";
 			if (file_exists($infofile))
 				$info= file_get_contents($infofile);
 			else

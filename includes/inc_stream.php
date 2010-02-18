@@ -1,6 +1,6 @@
 <?php
 
-global $vdrstreamdev, $vdrrecpath, $quality;
+global $vdrstreamdev, $quality;
 
 // Check if we are running
 if (infostreamexist())
@@ -44,17 +44,16 @@ if (infostreamexist())
 
 	print " <form name=\"stopstream\" id=\"stopstream\" method=\"post\" action=\"index.php\">";
 	print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"stopstream\" />";
+	print "    <input name =\"actionafterstop\" type=\"hidden\" id=\"actionafterstop\" value=\"stream\" />";
+	print "    <input name=\"type\" type=\"hidden\" id=\"type\" value={$type} />";
 	switch ($type)
 	{
 		case 1:
-			print "    <input name =\"actionafterstop\" type=\"hidden\" id=\"actionafterstop\" value=\"listchannels\" />";
-			print "    <input name =\"cat\"type=\"hidden\" id=\"cat\" value=\"{$category}\" />";
+			print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$realname}\" />";
 			break;
 		default:
 		case 2:
-			$dir = dirname($url);
-			print "    <input name =\"actionafterstop\" type=\"hidden\" id=\"actionafterstop\" value=\"recordings\" />";
-			print "    <input name =\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
+			print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$url}\" />";
 			break;
 	}
 	print " </form>\r\n";
@@ -150,7 +149,7 @@ else
 				break;
 			case 2:
 			default:
-				print "         <input name =\"url\" type=\"hidden\" id=\"url\" value=\"{$vdrrecpath}{$name}\" />\r\n";
+				print "         <input name =\"url\" type=\"hidden\" id=\"url\" value=\"{$name}\" />\r\n";
 				break;
 		}
 		print " </form>";
@@ -165,7 +164,7 @@ else
                         break;
                 default:
                 case 2:
-			$dir = dirname($vdrrecpath .$name);
+			$dir = dirname($name);
 			print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"recordings\" />";
                         print "    <input name =\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
                         break;
