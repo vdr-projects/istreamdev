@@ -51,10 +51,11 @@ if (infostreamexist())
 		case 1:
 			print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$realname}\" />";
 			break;
-		default:
 		case 2:
+		case 3:
 			print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$url}\" />";
 			break;
+			
 	}
 	print " </form>\r\n";
 }
@@ -76,12 +77,17 @@ else
 		case 2:
 			list($title, $desc, $realname) = vdrgetinfostream($name, 0);
 			break;
+		// Media
 		case 3:
+			$realname = $name;
+			$title = "";
+			$desc = "";
+			break;
 		default:
 			$realname = "";
 			$title = "";
 			$desc = "";
-			$channame = $name;
+			$channame = "";
 	}
 
 	print "<body onorientationchange=\"updateOrientation();\" onload=\"updateOrientation();\">\r\n";
@@ -148,9 +154,9 @@ else
 				print "         <input name =\"url\" type=\"hidden\" id=\"url\" value=\"{$vdrstreamdev}{$channum}\" />\r\n";
 				break;
 			case 2:
-			default:
+			case 3:
 				print "         <input name =\"url\" type=\"hidden\" id=\"url\" value=\"{$name}\" />\r\n";
-				break;
+                                break;
 		}
 		print " </form>";
 	}
@@ -167,6 +173,11 @@ else
 			$dir = dirname($name);
 			print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"recordings\" />";
                         print "    <input name =\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
+                        break;
+		case 3:
+			$dir = dirname($name);
+			 print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"media\" />";
+			 print "    <input name =\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
                         break;
         }
         print " </form>\r\n";

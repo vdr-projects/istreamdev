@@ -1,6 +1,5 @@
 #!/bin/bash
 
-FFPATH="/usr/bin/ffmpeg"
 STREAM=$1
 VRATE=$2
 ARATE=$3
@@ -10,6 +9,8 @@ HTTP_PATH="$6ram/"
 
 SEGDUR=10		# Length of Segments produced (between 10 and 30)
 SEGWIN=$7		# Amount of Segments to produce 
+FFPATH=$8
+
 PREFIX=stream
 
 if [ $# -eq 0 ]

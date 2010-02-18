@@ -88,16 +88,19 @@ function gen_media()
 
 function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url)
 {
-	global $httppath;
+	global $httppath, $ffmpegpath;
 
 	switch ($type)
 	{
 		case 1:
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh '" .$url ."' " .$qparams ." " .$httppath ." 2 \" | at now";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh '" .$url ."' " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." \" | at now";
 			break;
 		case 2:
-			$cmd = "export SHELL=\"/bin/sh\";printf \"cat \\\"" .$url ."\\\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 \" | at now";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"cat \\\"" .$url ."\\\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." \" | at now";
 			break;
+		case 3:
+			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh '" .$url ."' " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." \" | at now";
+                        break;
 		default:
 			$cmd = "";
 	}
