@@ -83,7 +83,7 @@
  -------------------
 
  Copy the file in your webfolder. /istreamdev for example.
- Edit config.php. 
+ Copy config_default.php to config.php and edit it. 
  $httpath can  point to your istreamdev http path or the full url 
  ( '/istreamdev/' or "http://mydomain.com/istreamdev/' )
 

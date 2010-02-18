@@ -1,6 +1,9 @@
 <?php
 
-include ('config.php');
+if (file_exists('config.php'))
+	include ('config.php');
+else
+	include ('config_default.php');
 include ('includes/inc_auth.php');
 include ('includes/inc_vdr.php');
 include ('includes/inc_files.php');
