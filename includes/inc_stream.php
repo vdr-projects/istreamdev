@@ -21,15 +21,17 @@ if (infostreamexist())
 
 	// Print the right logo
 	print " <ul class=\"pageitem\">\r\n";
-	if ($type <= 2)
-	{
-		if (!file_exists('logos/'.$realname.'.png'))
-			print " <center><video id=\"videofeed\" poster=\"logos/nologo2.png\" width='80' height='80' /></center>\r\n";
-		else
-			print " <center><video id=\"videofeed\" poster=\"logos/{$realname}.png\" width='80' height='80' /></center>\r\n";
-	}
+
+	if ($type == 3)
+		$logopath = "ram/stream-tb.png";
 	else
+		$logopath = "logos/" .$realname .".png";
+
+	if (!file_exists($logopath))
 		print " <center><video id=\"videofeed\" poster=\"logos/nologo2.png\" width='80' height='80' /></center>\r\n";
+	else
+		print " <center><video id=\"videofeed\" poster=\"{$logopath}\" width='80' height='80' /></center>\r\n";
+
 	print " </ul>\r\n";
 
 	print " <ul class=\"pageitem\">\r\n";
@@ -52,7 +54,7 @@ if (infostreamexist())
 			print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$realname}\" />";
 			break;
 		case 2:
-		case 3:
+		case 3:	
 			print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$url}\" />";
 			break;
 			
@@ -79,9 +81,8 @@ else
 			break;
 		// Media
 		case 3:
-			$realname = $name;
-			$title = "";
-			$desc = "";
+			list($title, $desc) = mediagetinfostream($name);
+			$realname = basename($name);
 			break;
 		default:
 			$realname = "";
@@ -106,18 +107,18 @@ else
 
 	print " <span class=\"graytitle\">Select stream mode</span>\r\n";
 
+	// Print the right logo
 	print " <ul class=\"pageitem\">\r\n";
 
-	// Print the right logo
-	if ($type <= 2)
-	{
-		if (!file_exists('logos/'.$realname.'.png'))
-			print " <center><img src=\"logos/nologo2.png\"></img></center>\r\n";
-		else
-			print " <center><img src=\"logos/{$realname}.png\"></img></center>\r\n";
-	}
+	if ($type == 3)
+		$logopath = "ram/stream-tb.png";
 	else
+		$logopath = "logos/" .$realname .".png";
+
+	if (!file_exists($logopath))
 		print " <center><img src=\"logos/nologo2.png\"></img></center>\r\n";
+	else
+		print " <center><img src=\"{$logopath}\"></img></center>\r\n";
 
 	print " </ul>\r\n";
 

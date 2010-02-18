@@ -1,5 +1,6 @@
 <?php
-	global $user, $pass, $vdrchannels, $vdrstreamdev, $quality, $httppath, $svdrpip, $svdrpport, $ffmpegpath;
+	global $user, $pass, $vdrchannels, $vdrstreamdev, $quality, $httppath;
+	global $svdrpip, $svdrpport, $ffmpegpath, $videotypes, $audiotypes, $mediainfopath;
 
 	// Http configuration
 	$user = 'istreamdev';		// Login
@@ -14,7 +15,10 @@
 	$vdrrecpath='/video/';
 
 	// Media configuration
+	$mediainfopath='/usr/bin/mediainfo';
 	$mediapath='/mnt/Storage/';
+	$videotypes='avi mkv ts mov mp4 wmv flv mpg mpeg mpeg2 mpv';
+	$audiotypes='mp3 wav aac flac';
 
 	// Encoding
 	//			Name		Video	Audio	Audio channels	Resolution
@@ -22,6 +26,8 @@
 				'3g'	=>	'350k	64k	1		408x272',
 				'Wifi'	=>	'512k	128k	2		480x320'
 			);
+
+	// Misc
 	$ffmpegpath = '/usr/bin/ffmpeg';
 
 	// Version

@@ -16,10 +16,11 @@ if ($dir == $vdrrecpath)
 	print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
 else
 	print "<a href=\"javascript:sendForm('getback')\">Back</a></div>\r\n";
-
+if ($dir != $vdrrecpath)
+{
 print "<div id=\"rightnav\">\r\n";
 print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
-
+}
 print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
 print "<div id=\"content\">\r\n";
@@ -28,9 +29,12 @@ print "<br>";
 print " <span class=\"graytitle\">{$subdir}</span>\r\n";
 print " <ul class=\"pageitem\">";
 
-$dir_handle = @opendir($dir) or die("Unable to open $dir");
-
-while ($recname = readdir($dir_handle))
+$dir_handle = @opendir($dir);
+if (!$dir_handle)
+{
+	print "Unable to open $dir";
+}
+else while ($recname = readdir($dir_handle))
 {
 	if($recname == "." || $recname == ".." || $recname == "epg.data" || $recname == 'lost+found')
 		continue;
@@ -59,7 +63,9 @@ while ($recname = readdir($dir_handle))
 $updir = dirname($dir);
 
 print "<form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.php\"><input name=\"action\" type=\"hidden\" id=\"action\" value=\"recordings\"/><input name=\"dir\" type=\"hidden\" id=\"dir\" value=\"{$updir}/\" /></form>\r\n";
-closedir($dir_handle);
+
+if ($dir_handle)
+	closedir($dir_handle);
 
 print "</ul></div>\r\n";
 ?>

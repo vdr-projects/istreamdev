@@ -533,8 +533,8 @@ li.store .image {
 	position: absolute;
 	left: 0;
 	top: 0;
-	height: 80px;
-	width: 80px;
+	height: 90px;
+	width: 90px;
 	display: block;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eff1f5), to(#d6dce6));
 	-webkit-background-size: 90px;
@@ -896,11 +896,11 @@ body.list div#content {
 	margin-top: -13px!important;
 }
 body.list ul img {
-	width: 90px;
-	height: 90px;
+	width: 80px;
+	height: 80px;
 	position: absolute;
-	left: 0;
-	top: 0;
+	left: 5;
+	top: 5;
 }
 body.list li.withimage {
 	height: 90px!important;
