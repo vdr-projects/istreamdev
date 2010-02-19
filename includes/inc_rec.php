@@ -47,6 +47,11 @@ else while ($recname = readdir($dir_handle))
 
 	if (strstr($recname, ".rec") == ".rec")
 	{
+
+		$date = preg_replace('/-/', '/', substr($recname, 0, 10));
+		$time = preg_replace('/\./', 'h', substr($recname, 11, 5));
+		$recnice = $date .' at ' .$time;
+
 		print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$recname2');\"><span class=\"name\">$recnice</span><span class=\"arrow\"></span></a></li>\r\n";
 		print "<form name=\"$recname\" id=\"$recname\" method=\"post\" action=\"index.php\">";
 		print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
@@ -56,7 +61,12 @@ else while ($recname = readdir($dir_handle))
 	}
 	else
 	{
-		print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$recname2');\"><span class=\"name\">$recname</span><span class=\"arrow\"></span></a></li>\r\n";
+		$recnice = $recname;
+		if ($recnice[0] == '@')
+			$recnice = substr($recnice, 1);
+		$recnice = preg_replace('/\_/', ' ', $recnice);
+
+		print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$recname2');\"><span class=\"name\">$recnice</span><span class=\"arrow\"></span></a></li>\r\n";
 		print "<form name=\"$recname\" id=\"$recname\" method=\"post\" action=\"index.php\">";
 		print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"recordings\"/>";
 		print "   <input name=\"dir\" type=\"hidden\" id=\"dir\" value=\"{$dir}/{$recname}\" />";
