@@ -4,7 +4,7 @@ iStreamdev History
 in progress:
 
 - fixed indentation
-- nice display of recording date & time
+- nice display of recording date & time and names
 - epg characters encoding detection and conversion to utf8 if necessary
 
 19.02.2010 - V.0.3.6.1
