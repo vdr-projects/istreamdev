@@ -23,7 +23,7 @@ if ($vdrenabled)
 }
 print " <span class=\"graytitle\">MEDIA</span>\r\n";
 print " <ul class=\"pageitem\">\r\n";
-print "         <li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('media');\"><img src=\"images/pictos/media.png\" /><span class=\"name\">Media</span><span class=\"arrow\"></span></a></li>\r\n";
+print "         <li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('media');\"><img src=\"images/pictos/media.png\" /><span class=\"name\">Media Files</span><span class=\"arrow\"></span></a></li>\r\n";
 print "         <form name=\"media\" id=\"media\" method=\"post\" action=\"index.php\"><input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\" /></form>\r\n";
 print " </ul>";
 print "</div>";
