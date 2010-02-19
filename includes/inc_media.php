@@ -34,7 +34,7 @@ print "<div id=\"content\">\r\n";
 print " <span class=\"graytitle\">Media</span>\r\n";
 print "<br>";
 print " <ul class=\"pageitem\">";
-print " <li class=\"textbox\"><span class=\"header\">/{$subdir}</span></li>";
+print " <li class=\"textbox\"><p>/{$subdir}</p></li>";
 
 $dir_handle = @opendir($dir);
 if (!$dir_handle)
