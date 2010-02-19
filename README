@@ -78,7 +78,7 @@
  - ffmpeg compiled with x264 support
  - segmenter: follow the instruction here to install it:
    http://www.ioncannon.net/programming/452/iphone-http-streaming-with-ffmpeg-and-an-open-source-segmenter/
-
+ - mediainfo ( http://mediainfo.sourceforge.net )
 
  Install iStreamdev:
  -------------------
