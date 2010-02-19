@@ -53,7 +53,7 @@ function vdrgetinfostream($stream = "NULL", $ischan = 1)
 		if ($chanfound == 0)
 		{
 			$streamArray = explode(",",$stream);
-			if (strstr($allepg[$i], $stream) == $stream)
+			if (strstr($allepg[$i], $streamArray[0]) == $streamArray[0])
 				$chanfound = 1;
 		}
 		else
