@@ -83,6 +83,13 @@ function vdrgetinfostream($stream = "NULL", $ischan = 1)
 				$epgdesc=substr($allepg[$i], 2);
 		}
 	}
+	
+	// Convert if needed
+	if (!is_utf8($epgtitle))
+		$epgtitle = utf8_encode($epgtitle);
+	if (!is_utf8($epgdesc))
+		$epgdesc = utf8_encode($epgdesc);
+
 
 	return array($epgtitle, $epgdesc, $channame);
 }

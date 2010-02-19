@@ -25,8 +25,8 @@ else
 	print "<a href=\"javascript:sendForm('getback')\">Back</a></div>\r\n";
 if ($dir != $mediapath)
 {
-print "<div id=\"rightnav\">\r\n";
-print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
+	print "<div id=\"rightnav\">\r\n";
+	print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
 }
 print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
@@ -54,42 +54,45 @@ else while ($medianame = readdir($dir_handle))
 //
 if ($medianame_array[0] == NULL)
 {
-//do nothing
+	//do nothing
 }
 else
 {
-sort($medianame_array);
-foreach($medianame_array as $value)
- {	
-	$medianame2=addslashes($value);
-	// Directories
-	if (is_dir($dir ."/" .$value))
-	{
-		print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
-		print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
-		print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\"/>";
-		print "   <input name=\"dir\" type=\"hidden\" id=\"dir\" value=\"{$dir}{$value}/\" />";
-		print "</form>\r\n";
-	}
-	else
-	{
-		// Get file extension
-		$fileext = end(explode(".", $value));
+	// Alphabetical sorting
+	sort($medianame_array);
+	
+	foreach($medianame_array as $value)
+	{	
+		$medianame2=addslashes($value);
 
-		// Check if it is supported
-		if (	preg_match("'" .$fileext ." '", $videotypes)
-		    ||	preg_match("'" .$fileext ." $'", $videotypes)
-		   )
+		// Directories
+		if (is_dir($dir ."/" .$value))
 		{
-			print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><img src=\"images/pictos/video.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+			print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
 			print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
-			print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
-	                print "   <input name=\"type\" type=\"hidden\" id=\"type\" value=3 />";
-        	        print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$dir}{$value}\" />";
+			print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\"/>";
+			print "   <input name=\"dir\" type=\"hidden\" id=\"dir\" value=\"{$dir}{$value}/\" />";
 			print "</form>\r\n";
 		}
+		else
+		{
+			// Get file extension
+			$fileext = end(explode(".", $value));
+
+			// Check if it is supported
+			if (	preg_match("'" .$fileext ." '", $videotypes)
+			    ||	preg_match("'" .$fileext ." $'", $videotypes)
+			   )
+			{
+				print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><img src=\"images/pictos/video.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+				print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
+				print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
+	                	print "   <input name=\"type\" type=\"hidden\" id=\"type\" value=3 />";
+        		        print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$dir}{$value}\" />";
+				print "</form>\r\n";
+			}
+		}
 	}
- }
 }
 
 $updir = dirname($dir);
