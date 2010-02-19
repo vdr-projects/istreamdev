@@ -39,11 +39,15 @@ else while ($recname = readdir($dir_handle))
 	if($recname == "." || $recname == ".." || $recname == "epg.data" || $recname == 'lost+found')
 		continue;
 	
-	$recname2=addslashes($recname);
+	$recname2 = addslashes($recname);
+
+	$date = preg_replace('/-/', '/', substr($recname2, 0, 10));
+	$time = preg_replace('/\./', 'h', substr($recname2, 11, 5));
+	$recnice = $date .' at ' .$time;
 
 	if (strstr($recname, ".rec") == ".rec")
 	{
-		print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$recname2');\"><span class=\"name\">$recname</span><span class=\"arrow\"></span></a></li>\r\n";
+		print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$recname2');\"><span class=\"name\">$recnice</span><span class=\"arrow\"></span></a></li>\r\n";
 		print "<form name=\"$recname\" id=\"$recname\" method=\"post\" action=\"index.php\">";
 		print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
                 print "   <input name=\"type\" type=\"hidden\" id=\"type\" value=2 />";
