@@ -7,6 +7,7 @@ in progress:
 - nice display of recording date & time and names
 - epg characters encoding detection and conversion to utf8 if necessary
 - fixed channels with coma. Something was still missing.
+- added an option to enable/disable the VDR feature
 
 19.02.2010 - V.0.3.6.1
 
