@@ -178,7 +178,7 @@ function vdrlistchannels($category = "NULL")
 			$chan2=addslashes($chan);
 			print "	<a class=\"noeffect\" href=\"javascript:sendForm('$chan2');\">\r\n";
 			if (!file_exists('logos/'.$chan.'.png'))
-				print " <img src=\"logos/nologo.png\" />\r\n";
+				print " <img src=\"logos/nologoTV.png\" />\r\n";
 			else
 				print "	<img src=\"logos/{$chan}.png\" />\r\n";
 			print " <span class=\"name\">$chan</span>\r\n";

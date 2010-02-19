@@ -42,6 +42,12 @@ function selectpage()
 		case ("media"):
 			gen_media();
 			break;
+		case ("epg"):
+			gen_epg();
+			break;
+		case ("timers"):
+			gen_timers();
+			break;
 		case ("startstream"):
 			$type = $_REQUEST['type'];
 			$name = $_REQUEST['name'];
@@ -90,6 +96,16 @@ function gen_media()
 {
 	include('includes/inc_media.php');
 }
+
+function gen_epg()
+{
+        include('includes/inc_epg.php');
+}
+function gen_timers()
+{
+        include('includes/inc_timers.php');
+}
+
 
 function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url)
 {

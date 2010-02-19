@@ -28,7 +28,7 @@ if (infostreamexist())
 		$logopath = "logos/" .$realname .".png";
 
 	if (!file_exists($logopath))
-		print " <center><video id=\"videofeed\" poster=\"logos/nologo2.png\" width='80' height='80' /></center>\r\n";
+		print " <center><video id=\"videofeed\" poster=\"logos/nologoTV.png\" width='80' height='80' /></center>\r\n";
 	else
 		print " <center><video id=\"videofeed\" poster=\"{$logopath}\" width='80' height='80' /></center>\r\n";
 
@@ -116,7 +116,7 @@ else
 		$logopath = "logos/" .$realname .".png";
 
 	if (!file_exists($logopath))
-		print " <center><img src=\"logos/nologo2.png\"></img></center>\r\n";
+		print " <center><img src=\"logos/nologoTV.png\"></img></center>\r\n";
 	else
 		print " <center><img src=\"{$logopath}\"></img></center>\r\n";
 
