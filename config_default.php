@@ -1,6 +1,9 @@
 <?php
-	global $user, $pass, $vdrchannels, $vdrstreamdev, $quality, $httppath;
-	global $svdrpip, $svdrpport, $ffmpegpath, $videotypes, $audiotypes, $mediainfopath;
+	global $user, $pass, $httppath;
+	global $vdrenabled, $vdrchannels, $svdrpport, $svdrpip, $vdrstreamdev, $vdrrecpath;
+	global $mediainfopath, $mediapath, $videotypes, $audiotypes;
+	global $quality, $ffmpegpath;
+	global $isdversion;
 
 	// Http configuration
 	$user = 'istreamdev';		// Login
@@ -8,6 +11,7 @@
 	$httppath = '/istreamdev/';	// Path to the index.php file
 
 	// VDR configuration
+	$vdrenabled=1;
 	$vdrchannels='/etc/vdr/channels.conf';	// VDR channel list
 	$svdrpport=2001;					// SVDRP port
 	$svdrpip='127.0.0.1';					// SVDRP ip
