@@ -1,13 +1,14 @@
 iStreamdev History
 ------------------
 
-in progress - V.0.3.6-dev
+19.02.2010 - V.0.3.6
 
 - Added Media streaming. Only video files for the moment. Mediainfo is needed on the system. ( The Troll )
 - fix logos channels size in channel list. Now it's ok ( thanks alex )
 - now recordings show logo channel ( The Troll )
 - fix channels with comma in the name to display epg ( thanks hendrikw01 & Mentox )
 - default config moved to config-default.php
+
 
 18.02.2010 - V.0.3.5
 
