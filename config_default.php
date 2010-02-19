@@ -5,18 +5,19 @@
 	$httppath = '/istreamdev/';	// Path to the index.php file
 
 	// VDR configuration
-	$vdrenabled=1;
+
+	$vdrenabled=1;	// enable/disable VDR features
 	$vdrchannels='/etc/vdr/channels.conf';	// VDR channel list
 	$svdrpport=2001;					// SVDRP port
 	$svdrpip='127.0.0.1';					// SVDRP ip
 	$vdrstreamdev='http://127.0.0.1:3000/TS/';		// VDR streamdev URL
-	$vdrrecpath='/video/';
+	$vdrrecpath='/video/';	//VDR recording directory
 
 	// Media configuration
 	$mediainfopath='/usr/bin/mediainfo';
-	$mediapath='/mnt/Storage/';
-	$videotypes='avi mkv ts mov mp4 wmv flv mpg mpeg mpeg2 mpv';
-	$audiotypes='mp3 wav aac flac';
+	$mediapath='/mnt/media/';	//path to your media files 
+	$videotypes='avi mkv ts mov mp4 wmv flv mpg mpeg mpeg2 mpv'; //video files extensions
+	$audiotypes='mp3 wav aac flac';	//audio files extensions
 
 	// Encoding
 	//			Name		Video	Audio	Audio channels	Resolution
@@ -26,8 +27,8 @@
 			);
 
 	// Misc
-	$ffmpegpath = '/usr/bin/ffmpeg';
+	$ffmpegpath = '/usr/bin/ffmpeg';	//path to ffmpeg binary
 
 	// Version
-	$isdversion = "0.3.6-alpha";
+	$isdversion = "0.3.7-dev";
 ?>
