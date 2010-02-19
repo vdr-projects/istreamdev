@@ -24,8 +24,8 @@
  About:
  -----
  
- iStreamdev lets you stream TV channels from VDR to your 
- unjailbroken iPhone Quicktime player.
+ iStreamdev lets you stream TV channels & recordings from VDR 
+ and your Media files to your unjailbroken iPhone Quicktime player.
 
  Your iPhone needs to have at least firmware 3.0 to support
  HTTP Live Streaming protocol.
@@ -45,6 +45,7 @@
  - Channels listed with logo and current epg.
  - Streaming format selection: Edge, 3g, Wifi
  - Recording streaming
+ - Media streaming ( only videos for now ) 
  
  Webapp:
  -------
