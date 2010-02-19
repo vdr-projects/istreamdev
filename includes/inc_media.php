@@ -33,8 +33,8 @@ print "</div>\r\n";
 print "<div id=\"content\">\r\n";
 print " <span class=\"graytitle\">Media</span>\r\n";
 print "<br>";
-print " <span class=\"graytitle\">{$subdir}</span>\r\n";
 print " <ul class=\"pageitem\">";
+print " <li class=\"textbox\"><span class=\"header\">/{$subdir}</span></li>";
 
 $dir_handle = @opendir($dir);
 if (!$dir_handle)
@@ -52,9 +52,15 @@ else while ($medianame = readdir($dir_handle))
 //closedir?
 
 //
+if ($medianame_array[0] == NULL)
+{
+//do nothing
+}
+else
+{
 sort($medianame_array);
 foreach($medianame_array as $value)
-{	
+ {	
 	$medianame2=addslashes($value);
 	// Directories
 	if (is_dir($dir ."/" .$value))
@@ -83,7 +89,7 @@ foreach($medianame_array as $value)
 			print "</form>\r\n";
 		}
 	}
-
+ }
 }
 
 $updir = dirname($dir);
