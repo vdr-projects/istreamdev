@@ -1,10 +1,4 @@
 <?php
-	global $user, $pass, $httppath;
-	global $vdrenabled, $vdrchannels, $svdrpport, $svdrpip, $vdrstreamdev, $vdrrecpath;
-	global $mediainfopath, $mediapath, $videotypes, $audiotypes;
-	global $quality, $ffmpegpath;
-	global $isdversion;
-
 	// Http configuration
 	$user = 'istreamdev';		// Login
 	$pass = 'iguest';		// Password
