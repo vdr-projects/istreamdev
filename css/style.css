@@ -899,8 +899,8 @@ body.list ul img {
 	width: 80px;
 	height: 80px;
 	position: absolute;
-	left: 5;
-	top: 5;
+	left: 5px;
+	top: 5px;
 }
 body.list li.withimage {
 	height: 90px!important;
