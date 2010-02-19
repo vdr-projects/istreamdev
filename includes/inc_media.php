@@ -75,7 +75,7 @@ foreach($medianame_array as $value)
 		    ||	preg_match("'" .$fileext ." $'", $videotypes)
 		   )
 		{
-			print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><img src=\"images/pictos/media.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+			print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><img src=\"images/pictos/video.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
 			print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
 			print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
 	                print "   <input name=\"type\" type=\"hidden\" id=\"type\" value=3 />";
