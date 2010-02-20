@@ -36,6 +36,10 @@ function updateOrientation() {
 <body onorientationchange="updateOrientation();" onload="updateOrientation();">
 
 <div id="topbar" class="transparent">
+<div id="leftnav">
+<a href="javascript:sendForm('getback')">Back</a></div>
+<div id="rightnav">
+<a href="index.php"><img alt="home" src="images/home.png" /></a></div>
 <div id="title">
 iStream
 </div>
@@ -195,6 +199,7 @@ iStream
 	
 	iStreamdev 2010
 </div>
+<form name="getback" id="getback" method="post" action="index.php"><input name="action" type="hidden" id="action" value="timers" /></form>
 
 </body>
 
