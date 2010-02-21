@@ -68,10 +68,11 @@ function openSelectDate() {
 function done_date() {
 	var results = SpinningWheel.getSelectedValues();
 	document.getElementById('layer_date').innerHTML = results.values.join(' ');
+	document.timer.timer_date.value = results.keys.join(' ');
+	
 }
 
 function cancel_date() {
-	document.getElementById('layer_date').innerHTML = 'Select timer date';
 }
 function openSelectTime(layer) {
 	var now = new Date();
@@ -92,8 +93,7 @@ function openSelectTime(layer) {
 	SpinningWheel.addSlot(minutes, '', now_minute);
 	
 	SpinningWheel.setCancelAction( function() {} );
-	SpinningWheel.setDoneAction(function () {var results = SpinningWheel.getSelectedValues(); document.getElementById(layer).innerHTML = results.values.join(' ');});
-	
+	SpinningWheel.setDoneAction(function () {var results = SpinningWheel.getSelectedValues(); document.getElementById(layer).innerHTML = results.values.join('h');if ( layer == 'layer_starttime' ) { var forminput = 'timer_starttime'; } else { var forminput = 'timer_endtime'; }; eval ("document.timer." + forminput + ".value = results.keys.join('')");  });
 	SpinningWheel.open();
 }
 
@@ -112,16 +112,18 @@ iStream
 </div>
 </div>
 <div id="content"> <span class="graytitle">New Timer</span>
+
+<form name="timer" id="timer" method="post" action="index.php">
   <ul class="pageitem">
     <li class="textbox"><span class="header">Recording name</span></li>
     <li class="bigfield">
-      <input type="text" placeholder="Enter recording name" name="rec_name" />
+      <input type="text" placeholder="Enter recording name" name="timer_name" />
     </li>
   </ul>
   <ul class="pageitem">
     <li class="textbox"><span class="header">Channel</span></li>
     <li class="select">
-      <select name="d">
+      <select name="timer_chan">
         <option value="1">TF1</option>
         <option value="2">France 2</option>
         <option value="3">France 3</option>
@@ -136,6 +138,7 @@ iStream
    <li class="textbox"><span class="header">Date</span></li>
    <li class="menu"><a class="noeffect" href="javascript:openSelectDate()">
   <span class="name" id="layer_date">Select timer date</span><span class="arrow"></span></a></li>
+ 
   </ul>
   	<ul class="pageitem">
 	<li class="textbox"><span class="header">Start time</span></li>
@@ -147,12 +150,16 @@ iStream
    <li class="menu"><a class="noeffect" href="javascript:openSelectTime('layer_endtime')">
   <span class="name" id="layer_endtime">Select end time</span><span class="arrow"></span></a></li>
   </ul>
-  
+<input name="action" type="hidden" id="action" value="newtimer"/>
+<input name="timer_date" type="hidden" id="timer_date" value="" />
+<input name="timer_starttime" type="hidden" id="timer_starttime" value="" />
+<input name="timer_endtime" type="hidden" id="timer_endtime" value="" />
+
 <ul class="pageitem">
 <li class="button">
-			<input name="Submit input" type="submit" value="Submit input" /></li>
+			<input name="Submit" type="submit" value="Submit" /></li>
 		</ul>
-
+</form>
 </div>
 <div id="footer">
 	
