@@ -48,8 +48,21 @@ function selectpage()
 		case ("timers"):
 			gen_timers();
 			break;
-		case ("edit_timer"):
+		case ("edittimer"):
 			gen_edit_timer();
+			break;
+		case ("deletetimer"):
+			$timer = $_REQUEST['timer'];
+			delete_timer($timer);
+			break;
+		case ("addtimer"):
+			$channame = $_REQUEST['chan'];
+			$date = $_REQUEST['date'];
+			$stime = $_REQUEST['stime'];
+			$etime = $_REQUEST['etime'];
+			$desc = $_REQUEST['desc'];
+			$prevtimer = $_REQUEST['prevtimer'];
+			set_timer($channame, $date, $stime, $etime, $desc, $prevtimer);
 			break;
 		case ("startstream"):
 			$type = $_REQUEST['type'];
@@ -139,6 +152,23 @@ function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, 
 	writeinfostream($type, $name, $title, $desc, $qname, $category, $url);
 	
 	include('includes/inc_stream.php');
+}
+
+function delete_timer($timer)
+{
+	vdrdeltimer($timer);
+	
+	include('includes/inc_timers.php');
+}
+
+function set_timer($channame, $date, $stime, $etime, $desc, $prevtimer)
+{
+
+	if ($prevtimer != -1)
+		vdrdeltimer($prevtimer);
+	vdrsettimer($channame, $date, $stime, $etime, $desc);
+
+	include('includes/inc_timers.php');
 }
 
 ?>

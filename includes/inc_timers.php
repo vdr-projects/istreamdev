@@ -25,7 +25,7 @@ print "   <span class=\"arrow\"></span>";
 print "  </a>";
 print " </li>";
 print " <form name=\"new_timer\" id=\"new_timer\" method=\"post\" action=\"index.php\">";
-print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"edit_timer\"/>";
+print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"edittimer\"/>";
 print "  <input name=\"timer\" type=\"hidden\" id=\"timer\" value=\"-1\" />";
 print " </form>";
 print "</ul>";

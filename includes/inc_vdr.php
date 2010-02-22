@@ -317,13 +317,36 @@ function vdrlisttimers()
 		print "</li>";
 
 		print "<form name=\"timer {$timernum}\" id=\"timer {$timernum}\" method=\"post\" action=\"index.php\">";
-		print " <input name=\"action\" type=\"hidden\" id=\"action\" value=\"edit_timer\"/>";
+		print " <input name=\"action\" type=\"hidden\" id=\"action\" value=\"edittimer\"/>";
 		print " <input name=\"timer\" type=\"hidden\" id=\"timer\" value=\"{$timernum}\" />";
 		print "</form>";
 	}
 }
 
+function vdrdeltimer($timer=0)
+{
+	global $svdrpip, $svdrpport;
 
+	$svdrp = new SVDRP($svdrpip, $svdrpport);
+	$svdrp->Connect();
+	$svdrp->Command("DELT " .$timer);
+	$svdrp->Disconnect();
+}
 
+function vdrsettimer($channame, $date, $stime, $etime, $desc)
+{
+	global $svdrpip, $svdrpport;
+
+	$channum = vdrgetchannum($channame);
+
+	$timer = "1:" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
+
+	print $timer;
+
+	$svdrp = new SVDRP($svdrpip, $svdrpport);
+	$svdrp->Connect();
+	$svdrp->Command("ADDT " .$timer);
+	$svdrp->Disconnect();
+}
 
 ?>
