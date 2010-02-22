@@ -14,35 +14,6 @@ include('includes/include.php');
 <title>iStreamdev</title>
 <link href="images/startup.png" rel="apple-touch-startup-image" />
 <link rel="apple-touch-icon" href="images/istreamdev.png"/>
-<script type="text/javascript">
-function updateOrientation() {
-     switch(window.orientation) {
-     case 0:
-         orient = "portrait";
-         break;
-     case -90:
-         orient = "landscape";
-         break;
-     case 90:
-         orient = "landscape";
-         break;
-     case 180:
-         orient = "portrait";
-         break;
-     }
-     document.body.setAttribute("orient", orient);
-     window.scrollTo(0, 1);
-
- }
-function sendForm(formid) {
-	var frm;
-	frm = document.getElementById(formid);
-	frm.submit();
-}
-function swapPic() {
-	document.getElementById('videofeed').src = "ram/stream.m3u8";
-	}
-</script>
 </head>
 
 
