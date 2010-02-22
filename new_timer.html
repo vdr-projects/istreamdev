@@ -37,11 +37,19 @@ function updateOrientation() {
 	frm = document.getElementById(formid);
 	frm.submit();
 }
-function openSelectDate() {
+function openSelectDate(timer_year,timer_month,timer_day) {
 	var now = new Date();
+	if ( timer_year == null ) {
 	var now_year = now.getFullYear();
 	var now_month = now.getMonth()+1;
 	var now_day = now.getDate();
+	}
+	else
+	{
+	var now_year = timer_year;
+        var now_month = timer_month;
+        var now_day = timer_day;
+	}
 	var layer = 'layer_date';
 	var days = { };
 	var years = { };
@@ -74,10 +82,17 @@ function done_date() {
 
 function cancel_date() {
 }
-function openSelectTime(layer) {
+function openSelectTime(layer,timer_hour,timer_minute) {
+	 if ( timer_hour == null ) {
 	var now = new Date();
 	var now_hour = now.getHours();
 	var now_minute = now.getMinutes()+1;
+	}
+	else
+	{
+	var now_hour = timer_hour;
+        var now_minute = timer_minute;
+	}
 	var hours = { };
 	var minutes = { };
 	
