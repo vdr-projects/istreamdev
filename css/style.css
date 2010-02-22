@@ -14,7 +14,7 @@ body {
 }
 img {
 	border: 0;
-	margin-top: 5px
+	margin-top: 5px;
 }
 a:hover span.arrow {
 	background-position: 0 -13px!important;
