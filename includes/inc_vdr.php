@@ -94,6 +94,29 @@ function vdrgetinfostream($stream = "NULL", $ischan = 1)
 	return array($epgtitle, $epgdesc, $channame);
 }
 
+function vdrgettimerinfo($timernum=0)
+{
+	global $svdrpip, $svdrpport;
+
+	$svdrp = new SVDRP($svdrpip, $svdrpport);
+	$svdrp->Connect();
+	$timer = $svdrp->Command("LSTT " .$timernum);
+	$svdrp->Disconnect();
+
+	$timerarray = explode(":", $timer);
+
+	$typearray = explode(" ", $timerarray[0]);
+	$type = $typearray[1];
+	$channel = $timerarray[1];
+	$channame = vdrgetchanname($channel);
+	$date = $timerarray[2];
+	$starthour = $timerarray[3];
+	$endhour = $timerarray[4];
+	$desc = $timerarray[7];
+
+	return array($type, $channame, $date, $starthour, $endhour, $desc);
+}
+
 function vdrgetchannum($chan = "NULL")
 {
 	global $svdrpip, $svdrpport;
@@ -112,6 +135,25 @@ function vdrgetchannum($chan = "NULL")
 
 	return $channum;
 }
+
+function vdrgetchanname($channum = 0)
+{
+	global $svdrpip, $svdrpport;
+
+	$svdrp = new SVDRP($svdrpip, $svdrpport);
+	$svdrp->Connect();
+	$channel = $svdrp->Command("LSTC " .$channum);
+	$svdrp->Disconnect();
+
+	// Get channel name
+	$chanarray = explode(":", $channel);
+	$chanarray = explode(";", $chanarray[0]);
+	$channame = $chanarray[0];
+	$channame = substr($channame, strlen($channum)+1);
+
+        return $channame;
+}
+
 
 function vdrlistcategories()
 {
@@ -209,4 +251,41 @@ function vdrlistchannels($category = "NULL")
 	}
 	fclose($fp);
 }
+
+function vdrlisttimers()
+{
+	global $svdrpip, $svdrpport;
+
+	$svdrp = new SVDRP($svdrpip, $svdrpport);
+	$svdrp->Connect();
+	$timers = $svdrp->Command("LSTT");
+	$svdrp->Disconnect();
+
+	foreach($timers as $timer)
+	{
+		// Extract timer #
+		$timerarray = explode(" ", $timer);
+		$timernum = $timerarray[0];
+
+		list($type, $channame, $date, $starthour, $endhour, $desc) = vdrgettimerinfo($timernum);
+
+		print "<li class=\"menu\">";
+		print " <a href=\"javascript:sendForm('timer {$timernum}')\">";
+		print "  <img alt=\"list\" src=\"images/pictos/timers.png\" />";
+
+		print "  <span class=\"name\">{$date}: {$channame}</span><span class=\"arrow\"></span>";
+
+		print " </a>";
+		print "</li>";
+
+		print "<form name=\"timer {$timernum}\" id=\"timer {$timernum}\" method=\"post\" action=\"index.php\">";
+		print " <input name=\"action\" type=\"hidden\" id=\"action\" value=\"edit_timer\"/>";
+		print " <input name=\"timer\" type=\"hidden\" id=\"timer\" value=\"{$timernum}\" />";
+		print "</form>";
+	}
+}
+
+
+
+
 ?>
