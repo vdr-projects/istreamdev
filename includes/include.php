@@ -48,9 +48,6 @@ function selectpage()
 		case ("timers"):
 			gen_timers();
 			break;
-		case ("new_timer"):
-			gen_new_timer();
-			break;
 		case ("edit_timer"):
 			gen_edit_timer();
 			break;
@@ -111,13 +108,9 @@ function gen_timers()
 {
         include('includes/inc_timers.php');
 }
-function gen_new_timer()
-{
-        include('new_timer.html');
-}
 function gen_edit_timer()
 {
-        include('edit_timer.html');
+        include('includes/inc_edittimer.php');
 }
 
 

@@ -94,27 +94,40 @@ function vdrgetinfostream($stream = "NULL", $ischan = 1)
 	return array($epgtitle, $epgdesc, $channame);
 }
 
-function vdrgettimerinfo($timernum=0)
+function vdrgettimerinfo($timernum=-1)
 {
 	global $svdrpip, $svdrpport;
 
-	$svdrp = new SVDRP($svdrpip, $svdrpport);
-	$svdrp->Connect();
-	$timer = $svdrp->Command("LSTT " .$timernum);
-	$svdrp->Disconnect();
+	if ($timernum != -1)
+	{
+		$svdrp = new SVDRP($svdrpip, $svdrpport);
+		$svdrp->Connect();
+		$timer = $svdrp->Command("LSTT " .$timernum);
+		$svdrp->Disconnect();
 
-	$timerarray = explode(":", $timer);
+		$timerarray = explode(":", $timer);
 
-	$typearray = explode(" ", $timerarray[0]);
-	$type = $typearray[1];
-	$channel = $timerarray[1];
+		$typearray = explode(" ", $timerarray[0]);
+		$type = $typearray[1];
+		$channel = $timerarray[1];
+		$date = $timerarray[2];
+		$stime = $timerarray[3];
+		$etime = $timerarray[4];
+		$desc = $timerarray[7];
+	}
+	else
+	{
+		$type = 1;
+		$channel = 1;
+		$date = date('Y-m-d');
+		$stime = date('Hi');
+		$etime = date('Hi');
+		$desc = "New timer";
+	}
+	
 	$channame = vdrgetchanname($channel);
-	$date = $timerarray[2];
-	$starthour = $timerarray[3];
-	$endhour = $timerarray[4];
-	$desc = $timerarray[7];
-
-	return array($type, $channame, $date, $starthour, $endhour, $desc);
+	
+	return array($type, $channame, $date, $stime, $etime, $desc);
 }
 
 function vdrgetchannum($chan = "NULL")
@@ -250,6 +263,31 @@ function vdrlistchannels($category = "NULL")
 		}
 	}
 	fclose($fp);
+}
+
+function vdrlistchannelsdrop($chansel = "")
+{
+	global $vdrchannels;
+
+	$chanselected = 0;
+
+	$fp = fopen ($vdrchannels,"r");
+	while ($line = fgets($fp, 1024))
+        {
+		if ($line[0] == ":")
+			continue;
+		
+		$channels = explode(":", $line);
+		$channels = explode(";", $channels[0]);
+		$chan = $channels[0];
+		if (($chan == $chansel) && !$chanselected)
+		{
+			print "<option selected value=\"{$chan}\">{$chan}</option>";
+			$chanselected = 1;
+		}
+		else
+			print "<option value=\"{$chan}\">{$chan}</option>";
+	}
 }
 
 function vdrlisttimers()

@@ -15,11 +15,12 @@ include('includes/include.php');
 <title>iStreamdev</title>
 <link href="images/startup.png" rel="apple-touch-startup-image" />
 <link rel="apple-touch-icon" href="images/istreamdev.png"/>
+<link rel="stylesheet" href="css/spinningwheel.css" type="text/css" media="all" />
 </head>
 
 
 <?php
-selectpage();
+	selectpage();
 ?>
 
 <div id="footer">
