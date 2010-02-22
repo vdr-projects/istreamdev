@@ -43,7 +43,7 @@ print "    <li class=\"textbox\"><span class=\"header\">Date</span></li>\r\n";
 $datearray = explode("-", $date);
 
 print "    <li class=\"menu\"><a class=\"noeffect\" href=\"javascript:openSelectDate({$datearray[0]},{$datearray[1]},{$datearray[2]})\">\r\n";
-print "      <span class=\"name\" id=\"layer_date\">{$date}</span><span class=\"arrow\"></span></a>";
+print "      <span class=\"layer_date\" id=\"date\">{$date}</span><span class=\"arrow\"></span></a>";
 print "    </li>\r\n";
 print "  </ul>\r\n";
 
