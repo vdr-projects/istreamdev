@@ -14,7 +14,7 @@ body {
 }
 img {
 	border: 0;
-	margin-top: 5px;
+        margin-top: 0px;
 }
 a:hover span.arrow {
 	background-position: 0 -13px!important;
@@ -265,6 +265,9 @@ body.ipodlist #footer, body.ipodlist #footer a {
 	margin: 3px 9px 17px;
 	list-style: none;
 }
+.pageitem img {
+        margin-top: 5px;
+}
 .textbox {
 	padding: 5px 9px;
 	position: relative;
@@ -472,9 +475,9 @@ li.menu a {
 	text-decoration: none;
 }
 li.menu a img {
-	width: auto;
-	height: 32px;
-	margin: 5px 0 0 5px;
+	width: 31px;
+	height: 28px;
+	margin: 8px 0 0 5px;
 	float: left;
 }
 li.menu span.name, li.checkbox .name, li.radiobutton .name {
@@ -608,7 +611,7 @@ body.applist .price {
 	color: #3b3b3b;
 }
 li.store .arrow, body.list li.withimage .arrow {
-	top: 39px!important;
+	top: 15px!important;
 }
 li.store .stars0, li.store .stars1, li.store .stars2, li.store .stars3, li.store .stars4, li.store .stars5 {
 	position: absolute;
@@ -862,7 +865,7 @@ body.list ul {
 	margin: 0;
 }
 body.list div#content li {
-	height: 40px;
+	height: 60px;
 	border-bottom: 1px solid #e1e1e1;
 	list-style: none;
 }
@@ -874,7 +877,7 @@ body.list div#footer {
 	margin-top: 24px!important;
 }
 body.list div#content li a {
-	padding: 9px 0 0 20px;
+	padding: 3px 0 0 0px;
 	font-size: large;
 	font-weight: bold;
 	position: relative;
@@ -897,28 +900,28 @@ body.list div#content {
 	margin-top: -13px!important;
 }
 body.list ul img {
-	width: 80px;
-	height: 80px;
+	width: 40px;
+	height: 40px;
 	position: absolute;
 	left: 5px;
-	top: 5px;
+	top: 1px;
 }
 body.list li.withimage {
-	height: 90px!important;
+	height: 42px!important;
 }
 body.list li.withimage span.name {
-	margin: 13px 0 0 90px;
+	margin: 0px 0 0 60px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	max-width: 63%!important;
 	white-space: nowrap;
 }
 body.list li.withimage .comment {
-	margin: 10px auto auto 90px !important;
+	margin: 0px auto auto 60px !important;
 	max-width: 63%!important;
 }
 body.list li.withimage a, body.list li.withimage:hover a {
-	height: 81px!important;
+	height: 41px!important;
 }
 #leftnav, #leftbutton, #blueleftbutton {
 	position: absolute;
