@@ -7,6 +7,8 @@
 <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script src="javascript/functions.js" type="text/javascript"></script>
+<link rel="stylesheet" href="css/spinningwheel.css" type="text/css" media="all" />
+<script type="text/javascript" src="javascript/spinningwheel-min.js?v=1.4"></script>
 <title>Title of your page</title>
 <meta content="keyword1,keyword2,keyword3" name="keywords" />
 <meta content="Description of your page" name="description" />
@@ -35,6 +37,66 @@ function updateOrientation() {
 	frm = document.getElementById(formid);
 	frm.submit();
 }
+function openSelectDate() {
+	var now = new Date();
+	var now_year = now.getFullYear();
+	var now_month = now.getMonth()+1;
+	var now_day = now.getDate();
+	var layer = 'layer_date';
+	var days = { };
+	var years = { };
+	var months = { 1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec' };
+	
+	for( var i = 1; i < 32; i += 1 ) {
+		days[i] = i;
+	}
+
+	for( i = now.getFullYear(); i < now.getFullYear()+5; i += 1 ) {
+		years[i] = i;
+	}
+
+	SpinningWheel.addSlot(days, 'right', now_day);
+	SpinningWheel.addSlot(months, '', now_month);
+	SpinningWheel.addSlot(years, 'right', now_year );
+	
+	SpinningWheel.setCancelAction(cancel_date);
+	SpinningWheel.setDoneAction(done_date);
+	
+	SpinningWheel.open();
+}
+
+function done_date() {
+	var results = SpinningWheel.getSelectedValues();
+	document.getElementById('layer_date').innerHTML = results.values.join('-');
+	document.timer.timer_date.value = results.keys.join('-');
+	
+}
+
+function cancel_date() {
+}
+function openSelectTime(layer) {
+	var now = new Date();
+	var now_hour = now.getHours();
+	var now_minute = now.getMinutes()+1;
+	var hours = { };
+	var minutes = { };
+	
+	for( var i = 00; i < 24; i += 1 ) {
+		hours[i] = i;
+	}
+
+	for( var i = 00; i < 60; i += 1 ) {
+		minutes[i] = i;
+	}
+
+	SpinningWheel.addSlot(hours, 'right', now_hour);
+	SpinningWheel.addSlot({ separator: 'h' }, 'readonly shrink');
+	SpinningWheel.addSlot(minutes, '', now_minute);
+	
+	SpinningWheel.setCancelAction( function() {} );
+	SpinningWheel.setDoneAction(function () {var results = SpinningWheel.getSelectedValues(); document.getElementById(layer).innerHTML = results.values.join('');if ( layer == 'layer_starttime' ) { var forminput = 'timer_starttime'; } else { var forminput = 'timer_endtime'; }; eval ("document.timer." + forminput + ".value = results.keys.join('')");  });
+	SpinningWheel.open();
+}
 </script>
 </head>
 
@@ -50,154 +112,59 @@ iStream
 </div>
 </div>
 <div id="content"> <span class="graytitle">Edit Timer</span>
+
+<form name="edittimer" id="edittimer" method="post" action="index.php">
   <ul class="pageitem">
     <li class="textbox"><span class="header">Recording name</span></li>
     <li class="bigfield">
-      <input placeholder="Gran Torino" type="text" name="rec_name" />
+      <input type="text" placeholder="Enter recording name" name="timer_name" value="Two Lovers" />
     </li>
   </ul>
   <ul class="pageitem">
     <li class="textbox"><span class="header">Channel</span></li>
     <li class="select">
-      <select name="d">
+      <select name="timer_chan">
         <option value="1">TF1</option>
-        <option value="2" selected="yes">France 2</option>
+        <option value="2">France 2</option>
         <option value="3">France 3</option>
         <option value="4">France 4</option>
-        <option value="4">France 5</option>
-        <option value="4">M6</option>
+        <option value="5">France 5</option>
+        <option value="6"  selected>M6</option>
       </select>
       <span class="arrow"></span></li>
   </ul>
+    
   <ul class="pageitem">
-    <li class="textbox"><span class="header">Start time</span></li>
-    <li class="select">
-      <select name="start_hour">
-        <option>Hour</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6" selected="yes">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="19">19</option>
-        <option value="20">20</option>
-        <option value="21">21</option>
-        <option value="22">22</option>
-        <option value="23">23</option>
-        <option value="00">00</option>
-      </select>
-      <span class="arrow"></span></li>
-    <li class="select">
-      <select name="start_minute">
-        <option>Minutes</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="19">19</option>
-        <option value="20">20</option>
-        <option value="21" selected="yes">21</option>
-        <option value="22">22</option>
-        <option value="23">23</option>
-        <option value="24">24</option>
-      </select>
-      <span class="arrow"></span></li>
+   <li class="textbox"><span class="header">Date</span></li>
+   <li class="menu"><a class="noeffect" href="javascript:openSelectDate()">
+  <span class="name" id="layer_date">22 Feb 2010</span><span class="arrow"></span></a></li>
+ 
   </ul>
-  <ul class="pageitem">
-    <li class="textbox"><span class="header">End time</span></li>
-    <li class="select">
-      <select name="start_hour">
-        <option>Hour</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7" selected="yes">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="19">19</option>
-        <option value="20">20</option>
-        <option value="21">21</option>
-        <option value="22">22</option>
-        <option value="23">23</option>
-        <option value="24">24</option>
-      </select>
-      <span class="arrow"></span></li>
-    <li class="select">
-      <select name="start_minute">
-        <option>Minutes</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="19">19</option>
-        <option value="20" selected="yes">20</option>
-        <option value="21">21</option>
-        <option value="22">22</option>
-        <option value="23">23</option>
-        <option value="24">24</option>
-      </select>
-      <span class="arrow"></span></li>
+  	<ul class="pageitem">
+	<li class="textbox"><span class="header">Start time</span></li>
+   <li class="menu"><a class="noeffect" href="javascript:openSelectTime('layer_starttime')">
+  <span class="name" id="layer_starttime">22h30</span><span class="arrow"></span></a></li>
   </ul>
+  	<ul class="pageitem">
+	<li class="textbox"><span class="header">End time</span></li>
+   <li class="menu"><a class="noeffect" href="javascript:openSelectTime('layer_endtime')">
+  <span class="name" id="layer_endtime">23h45</span><span class="arrow"></span></a></li>
+  </ul>
+<input name="action" type="hidden" id="action" value="edittimer"/>
+<input name="timer_id" type="hidden" id="timer_date" value="2" />
+<input name="timer_date" type="hidden" id="timer_date" value="22-2-2010" />
+<input name="timer_starttime" type="hidden" id="timer_starttime" value="2230" />
+<input name="timer_endtime" type="hidden" id="timer_endtime" value="2345" />
+
 <ul class="pageitem">
 <li class="button">
-<input name="save" type="submit" value="Save" /></li>
-</ul>
+			<input name="Submit" type="submit" value="Validate changes" /></li>
+		</ul>
+</form>
 <ul class="pageitem">
+<form name="deletetimer" id="deletetimer" method="post" action="index.php"><input name="action" type="hidden" id="action" value="deletetimer" /><input name="timer_id" type="hidden" id="timer_id" value="2" />
 <li class="button">
-<input name="delete" type="submit" value="Delete Timer" /></li>
+<input name="Submit" type="submit" value="Validate changes" /></li></form>
 </ul>
 </div>
 <div id="footer">
