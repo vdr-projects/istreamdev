@@ -9,8 +9,9 @@ include('includes/include.php');
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" name="viewport" />
 <link href="css/style.css" rel="stylesheet" type="text/css" />
-<script src="javascript/functions.js" type="text/javascript"></script>
+<script src="javascript/spinningwheel-min.js" type="text/javascript"></script>
 <script src="javascript/ajax.js" type="text/javascript"></script>
+<script src="javascript/functions.js" type="text/javascript"></script>
 <title>iStreamdev</title>
 <link href="images/startup.png" rel="apple-touch-startup-image" />
 <link rel="apple-touch-icon" href="images/istreamdev.png"/>
