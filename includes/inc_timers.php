@@ -7,7 +7,11 @@ print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
 print "<div id=\"content\">\r\n";
 print " <span class=\"graytitle\">Timers</span>\r\n";
-
+//contextual alert message
+print " <ul class=\"pageitem\">";
+print " <li class=\"textbox\"><p>New timer successfully created</p></li>";
+print " </ul>";
+//end contextual alert message
 print " <ul class=\"pageitem\">";
 print "  <li class=\"textbox\">";
 print "   <span class=\"header\">Current timers</span>";
