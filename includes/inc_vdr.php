@@ -292,7 +292,7 @@ function vdrlisttimers()
 	{
 		if (!is_numeric(substr($timers,0,1)))
 		{
-			print "<li class=\"textbox\"><p>{$timers}</p></li>\r\n";
+			print "<li class=\"textbox\"><p>none</p></li>\r\n";
 			return;
 		}
 		else

@@ -159,7 +159,7 @@ function delete_timer($timer)
 {
 	$ret = vdrdeltimer($timer);
 
-	$message = " <li class=\"textbox\"><p><font color='black'>{$ret}</font></p></li>";
+	$message = " <li class=\"textbox\"><p><font color='black'>Timer deleted successfully</font></p></li>";
 
 	include('includes/inc_timers.php');
 }
