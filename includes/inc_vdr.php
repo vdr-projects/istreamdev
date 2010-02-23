@@ -345,7 +345,7 @@ function vdrsettimer($channame, $date, $stime, $etime, $desc)
 
 	$svdrp = new SVDRP($svdrpip, $svdrpport);
 	$svdrp->Connect();
-	$svdrp->Command("ADDT " .$timer);
+	$svdrp->Command("NEWT " .$timer);
 	$svdrp->Disconnect();
 }
 
