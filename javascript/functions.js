@@ -40,7 +40,7 @@ function updateOrientation() {
      window.scrollTo(0, 1);
 
  }
- function sendForm(formid) {
+function sendForm(formid) {
 	var frm;
 	frm = document.getElementById(formid);
 	frm.submit();
@@ -49,7 +49,6 @@ function updateOrientation() {
 function swapPic() {
         document.getElementById('videofeed').src = "ram/stream.m3u8";
 }
-
 
 function openSelectDate(timer_year,timer_month,timer_day) {
 	var now = new Date();
@@ -126,5 +125,4 @@ function openSelectTime(layer,timer_hour,timer_minute) {
 	SpinningWheel.setDoneAction(function () {var results = SpinningWheel.getSelectedValues(); document.getElementById(layer).innerHTML = results.values.join('');if ( layer == 'layer_starttime' ) { var forminput = 'timer_starttime'; } else { var forminput = 'timer_endtime'; }; eval ("document.timer." + forminput + ".value = results.keys.join('')");  });
 	SpinningWheel.open();
 }
-
 
