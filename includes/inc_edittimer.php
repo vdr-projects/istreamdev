@@ -8,6 +8,7 @@ print "<div id=\"rightnav\">\r\n";
 print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
 print "<div id=\"title\">iStream</div>\r\n";
 print "</div>\r\n";
+$timer = $_REQUEST['timer'];
 if ($timer == -1)
 {
 print "<div id=\"content\"> <span class=\"graytitle\">New Timer</span>\r\n";
@@ -16,7 +17,6 @@ else
 {
 print "<div id=\"content\"> <span class=\"graytitle\">Edit Timer</span>\r\n";
 }
-$timer = $_REQUEST['timer'];
 
 list($type, $channame, $date, $stime, $etime, $desc) = vdrgettimerinfo($timer);
 
