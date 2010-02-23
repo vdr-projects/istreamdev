@@ -19,7 +19,7 @@ print "<form name=\"timer\" id=\"timer\" method=\"post\" action=\"index.php\">\r
 print "  <ul class=\"pageitem\">\r\n";
 print "    <li class=\"textbox\"><span class=\"header\">Recording name</span></li>\r\n";
 print "    <li class=\"bigfield\">\r\n";
-print "      <input type=\"text\" placeholder=\"Enter recording name\" name=\"desc\" value=\"{$desc}\" />\r\n";
+print "      <input type=\"text\" placeholder=\"Enter recording name\" name=\"timer_name\" value=\"{$desc}\" />\r\n";
 print "    </li>\r\n";
 print "  </ul>\r\n";
 print "  <ul class=\"pageitem\">\r\n";
@@ -27,7 +27,7 @@ print "    <li class=\"textbox\"><span class=\"header\">Channel</span></li>\r\n"
 print "    <li class=\"select\">\r\n";
 
 // Channel selection
-print "      <select name=\"chan\">\r\n";
+print "      <select name=\"timer_chan\">\r\n";
 
 vdrlistchannelsdrop($channame);
 
@@ -72,9 +72,9 @@ print "  <span class=\"name\" id=\"layer_endtime\">{$emin}h{$esec}</span><span c
 print "  </ul>\r\n";
 
 print "<input name=\"action\" type=\"hidden\" id=\"action\" value=\"addtimer\"/>\r\n";
-print "<input name=\"timer_date\" type=\"hidden\" id=\"date\" value=\"\" />\r\n";
-print "<input name=\"timer_starttime\" type=\"hidden\" id=\"stime\" value=\"\" />\r\n";
-print "<input name=\"timer_endtime\" type=\"hidden\" id=\"etime\" value=\"\" />\r\n";
+print "<input name=\"timer_date\" type=\"hidden\" id=\"timer_date\" value=\"\" />\r\n";
+print "<input name=\"timer_starttime\" type=\"hidden\" id=\"timer_starttime\" value=\"\" />\r\n";
+print "<input name=\"timer_endtime\" type=\"hidden\" id=\"timer_endtime\" value=\"\" />\r\n";
 print "<input name=\"prevtimer\" type=\"hidden\" id=\"prevtimer\" value=\"{$timer}\" />\r\n";
 
 print "<ul class=\"pageitem\">\r\n";

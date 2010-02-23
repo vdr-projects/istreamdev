@@ -56,11 +56,11 @@ function selectpage()
 			delete_timer($timer);
 			break;
 		case ("addtimer"):
-			$channame = $_REQUEST['chan'];
-			$date = $_REQUEST['date'];
-			$stime = $_REQUEST['stime'];
-			$etime = $_REQUEST['etime'];
-			$desc = $_REQUEST['desc'];
+			$channame = $_REQUEST['timer_chan'];
+			$date = $_REQUEST['timer_date'];
+			$stime = $_REQUEST['timer_starttime'];
+			$etime = $_REQUEST['timer_endtime'];
+			$desc = $_REQUEST['timer_name'];
 			$prevtimer = $_REQUEST['prevtimer'];
 			set_timer($channame, $date, $stime, $etime, $desc, $prevtimer);
 			break;

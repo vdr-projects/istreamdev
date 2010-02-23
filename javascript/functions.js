@@ -39,7 +39,7 @@ function updateOrientation() {
      document.body.setAttribute("orient", orient);
      window.scrollTo(0, 1);
 
- }
+}
 function sendForm(formid) {
 	var frm;
 	frm = document.getElementById(formid);
@@ -76,10 +76,9 @@ function openSelectDate(timer_year,timer_month,timer_day) {
 		years[i] = i;
 	}
 
-	SpinningWheel.addSlot(days, 'right', now_day);
-	SpinningWheel.addSlot(months, '', now_month);
 	SpinningWheel.addSlot(years, 'right', now_year );
-	
+	SpinningWheel.addSlot(months, '', now_month);
+	SpinningWheel.addSlot(days, 'right', now_day);	
 	SpinningWheel.setCancelAction(cancel_date);
 	SpinningWheel.setDoneAction(done_date);
 	
@@ -118,7 +117,7 @@ function openSelectTime(layer,timer_hour,timer_minute) {
 	}
 
 	SpinningWheel.addSlot(hours, 'right', now_hour);
-	SpinningWheel.addSlot({ separator: 'h' }, 'readonly shrink');
+	//SpinningWheel.addSlot({ separator: 'h' }, 'readonly shrink');
 	SpinningWheel.addSlot(minutes, '', now_minute);
 	
 	SpinningWheel.setCancelAction( function() {} );
