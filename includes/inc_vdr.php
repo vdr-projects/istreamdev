@@ -327,7 +327,7 @@ function vdrlisttimers()
 		else
 			print "  <img alt=\"list\" src=\"images/pictos/timeroff.png\" />";
 
-		print "  <span class=\"name\">{$date}: {$channame}</span><span class=\"arrow\"></span>";
+		print "  <span class=\"name\">{$date}: {$desc}</span><span class=\"arrow\"></span>";
 
 		print " </a>";
 		print "</li>";
