@@ -22,22 +22,28 @@ if (infostreamexist())
 	// Print the right logo
 	print " <ul class=\"pageitem\">\r\n";
 
-	if ($type == 3)
+	switch ($type)
 	{
-	        if (file_exists("ram/stream-tb.png"))
-	                $logopath = "ram/stream-tb.png";
-	        else if (file_exists("ram/stream-tb.jpg"))
-	                $logopath = "ram/stream-tb.jpg";
-	        else
-	                $logopath = "";
+		case 1:
+			$logopath = "logos/" .$realname .".png";
+			if (!file_exists($logopath))
+				$logopath = "logos/nologoTV.png";
+			break;
+		case 2:
+			$logopath = "logos/" .$realname .".png";
+			if (!file_exists($logopath))
+				$logopath = "logos/nologoREC.png";
+			break;
+		case 3:
+		        if (file_exists("ram/stream-tb.png"))
+		                $logopath = "ram/stream-tb.png";
+		        else if (file_exists("ram/stream-tb.jpg"))
+		                $logopath = "ram/stream-tb.jpg";
+		        else
+		                $logopath = "logos/nologoMEDIA.png";
 	}
-	else
-		$logopath = "logos/" .$realname .".png";
 
-	if (!file_exists($logopath))
-		print " <center><video id=\"videofeed\" poster=\"logos/nologoTV.png\" width='80' height='80' /></center>\r\n";
-	else
-		print " <center><video id=\"videofeed\" poster=\"{$logopath}\" width='80' height='80' /></center>\r\n";
+	print " <center><video id=\"videofeed\" poster=\"{$logopath}\" width='80' height='80' /></center>\r\n";
 
 	print " </ul>\r\n";
 
@@ -117,22 +123,28 @@ else
 	// Print the right logo
 	print " <ul class=\"pageitem\">\r\n";
 
-	if ($type == 3)
-	{
-	        if (file_exists("ram/stream-tb.png"))
-	                $logopath = "ram/stream-tb.png";
-	        else if (file_exists("ram/stream-tb.jpg"))
-	                $logopath = "ram/stream-tb.jpg";
-	        else
-	                $logopath = "";
-	}
-	else
-		$logopath = "logos/" .$realname .".png";
+        switch ($type)
+        {
+                case 1:
+                        $logopath = "logos/" .$realname .".png";
+                        if (!file_exists($logopath))
+                                $logopath = "logos/nologoTV.png";
+                        break;
+                case 2:
+                        $logopath = "logos/" .$realname .".png";
+                        if (!file_exists($logopath))
+                                $logopath = "logos/nologoREC.png";
+                        break;
+                case 3:
+                        if (file_exists("ram/stream-tb.png"))
+                                $logopath = "ram/stream-tb.png";
+                        else if (file_exists("ram/stream-tb.jpg"))
+                                $logopath = "ram/stream-tb.jpg";
+                        else
+                                $logopath = "logos/nologoMEDIA.png";
+        }
 
-	if (!file_exists($logopath))
-		print " <center><img src=\"logos/nologoTV.png\"></img></center>\r\n";
-	else
-		print " <center><img src=\"{$logopath}\"></img></center>\r\n";
+	print " <center><img src=\"{$logopath}\"></img></center>\r\n";
 
 	print " </ul>\r\n";
 
