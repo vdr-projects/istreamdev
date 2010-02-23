@@ -255,6 +255,11 @@ body.ipodlist #footer, body.ipodlist #footer a {
 	margin-top: 5px;
 }
 
+.pageitem video {
+	border: 0;
+	margin-top: 5px;
+}
+
 .pageitem {
 	-webkit-border-radius: 8px;
 	background-color: #fff;
