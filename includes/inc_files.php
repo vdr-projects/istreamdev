@@ -32,11 +32,11 @@ function mediagetinfostream($stream = "")
 	$path = dirname($stream);
 
 	if (file_exists(substr($stream, 0, -4) .".tbn"))
-		exec("cp \"" .substr($stream, 0, -4) .".tbn\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s 128x72 ram/stream-tb.jpg");
+		exec("cp \"" .substr($stream, 0, -4) .".tbn\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s 128x180 ram/stream-tb.jpg");
 	else  if (file_exists($path ."/poster.jpg"))
-		exec($ffmpegpath ." -y -i \"" .$path ."/poster.jpg\" -s 128x72 ram/stream-tb.jpg");
+		exec($ffmpegpath ." -y -i \"" .$path ."/poster.jpg\" -s 128x180 ram/stream-tb.jpg");
 	else  if (file_exists($path ."/folder.jpg"))
-	        exec($ffmpegpath ." -y -i \"" .$path ."/folder.jpg\" -s 128x72 ram/stream-tb.jpg");
+	        exec($ffmpegpath ." -y -i \"" .$path ."/folder.jpg\" -s 128x180 ram/stream-tb.jpg");
 	else
 	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s 128x72 -f mjpeg ram/stream-tb.png");
 	
