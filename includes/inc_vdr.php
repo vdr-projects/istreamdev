@@ -299,7 +299,17 @@ function vdrlisttimers()
 	$timers = $svdrp->Command("LSTT");
 	$svdrp->Disconnect();
 
-	foreach($timers as $timer)
+	if (gettype($timers) == "string")
+	{
+		if ($timers == "")
+			return;
+		else
+			$timersarray[] = $timers;
+	}
+	else
+		$timersarray = $timers;
+
+	foreach($timersarray as $timer)
 	{
 		// Extract timer #
 		$timerarray = explode(" ", $timer);
@@ -309,7 +319,13 @@ function vdrlisttimers()
 
 		print "<li class=\"menu\">";
 		print " <a href=\"javascript:sendForm('timer {$timernum}')\">";
-		print "  <img alt=\"list\" src=\"images/pictos/timers.png\" />";
+		
+		if ($type & 0x8)
+			print "  <img alt=\"list\" src=\"images/pictos/timerrec.png\" />";
+		else if ($type & 0x1)
+			print "  <img alt=\"list\" src=\"images/pictos/timeron.png\" />";
+		else
+			print "  <img alt=\"list\" src=\"images/pictos/timeroff.png\" />";
 
 		print "  <span class=\"name\">{$date}: {$channame}</span><span class=\"arrow\"></span>";
 
@@ -329,24 +345,29 @@ function vdrdeltimer($timer=0)
 
 	$svdrp = new SVDRP($svdrpip, $svdrpport);
 	$svdrp->Connect();
-	$svdrp->Command("DELT " .$timer);
+	$ret = $svdrp->Command("DELT " .$timer);
 	$svdrp->Disconnect();
+
+	return $ret;
 }
 
-function vdrsettimer($channame, $date, $stime, $etime, $desc)
+function vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc)
 {
 	global $svdrpip, $svdrpport;
 
 	$channum = vdrgetchannum($channame);
 
-	$timer = "1:" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
-
-	print $timer;
+	if ($prevtimer == -1)
+		$command = "NEWT 1:" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
+	else
+		$command = "MODT " .$prevtimer ." 1:" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
 
 	$svdrp = new SVDRP($svdrpip, $svdrpport);
 	$svdrp->Connect();
-	$svdrp->Command("NEWT " .$timer);
+	$ret = $svdrp->Command($command);
 	$svdrp->Disconnect();
+
+	return $ret;
 }
 
 ?>

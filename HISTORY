@@ -11,6 +11,7 @@ in progress:
 - segmenter binary path is now configurable ( don't forget to update your config.php )
 - cosmetics fixes
 - prepared interface for timers & epg
+- support for timers creation and deletion
 
 19.02.2010 - V.0.3.6.1
 

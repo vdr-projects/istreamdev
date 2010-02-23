@@ -156,17 +156,28 @@ function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, 
 
 function delete_timer($timer)
 {
-	vdrdeltimer($timer);
-	
+	$ret = vdrdeltimer($timer);
+
+	$message = " <li class=\"textbox\"><p><font color='black'>{$ret}</font></p></li>";
+
 	include('includes/inc_timers.php');
 }
 
 function set_timer($channame, $date, $stime, $etime, $desc, $prevtimer)
 {
+	$ret = vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc);
 
-	if ($prevtimer != -1)
-		vdrdeltimer($prevtimer);
-	vdrsettimer($channame, $date, $stime, $etime, $desc);
+	if ($prevtimer == -1)
+		$settype = "creat";
+	else
+		$settype = "edit";
+
+	$retarray = explode(":", $ret);
+
+	if (!is_numeric(substr($retarray[0], 0, 1)))
+		$message = " <li class=\"textbox\"><p><font color='red'>Error: {$retarray[0]}</font></p></li>";
+	else
+		$message = " <li class=\"textbox\"><p><font color='green'>Timer {$settype}ed successfully </font></p></li>";
 
 	include('includes/inc_timers.php');
 }
