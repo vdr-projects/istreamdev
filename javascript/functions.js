@@ -87,7 +87,7 @@ function openSelectDate(timer_year,timer_month,timer_day) {
 
 function done_date() {
 	var results = SpinningWheel.getSelectedValues();
-	document.getElementById('layer_date').innerHTML = results.values.join('-');
+	document.getElementById('layer_date').innerHTML = results.keys.join('-');
 	document.timer.timer_date.value = results.keys.join('-');
 	
 }
