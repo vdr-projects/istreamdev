@@ -318,24 +318,24 @@ function vdrlisttimers()
 		list($type, $channame, $date, $starthour, $endhour, $desc) = vdrgettimerinfo($timernum);
 
 		print "<li class=\"menu\">";
-		print " <a href=\"javascript:sendForm('timer {$timernum}')\">";
+		print " <a href=\"javascript:sendForm('timer {$timernum}')\">\r\n";
 		
 		if ($type & 0x8)
-			print "  <img alt=\"list\" src=\"images/pictos/timerrec.png\" />";
+			print "  <img alt=\"list\" src=\"images/pictos/timerrec.png\" />\r\n";
 		else if ($type & 0x1)
-			print "  <img alt=\"list\" src=\"images/pictos/timeron.png\" />";
+			print "  <img alt=\"list\" src=\"images/pictos/timeron.png\" />\r\n";
 		else
-			print "  <img alt=\"list\" src=\"images/pictos/timeroff.png\" />";
+			print "  <img alt=\"list\" src=\"images/pictos/timeroff.png\" />\r\n";
 
-		print "  <span class=\"name\">{$date}: {$desc}</span><span class=\"arrow\"></span>";
+		print "  <span class=\"name\">{$date}: {$desc}</span><span class=\"arrow\"></span>\r\n";
 
-		print " </a>";
-		print "</li>";
+		print " </a>\r\n";
+		print "</li>\r\n";
 
-		print "<form name=\"timer {$timernum}\" id=\"timer {$timernum}\" method=\"post\" action=\"index.php\">";
-		print " <input name=\"action\" type=\"hidden\" id=\"action\" value=\"edittimer\"/>";
-		print " <input name=\"timer\" type=\"hidden\" id=\"timer\" value=\"{$timernum}\" />";
-		print "</form>";
+		print "<form name=\"timer {$timernum}\" id=\"timer {$timernum}\" method=\"post\" action=\"index.php\">\r\n";
+		print " <input name=\"action\" type=\"hidden\" id=\"action\" value=\"edittimer\"/>\r\n";
+		print " <input name=\"timer\" type=\"hidden\" id=\"timer\" value=\"{$timernum}\" />\r\n";
+		print "</form>\r\n";
 	}
 }
 
