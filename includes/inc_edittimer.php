@@ -27,7 +27,7 @@ print "    <li class=\"textbox\"><span class=\"header\">Channel</span></li>\r\n"
 print "    <li class=\"select\">\r\n";
 
 // Channel selection
-print "      <select name=\"timer_chan\">\r\n";
+print "      <select name=\"chan\">\r\n";
 
 vdrlistchannelsdrop($channame);
 
@@ -72,7 +72,6 @@ print "  <span class=\"name\" id=\"layer_endtime\">{$emin}h{$esec}</span><span c
 print "  </ul>\r\n";
 
 print "<input name=\"action\" type=\"hidden\" id=\"action\" value=\"addtimer\"/>\r\n";
-print "<input name=\"chan\" type=\"hidden\" id=\"chan\" value=\"\" />\r\n";
 print "<input name=\"timer_date\" type=\"hidden\" id=\"date\" value=\"\" />\r\n";
 print "<input name=\"timer_starttime\" type=\"hidden\" id=\"stime\" value=\"\" />\r\n";
 print "<input name=\"timer_endtime\" type=\"hidden\" id=\"etime\" value=\"\" />\r\n";

@@ -45,6 +45,12 @@ function updateOrientation() {
 	frm = document.getElementById(formid);
 	frm.submit();
 }
+
+function swapPic() {
+        document.getElementById('videofeed').src = "ram/stream.m3u8";
+}
+
+
 function openSelectDate(timer_year,timer_month,timer_day) {
 	var now = new Date();
 	if ( timer_year == null ) {
