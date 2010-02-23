@@ -10,20 +10,19 @@ print "<div id=\"title\">iStream</div>\r\n";
 print "</div>\r\n";
 $timer = $_REQUEST['timer'];
 if ($timer == -1)
-{
-print "<div id=\"content\"> <span class=\"graytitle\">New Timer</span>\r\n";
-}
+	print "<div id=\"content\"> <span class=\"graytitle\">New Timer</span>\r\n";
 else
-{
-print "<div id=\"content\"> <span class=\"graytitle\">Edit Timer</span>\r\n";
-}
+	print "<div id=\"content\"> <span class=\"graytitle\">Edit Timer</span>\r\n";
 
 list($type, $channame, $date, $stime, $etime, $desc) = vdrgettimerinfo($timer);
 
 // Timer name
 print "<form name=\"timer\" id=\"timer\" method=\"post\" action=\"index.php\">\r\n";
 print " <ul class=\"pageitem\">\r\n";
-print "   <li class=\"checkbox\"><span class=\"name\">Active</span><input name=\"active\" type=\"checkbox\" checked/></li>\r\n";
+if ($type & 0x1)
+	print "   <li class=\"checkbox\"><span class=\"name\">Active</span><input name=\"timer_active\" type=\"checkbox\" checked/></li>\r\n";
+else
+	print "   <li class=\"checkbox\"><span class=\"name\">Active</span><input name=\"timer_active\" type=\"checkbox\"/></li>\r\n";
 print " </ul>\r\n";
 print "  <ul class=\"pageitem\">\r\n";
 print "    <li class=\"textbox\"><span class=\"header\">Recording name</span></li>\r\n";

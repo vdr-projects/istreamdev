@@ -351,16 +351,20 @@ function vdrdeltimer($timer=0)
 	return $ret;
 }
 
-function vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc)
+function vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc, $active)
 {
 	global $svdrpip, $svdrpport;
 
 	$channum = vdrgetchannum($channame);
+	if ($active)	
+		$type = "1";
+	else
+		$type = "0";
 
 	if ($prevtimer == -1)
-		$command = "NEWT 1:" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
+		$command = "NEWT " .$type .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
 	else
-		$command = "MODT " .$prevtimer ." 1:" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
+		$command = "MODT " .$prevtimer ." " .$type .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
 
 	$svdrp = new SVDRP($svdrpip, $svdrpport);
 	$svdrp->Connect();

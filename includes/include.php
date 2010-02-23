@@ -56,13 +56,14 @@ function selectpage()
 			delete_timer($timer);
 			break;
 		case ("addtimer"):
+			$active = $_REQUEST['timer_active'];
 			$channame = $_REQUEST['timer_chan'];
 			$date = $_REQUEST['timer_date'];
 			$stime = $_REQUEST['timer_starttime'];
 			$etime = $_REQUEST['timer_endtime'];
 			$desc = $_REQUEST['timer_name'];
 			$prevtimer = $_REQUEST['prevtimer'];
-			set_timer($channame, $date, $stime, $etime, $desc, $prevtimer);
+			set_timer($active, $channame, $date, $stime, $etime, $desc, $prevtimer);
 			break;
 		case ("startstream"):
 			$type = $_REQUEST['type'];
@@ -163,9 +164,9 @@ function delete_timer($timer)
 	include('includes/inc_timers.php');
 }
 
-function set_timer($channame, $date, $stime, $etime, $desc, $prevtimer)
+function set_timer($active, $channame, $date, $stime, $etime, $desc, $prevtimer)
 {
-	$ret = vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc);
+	$ret = vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc, $active);
 
 	if ($prevtimer == -1)
 		$settype = "creat";
