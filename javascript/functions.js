@@ -121,7 +121,7 @@ function openSelectTime(layer,timer_hour,timer_minute) {
 	SpinningWheel.addSlot(minutes, '', now_minute);
 	
 	SpinningWheel.setCancelAction( function() {} );
-	SpinningWheel.setDoneAction(function () {var results = SpinningWheel.getSelectedValues(); document.getElementById(layer).innerHTML = results.values.join('');if ( layer == 'layer_starttime' ) { var forminput = 'timer_starttime'; } else { var forminput = 'timer_endtime'; }; eval ("document.timer." + forminput + ".value = results.keys.join('')");  });
+	SpinningWheel.setDoneAction(function () {var results = SpinningWheel.getSelectedValues(); document.getElementById(layer).innerHTML = results.values.join('h');if ( layer == 'layer_starttime' ) { var forminput = 'timer_starttime'; } else { var forminput = 'timer_endtime'; }; eval ("document.timer." + forminput + ".value = results.keys.join('')");  });
 	SpinningWheel.open();
 }
 

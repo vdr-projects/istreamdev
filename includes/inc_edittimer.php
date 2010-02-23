@@ -56,7 +56,7 @@ $ssec = substr($stime, 2);
 
 print "    <li class=\"menu\">";
 print "      <a class=\"noeffect\" href=\"javascript:openSelectTime('layer_starttime',{$smin}, {$ssec})\">\r\n";
-print "        <span class=\"name\" id=\"layer_starttime\">{$smin}{$ssec}</span>";
+print "        <span class=\"name\" id=\"layer_starttime\">{$smin}h{$ssec}</span>";
 print "        <span class=\"arrow\"></span>";
 print "      </a>";
 print "    </li>\r\n";
@@ -68,7 +68,7 @@ $emin = substr($etime, 0, 2);
 $esec = substr($etime, 2);
 
 print "   <li class=\"menu\"><a class=\"noeffect\" href=\"javascript:openSelectTime('layer_endtime',{$emin},{$esec})\">\r\n";
-print "  <span class=\"name\" id=\"layer_endtime\">{$emin}{$esec}</span><span class=\"arrow\"></span></a></li>\r\n";
+print "  <span class=\"name\" id=\"layer_endtime\">{$emin}h{$esec}</span><span class=\"arrow\"></span></a></li>\r\n";
 print "  </ul>\r\n";
 
 print "<input name=\"action\" type=\"hidden\" id=\"action\" value=\"addtimer\"/>\r\n";
