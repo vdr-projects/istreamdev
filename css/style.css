@@ -611,7 +611,7 @@ body.applist .price {
 	color: #3b3b3b;
 }
 li.store .arrow, body.list li.withimage .arrow {
-	top: 15px!important;
+	top: 18px!important;
 }
 li.store .stars0, li.store .stars1, li.store .stars2, li.store .stars3, li.store .stars4, li.store .stars5 {
 	position: absolute;
@@ -900,28 +900,28 @@ body.list div#content {
 	margin-top: -13px!important;
 }
 body.list ul img {
-	width: 40px;
-	height: 40px;
+	width: 60px;
+	height: 60px;
 	position: absolute;
 	left: 5px;
 	top: 1px;
 }
 body.list li.withimage {
-	height: 42px!important;
+	height: 62px!important;
 }
 body.list li.withimage span.name {
-	margin: 0px 0 0 60px;
+	margin: 2px 0 0 70px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	max-width: 63%!important;
 	white-space: nowrap;
 }
 body.list li.withimage .comment {
-	margin: 0px auto auto 60px !important;
+	margin: 2px auto auto 70px !important;
 	max-width: 63%!important;
 }
 body.list li.withimage a, body.list li.withimage:hover a {
-	height: 41px!important;
+	height: 68px!important;
 }
 #leftnav, #leftbutton, #blueleftbutton {
 	position: absolute;
