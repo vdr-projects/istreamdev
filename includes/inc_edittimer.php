@@ -22,6 +22,9 @@ list($type, $channame, $date, $stime, $etime, $desc) = vdrgettimerinfo($timer);
 
 // Timer name
 print "<form name=\"timer\" id=\"timer\" method=\"post\" action=\"index.php\">\r\n";
+print " <ul class=\"pageitem\">\r\n";
+print "   <li class=\"checkbox\"><span class=\"name\">Active</span><input name=\"active\" type=\"checkbox\" checked/></li>\r\n";
+print " </ul>\r\n";
 print "  <ul class=\"pageitem\">\r\n";
 print "    <li class=\"textbox\"><span class=\"header\">Recording name</span></li>\r\n";
 print "    <li class=\"bigfield\">\r\n";
