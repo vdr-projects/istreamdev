@@ -301,8 +301,11 @@ function vdrlisttimers()
 
 	if (gettype($timers) == "string")
 	{
-		if ($timers == "")
+		if (!is_numeric(substr($timers,0,1)))
+		{
+			print "<li class=\"textbox\"><p>{$timers}</p></li>\r\n";
 			return;
+		}
 		else
 			$timersarray[] = $timers;
 	}
