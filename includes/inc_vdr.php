@@ -1,19 +1,28 @@
 <?php
 include ('includes/inc_svdrp.php');
 
+function vdrsendcommand($cmd)
+{
+	global $svdrpip, $svdrpport;
+
+	$svdrp = new SVDRP($svdrpip, $svdrpport);
+	$svdrp->Connect();
+        $ret = $svdrp->Command($cmd);
+	$svdrp->Disconnect();
+
+	return $ret;
+}
+
 function vdrgetinfostream($stream = "NULL", $ischan = 1)
 {
-	global $allepg, $allepgfilled, $svdrpip, $svdrpport;
+	global $allepg, $allepgfilled;
 
 	if ($ischan)
 	{
 		// Fill epg if not yet done
 		if ($allepgfilled == 0)
 		{
-			$svdrp = new SVDRP($svdrpip, $svdrpport);
-			$svdrp->Connect();
-			$allepg = $svdrp->Command("LSTE NOW");
-			$svdrp->Disconnect();
+			$allepg = vdrsendcommand("LSTE NOW");
 			$allepgfilled = 1;
 		}
 
@@ -96,14 +105,9 @@ function vdrgetinfostream($stream = "NULL", $ischan = 1)
 
 function vdrgettimerinfo($timernum=-1)
 {
-	global $svdrpip, $svdrpport;
-
 	if ($timernum != -1)
 	{
-		$svdrp = new SVDRP($svdrpip, $svdrpport);
-		$svdrp->Connect();
-		$timer = $svdrp->Command("LSTT " .$timernum);
-		$svdrp->Disconnect();
+		$timer = vdrsendcommand("LSTT " .$timernum);
 
 		$timerarray = explode(":", $timer);
 
@@ -132,12 +136,7 @@ function vdrgettimerinfo($timernum=-1)
 
 function vdrgetchannum($chan = "NULL")
 {
-	global $svdrpip, $svdrpport;
-	
-	$svdrp = new SVDRP($svdrpip, $svdrpport);
-	$svdrp->Connect();
-	$channels = $svdrp->Command("LSTC");
-	$svdrp->Disconnect();
+	$channels = vdrsendcommand("LSTC");
 
 	// Get channel number
 	$channels = preg_grep(quotemeta('"'.$chan.';|'.$chan.':"'), $channels);
@@ -151,12 +150,7 @@ function vdrgetchannum($chan = "NULL")
 
 function vdrgetchanname($channum = 0)
 {
-	global $svdrpip, $svdrpport;
-
-	$svdrp = new SVDRP($svdrpip, $svdrpport);
-	$svdrp->Connect();
-	$channel = $svdrp->Command("LSTC " .$channum);
-	$svdrp->Disconnect();
+	$channel = vdrsendcommand("LSTC " .$channum);
 
 	// Get channel name
 	$chanarray = explode(":", $channel);
@@ -292,12 +286,7 @@ function vdrlistchannelsdrop($chansel = "")
 
 function vdrlisttimers()
 {
-	global $svdrpip, $svdrpport;
-
-	$svdrp = new SVDRP($svdrpip, $svdrpport);
-	$svdrp->Connect();
-	$timers = $svdrp->Command("LSTT");
-	$svdrp->Disconnect();
+	$timers = vdrsendcommand("LSTT");
 
 	if (gettype($timers) == "string")
 	{
@@ -344,20 +333,11 @@ function vdrlisttimers()
 
 function vdrdeltimer($timer=0)
 {
-	global $svdrpip, $svdrpport;
-
-	$svdrp = new SVDRP($svdrpip, $svdrpport);
-	$svdrp->Connect();
-	$ret = $svdrp->Command("DELT " .$timer);
-	$svdrp->Disconnect();
-
-	return $ret;
+	return vdrsendcommand("DELT " .$timer);
 }
 
 function vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc, $active)
 {
-	global $svdrpip, $svdrpport;
-
 	$channum = vdrgetchannum($channame);
 	if ($active)	
 		$type = "1";
@@ -369,12 +349,7 @@ function vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc, $activ
 	else
 		$command = "MODT " .$prevtimer ." " .$type .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
 
-	$svdrp = new SVDRP($svdrpip, $svdrpport);
-	$svdrp->Connect();
-	$ret = $svdrp->Command($command);
-	$svdrp->Disconnect();
-
-	return $ret;
+	return vdrsendcommand($command);
 }
 
 ?>
