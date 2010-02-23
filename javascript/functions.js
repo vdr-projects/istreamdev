@@ -66,10 +66,10 @@ function openSelectDate(timer_year,timer_month,timer_day) {
 	var layer = 'layer_date';
 	var days = { };
 	var years = { };
-	var months = { 1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec' };
+	var months = { '01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May','06': 'Jun', '07': 'Jul', '08': 'Aug', '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' };
 	
 	for( var i = 1; i < 32; i += 1 ) {
-		days[i] = i;
+		days[i] = str_pad(i, 2, '0', 'STR_PAD_LEFT');
 	}
 
 	for( i = now.getFullYear(); i < now.getFullYear()+5; i += 1 ) {
@@ -109,11 +109,11 @@ function openSelectTime(layer,timer_hour,timer_minute) {
 	var minutes = { };
 	
 	for( var i = 00; i < 24; i += 1 ) {
-		hours[i] = i;
+		hours[i] = str_pad(i,2,'0','STR_PAD_LEFT');
 	}
 
 	for( var i = 00; i < 60; i += 1 ) {
-		minutes[i] = i;
+		minutes[i] = str_pad(i,2,'0','STR_PAD_LEFT');
 	}
 
 	SpinningWheel.addSlot(hours, 'right', now_hour);
@@ -125,3 +125,36 @@ function openSelectTime(layer,timer_hour,timer_minute) {
 	SpinningWheel.open();
 }
 
+function str_pad (input, pad_length, pad_string, pad_type) {
+    // Returns input string padded on the left or right to specified length with pad_string  
+    // 
+    // version: 909.322
+    // discuss at: http://phpjs.org/functions/str_pad    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // + namespaced by: Michael White (http://getsprink.com)
+    // +      input by: Marco van Oort
+    // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
+    // *     example 1: str_pad('Kevin van Zonneveld', 30, '-=', 'STR_PAD_LEFT');    // *     returns 1: '-=-=-=-=-=-Kevin van Zonneveld'
+    // *     example 2: str_pad('Kevin van Zonneveld', 30, '-', 'STR_PAD_BOTH');
+    // *     returns 2: '------Kevin van Zonneveld-----'
+    var half = '', pad_to_go;
+     var str_pad_repeater = function (s, len) {
+        var collect = '', i;
+ 
+        while (collect.length < len) {collect += s;}
+        collect = collect.substr(0,len); 
+        return collect;
+    };
+ 
+    input += '';    pad_string = pad_string !== undefined ? pad_string : ' ';
+    
+    if (pad_type != 'STR_PAD_LEFT' && pad_type != 'STR_PAD_RIGHT' && pad_type != 'STR_PAD_BOTH') { pad_type = 'STR_PAD_RIGHT'; }
+    if ((pad_to_go = pad_length - input.length) > 0) {
+        if (pad_type == 'STR_PAD_LEFT') { input = str_pad_repeater(pad_string, pad_to_go) + input; }        else if (pad_type == 'STR_PAD_RIGHT') { input = input + str_pad_repeater(pad_string, pad_to_go); }
+        else if (pad_type == 'STR_PAD_BOTH') {
+            half = str_pad_repeater(pad_string, Math.ceil(pad_to_go/2));
+            input = half + input + half;
+            input = input.substr(0, pad_length);        }
+    }
+ 
+    return input;
+} 
