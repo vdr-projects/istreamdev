@@ -27,8 +27,18 @@ function mediagetinfostream($stream = "")
 	}
 
 	// Extract a thumbnail
-	exec("rm ram/stream-tb.png");
-	exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s 128x72 -f mjpeg ram/stream-tb.png");
+	exec("rm ram/stream-tb.*");
+
+	$path = dirname($stream);
+
+	if (file_exists(substr($stream, 0, -4) .".tbn"))
+	        exec("cp " .substr($stream, 0, -4) .".tbn ram/stream-tb.jpg");
+	else  if (file_exists($path ."/poster.jpg"))
+	        exec("cp " .$path ."/poster.jpg ram/stream-tb.jpg");
+	else  if (file_exists($path ."/folder.jpg"))
+	        exec("cp " .$path ."/folder.jpg ram/stream-tb.jpg");
+	else
+	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s 128x72 -f mjpeg ram/stream-tb.png");
 	
 	return array($title, $info);
 }

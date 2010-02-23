@@ -23,7 +23,14 @@ if (infostreamexist())
 	print " <ul class=\"pageitem\">\r\n";
 
 	if ($type == 3)
-		$logopath = "ram/stream-tb.png";
+	{
+	        if (file_exists("ram/stream-tb.png"))
+	                $logopath = "ram/stream-tb.png";
+	        else if (file_exists("ram/stream-tb.jpg"))
+	                $logopath = "ram/stream-tb.jpg";
+	        else
+	                $logopath = "";
+	}
 	else
 		$logopath = "logos/" .$realname .".png";
 
@@ -111,7 +118,14 @@ else
 	print " <ul class=\"pageitem\">\r\n";
 
 	if ($type == 3)
-		$logopath = "ram/stream-tb.png";
+	{
+	        if (file_exists("ram/stream-tb.png"))
+	                $logopath = "ram/stream-tb.png";
+	        else if (file_exists("ram/stream-tb.jpg"))
+	                $logopath = "ram/stream-tb.jpg";
+	        else
+	                $logopath = "";
+	}
 	else
 		$logopath = "logos/" .$realname .".png";
 
