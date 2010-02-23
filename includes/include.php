@@ -176,7 +176,7 @@ function set_timer($active, $channame, $date, $stime, $etime, $desc, $prevtimer)
 	$retarray = explode(":", $ret);
 
 	if (!is_numeric(substr($retarray[0], 0, 1)))
-		$message = " <li class=\"textbox\"><p><font color='red'>Error: {$retarray[0]}</font></p></li>";
+		$message = " <li class=\"textbox\"><p><font color='red'>{$retarray[0]}</font></p></li>";
 	else
 		$message = " <li class=\"textbox\"><p>Timer {$settype}ed successfully</p></li>";
 
