@@ -73,8 +73,8 @@ print "  </ul>\r\n";
 
 print "<input name=\"action\" type=\"hidden\" id=\"action\" value=\"addtimer\"/>\r\n";
 print "<input name=\"timer_date\" type=\"hidden\" id=\"timer_date\" value=\"{$date}\" />\r\n";
-print "<input name=\"timer_starttime\" type=\"hidden\" id=\"timer_starttime\" value=\"{$smin}h{$ssec}\" />\r\n";
-print "<input name=\"timer_endtime\" type=\"hidden\" id=\"timer_endtime\" value=\"{$smin}h{$ssec}\" />\r\n";
+print "<input name=\"timer_starttime\" type=\"hidden\" id=\"timer_starttime\" value=\"{$smin}{$ssec}\" />\r\n";
+print "<input name=\"timer_endtime\" type=\"hidden\" id=\"timer_endtime\" value=\"{$smin}{$ssec}\" />\r\n";
 print "<input name=\"prevtimer\" type=\"hidden\" id=\"prevtimer\" value=\"{$timer}\" />\r\n";
 
 print "<ul class=\"pageitem\">\r\n";
