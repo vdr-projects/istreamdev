@@ -14,7 +14,6 @@ body {
 }
 img {
 	border: 0;
-        margin-top: 0px;
 }
 a:hover span.arrow {
 	background-position: 0 -13px!important;
@@ -265,9 +264,6 @@ body.ipodlist #footer, body.ipodlist #footer a {
 	margin: 3px 9px 17px;
 	list-style: none;
 }
-.pageitem img {
-        margin-top: 5px;
-}
 .textbox {
 	padding: 5px 9px;
 	position: relative;
@@ -475,9 +471,9 @@ li.menu a {
 	text-decoration: none;
 }
 li.menu a img {
-	width: 31px;
-	height: 28px;
-	margin: 8px 0 0 5px;
+	width: auto;
+	height: 32px;
+	margin: 5px 0 0 5px;
 	float: left;
 }
 li.menu span.name, li.checkbox .name, li.radiobutton .name {
@@ -611,7 +607,7 @@ body.applist .price {
 	color: #3b3b3b;
 }
 li.store .arrow, body.list li.withimage .arrow {
-	top: 18px!important;
+	top: 39px!important;
 }
 li.store .stars0, li.store .stars1, li.store .stars2, li.store .stars3, li.store .stars4, li.store .stars5 {
 	position: absolute;
@@ -865,7 +861,7 @@ body.list ul {
 	margin: 0;
 }
 body.list div#content li {
-	height: 60px;
+	height: 40px;
 	border-bottom: 1px solid #e1e1e1;
 	list-style: none;
 }
@@ -877,7 +873,7 @@ body.list div#footer {
 	margin-top: 24px!important;
 }
 body.list div#content li a {
-	padding: 3px 0 0 0px;
+	padding: 9px 0 0 20px;
 	font-size: large;
 	font-weight: bold;
 	position: relative;
@@ -900,28 +896,28 @@ body.list div#content {
 	margin-top: -13px!important;
 }
 body.list ul img {
-	width: 60px;
-	height: 60px;
+	width: 80px;
+	height: 80px;
 	position: absolute;
 	left: 5px;
-	top: 1px;
+	top: 5px;
 }
 body.list li.withimage {
-	height: 62px!important;
+	height: 90px!important;
 }
 body.list li.withimage span.name {
-	margin: 2px 0 0 70px;
+	margin: 13px 0 0 90px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	max-width: 63%!important;
 	white-space: nowrap;
 }
 body.list li.withimage .comment {
-	margin: 2px auto auto 70px !important;
+	margin: 10px auto auto 90px !important;
 	max-width: 63%!important;
 }
 body.list li.withimage a, body.list li.withimage:hover a {
-	height: 68px!important;
+	height: 81px!important;
 }
 #leftnav, #leftbutton, #blueleftbutton {
 	position: absolute;
