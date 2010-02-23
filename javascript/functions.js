@@ -157,4 +157,36 @@ function str_pad (input, pad_length, pad_string, pad_type) {
     }
  
     return input;
-} 
+}
+
+function checkform()
+{
+	
+	if ( document.timer.timer_name.value=="" )
+	{
+	alert('Recording name is missing');
+	return false;
+	}
+	else if ( document.timer.timer_chan.value=="" )
+	{
+	alert('Select a channel to record');
+	return false;
+	}
+	else if ( document.timer.timer_date.value=="" )
+	{
+	alert('Select recording date');
+	return false;
+	}
+	else if ( document.timer.timer_starttime.value=="" )
+	{
+	alert('Select recording start time');
+	return false;
+	}
+	else if ( document.timer.timer_endtime.value=="" )
+	{
+	alert('Select recording end time');
+	return false;
+	}
+	
+	return true;
+}
