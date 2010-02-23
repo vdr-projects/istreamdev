@@ -14,7 +14,6 @@ body {
 }
 img {
 	border: 0;
-	margin-top: 5px;
 }
 a:hover span.arrow {
 	background-position: 0 -13px!important;
@@ -251,6 +250,11 @@ body.ipodlist #footer, body.ipodlist #footer a {
 	color: #4C4C4C;
 	text-shadow: #FFF 0 1px 0;
 }
+.pageitem img {
+	border: 0;
+	margin-top: 5px;
+}
+
 .pageitem {
 	-webkit-border-radius: 8px;
 	background-color: #fff;
