@@ -7,11 +7,31 @@ print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
 print "<div id=\"content\">\r\n";
 print " <span class=\"graytitle\">Timers</span>\r\n";
+
 //contextual alert message
+
+//error new timer
 print " <ul class=\"pageitem\">";
-print " <li class=\"textbox\"><p>New timer successfully created</p></li>";
+print " <li class=\"textbox\"><p><font color='red'>Error: the timer was not created</font></p></li>";
 print " </ul>";
+
+//error edit timer
+print " <ul class=\"pageitem\">";
+print " <li class=\"textbox\"><p><font color='red'>Error: the timer was not edited</font></p></li>";
+print " </ul>";
+
+//success new timer
+print " <ul class=\"pageitem\">";
+print " <li class=\"textbox\"><p>The timer was successfully created</p></li>";
+print " </ul>";
+
+//success edit timer
+print " <ul class=\"pageitem\">";
+print " <li class=\"textbox\"><p>The timer was successfully edited</font></p></li>";
+print " </ul>";
+
 //end contextual alert message
+
 print " <ul class=\"pageitem\">";
 print "  <li class=\"textbox\">";
 print "   <span class=\"header\">Current timers</span>";
