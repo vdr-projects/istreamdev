@@ -16,16 +16,8 @@
 	{
 		$found = 0;
 		while ($medianame = readdir($dir_handle))
-		{
 			if (mediagettype($path .$medianame) == 2)
-			{
-				if ($medianame == $name)
-					$found = 1;		
-		
-				if ($found)
-				        $medianame_array[] = $medianame;
-			}
-		}
+			        $medianame_array[] = $medianame;
 
 		if ($medianame_array[0])
 		{
@@ -39,8 +31,15 @@
 			else
 			{
 				$count = count($medianame_array);
+				$found = 0;
 				for ($cnt=0; $cnt < $count; $cnt++)
-        				fwrite($plfile, "playlist/" .$medianame_array[$cnt] ."\n");
+				{
+					if ($medianame_array[$cnt] == $name)
+						$found=1;
+
+					if ($found)
+	        				fwrite($plfile, "playlist/" .$medianame_array[$cnt] ."\n");
+				}
 
 			        fclose($plfile);
 	
