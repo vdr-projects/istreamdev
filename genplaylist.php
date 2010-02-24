@@ -1,4 +1,11 @@
 <?php
+	
+	if (file_exists('config.php'))
+		include ('config.php');
+	else	
+		include ('config_default.php');
+	include ('includes/inc_files.php');
+
 	header('Content-Type: text/xml'); 
 	echo "<?xml version=\"1.0\"?>\n";
 	echo "<status>\n";
@@ -14,14 +21,12 @@
 		echo "<m3u>error</m3u>";
 	else
 	{
-		$found = 0;
 		while ($medianame = readdir($dir_handle))
 			if (mediagettype($path .$medianame) == 2)
 			        $medianame_array[] = $medianame;
 
 		if ($medianame_array[0])
 		{
-	
 			// Alphabetical sorting
 			sort($medianame_array);
 
