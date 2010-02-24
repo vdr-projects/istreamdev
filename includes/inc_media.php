@@ -95,7 +95,7 @@ else
                             ||  preg_match("'" .$fileext ." $'", $audiotypes)
                            )
 			{
-			 print "<li class=\"menu\"><a href=\"streammusic.php?file={$dir}{$value}\"><img src=\"images/pictos/audio.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+			 print "<li class=\"menu\"><a href=\"streammusic.php?dir={$dir}&file={$value}\"><img src=\"images/pictos/audio.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
 			}
 		}
 	}
