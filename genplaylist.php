@@ -17,7 +17,7 @@
 		$found = 0;
 		while ($medianame = readdir($dir_handle))
 		{
-			if (mediagettype($path .$name) == 2)
+			if (mediagettype($path .$medianame) == 2)
 			{
 				if ($medianame == $name)
 					$found = 1;		
