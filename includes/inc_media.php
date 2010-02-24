@@ -91,6 +91,12 @@ else
         		        print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$dir}{$value}\" />";
 				print "</form>\r\n";
 			}
+			else if (  preg_match("'" .$fileext ." '", $audiotypes)
+                            ||  preg_match("'" .$fileext ." $'", $audiotypes)
+                           )
+			{
+			 print "<li class=\"menu\"><a href=\"streammusic.php?file={$dir}{$value}\"><img src=\"images/pictos/audio.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+			}
 		}
 	}
 }
