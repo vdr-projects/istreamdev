@@ -16,7 +16,6 @@
 	// Media configuration
 	$mediainfopath='/usr/bin/mediainfo';
 	$videotypes='avi mkv ts mov mp4 wmv flv mpg mpeg mpeg2 mpv';	//video files extensions
-	$audiotypes='mp3 wav aac flac';					//audio files extensions
 	//			Source name	Source path
 	$mediasources=array (	'Video'	=>	'/mnt/media/movies',
 				'Audio'	=>	'/mnt/media/music');

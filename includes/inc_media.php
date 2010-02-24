@@ -1,6 +1,7 @@
 <?php
 
-global $videotypes, $audiotypes;
+global $videotypes;
+$audiotypes='mp3 aac';
 
 $subdir = $_REQUEST['subdir'];
 $mediapath = $_REQUEST['mediapath'];
@@ -34,8 +35,15 @@ print "  <ul class=\"pageitem\">";
 print "  <li class=\"textbox\"><span class=\"header\">Current path:</span><p>{$subdir}</p></li>";
 
 // Option to play dir
+$audioextarray = explode(' ', $audiotypes);
+$playlist = 0;
+foreach ($audioextarray as $num => $audioext)
+{
+	if (glob($mediapath .$subdir .'*.' .$audioext))
+		$playlist = 1;
+}
 
-if (glob($mediapath .$subdir ."*.mp3"))
+if ($playlist)
 {
 	print "  <li class=\"menu\">\r\n";
 	print "    <a href=\"index.php?action=playdir&mediapath={$mediapath}&subdir={$subdir}\">\r\n";
@@ -63,6 +71,8 @@ if ($medianame_array[0])
 {
 	// Alphabetical sorting
 	sort($medianame_array);
+
+	$audiocnt=0;
 	
 	foreach($medianame_array as $value)
 	{	
@@ -88,9 +98,7 @@ if ($medianame_array[0])
 			$fileext = end(explode(".", $value));
 
 			// Check if it is supported
-			if (	preg_match("/" .$fileext ." /", $videotypes)
-			    ||	preg_match("/" .$fileext ." $/", $videotypes)
-			   )
+			if ( preg_match("/" .$fileext ." /", $videotypes) || preg_match("/" .$fileext ." $/", $videotypes) )
 			{
 				print "<li class=\"menu\">\r\n";
 				print "  <a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\">\r\n";
@@ -106,12 +114,12 @@ if ($medianame_array[0])
         		        print "  <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$mediapath}{$subdir}{$value}\" />";
 				print "</form>\r\n";
 			}
-			else if (  preg_match("/" .$fileext ." /", $audiotypes)
-                            ||  preg_match("/" .$fileext ."$/", $audiotypes)
-                           )
+			else if ( preg_match("/" .$fileext ." /", $audiotypes) || preg_match("/" .$fileext ."$/", $audiotypes) )
 			{
+				$audiocnt++;
+
 				print "<li class=\"menu\">\r\n";
-				print "  <a href=\"streammusic.php?mediapath={$mediapath}&subdir={$subdir}&file={$value}\">\r\n";
+				print "  <a href=\"index.php?action=playdir&mediapath={$mediapath}&subdir={$subdir}&play={$audiocnt}\">\r\n";
 				print "    <img src=\"images/pictos/audio.png\" />\r\n";
 				print "    <span class=\"name\">$value</span><span class=\"arrow\"></span>\r\n";
 				print "  </a>\r\n";

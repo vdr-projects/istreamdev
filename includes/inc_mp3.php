@@ -1,6 +1,11 @@
 <?php
 
-print "<body class=\"ipodlist\">\r\n";
+$play =$_REQUEST['play'];
+if ($play == "")
+	print "<body class=\"ipodlist\">\r\n";
+else
+	print "<body class=\"ipodlist\" onload=\"javascript:Document.s{$play}.Play()\">\r\n";
+
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
 print "<div id=\"leftnav\">\r\n";
 print "	 <a href=\"javascript:sendForm('getback')\">Back</a>\r\n";
