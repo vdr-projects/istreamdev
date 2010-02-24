@@ -48,10 +48,11 @@ if ($medianame_array[0])
         foreach($medianame_array as $value)
         {
                 $medianame2=addslashes($value);
+		
 
 		print "	 <li>\r\n";
 		print "    <a class=\"noeffect\" href=\"javascript:document.s{$cnt}.Play();\">\r\n";
-		print "	     <span class=\"number\">1</span><span class=\"auto\"></span><span class=\"name\">{$value}</span><span class=\"time\">???</span>\r\n";
+		print "	     <span class=\"number\">$cnt</span><span class=\"stop\"></span><span class=\"name\">{$value}</span>\r\n";
 		print "	   </a>\r\n";
 		print "  </li>\r\n";
 
