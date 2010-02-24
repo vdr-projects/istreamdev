@@ -25,3 +25,32 @@ function alert_ajax(xhr)
 			swapPic();
 	}
 }
+
+function playmusic(path,name)
+{
+    var xhr=null;
+
+    xhr = new XMLHttpRequest();
+    //on définit l'appel de la fonction au retour serveur
+    xhr.onreadystatechange = function() { openpls(xhr); };
+
+    xhr.open("GET", "genplaylist.php?path=" + path + "&name=" + name, true);
+    xhr.send(null);
+
+}
+
+function openpls(xhr)
+{
+        if (xhr.readyState==4)
+        {
+                var docXML= xhr.responseXML;
+                var streamstatus = null;
+                var items = docXML.getElementsByTagName("m3u")
+
+                streamstatus = items.item(0).firstChild.data;
+                if ( streamstatus == 'error' )
+                        this.location.href = 'error.php';
+                else
+                        document.player.Play()
+        }
+}
