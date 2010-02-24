@@ -46,12 +46,18 @@ foreach ($audioextarray as $num => $audioext)
 if ($playlist)
 {
 	print "  <li class=\"menu\">\r\n";
-	print "    <a href=\"index.php?action=playdir&mediapath={$mediapath}&subdir={$subdir}\">\r\n";
+	print "  <a class=\"noeffect\" href=\"javascript:sendForm('track_all');\">\r\n"; 
 	print "      <img src=\"images/pictos/playlist.png\" />\r\n";
 	print "      <span class=\"name\">Play current dir</span>\r\n";
 	print "      <span class=\"arrow\"></span>\r\n";
 	print "      </a>\r\n";
 	print "  </li>\r\n";
+	print "<form name=\"track_all\" id=\"track_all\" method=\"post\" action=\"index.php\">";
+        print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"playdir\"/>";
+         print "  <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />";
+        print "  <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />";
+        print "  <input name=\"play\" type=\"hidden\" id=\"play\" value= />";
+        print "</form>";
 }
 
 $dir_handle = @opendir($mediapath .$subdir);
@@ -119,11 +125,17 @@ if ($medianame_array[0])
 				$audiocnt++;
 
 				print "<li class=\"menu\">\r\n";
-				print "  <a href=\"index.php?action=playdir&mediapath={$mediapath}&subdir={$subdir}&play={$audiocnt}\">\r\n";
+				print "  <a class=\"noeffect\" href=\"javascript:sendForm('track_{$audiocnt}');\">\r\n";
 				print "    <img src=\"images/pictos/audio.png\" />\r\n";
 				print "    <span class=\"name\">$value</span><span class=\"arrow\"></span>\r\n";
 				print "  </a>\r\n";
 				print "</li>\r\n";
+				print "<form name=\"track_{$audiocnt}\" id=\"track_{$audiocnt}\" method=\"post\" action=\"index.php\">";
+				print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"playdir\"/>";
+				print "  <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />";
+				print "  <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />";
+				print "  <input name=\"play\" type=\"hidden\" id=\"play\" value={$audiocnt} />";
+				print "</form>";
 			}
 		}
 	}
