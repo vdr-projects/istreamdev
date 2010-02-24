@@ -1,6 +1,6 @@
 <?php
 
-$audiotypes='mp3 aac';
+$audiotypes='mp3 aac wav';
 
 function mediagetinfostream($stream = "")
 {

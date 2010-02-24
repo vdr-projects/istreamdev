@@ -36,8 +36,8 @@ if ($medianame_array[0])
         // Alphabetical sorting
         sort($medianame_array);
 
-	exec('rm playlist/*.mp3');
-	exec('ln -s ' .addcslashes(quotemeta($mediapath .$subdir), " ") .'*.mp3 playlist');
+	exec('rm playlist/*');
+	exec('ln -s ' .addcslashes(quotemeta($mediapath .$subdir), " &") .'* playlist');
 
         $count = count($medianame_array);
 
