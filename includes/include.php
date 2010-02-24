@@ -109,6 +109,8 @@ function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, 
 		default:
 			$cmd = "";
 	}
+	
+	$cmd = str_replace('%', '%%', $cmd);
 	exec ($cmd);
 
 	// Write streaminfo
