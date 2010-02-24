@@ -111,7 +111,7 @@ if ($medianame_array[0])
                            )
 			{
 				print "<li class=\"menu\">\r\n";
-				print "  <a href=\"streammusic.php?dir={$mediapath}{$subdir}&file={$value}\">\r\n";
+				print "  <a href=\"streammusic.php?mediapath={$mediapath}&subdir={$subdir}&file={$value}\">\r\n";
 				print "    <img src=\"images/pictos/audio.png\" />\r\n";
 				print "    <span class=\"name\">$value</span><span class=\"arrow\"></span>\r\n";
 				print "  </a>\r\n";
