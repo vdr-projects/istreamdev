@@ -1,5 +1,5 @@
 <?php
-print "<body class=\"ipodlist\" onorientationchange=\"updateOrientation();\" onload=\"updateOrientation();\">\r\n";
+print "<body class=\"ipodlist\">\r\n";
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
 print "<div id=\"leftnav\">\r\n";
 print "	<a href=\"javascript:sendForm('getback')\">Back</a></div>\r\n";
