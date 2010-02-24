@@ -1,45 +1,41 @@
 <?php
 
-global $mediapath, $videotypes, $audiotypes;
+global $videotypes, $audiotypes;
 
-$dir = $_REQUEST['dir'];
-if ($dir == "")
-	$dir = $mediapath;
+$subdir = $_REQUEST['subdir'];
+$mediapath = $_REQUEST['mediapath'];
 
 /* Add last slash to dirs */
 if ($mediapath[strlen($mediapath)-1] != '/')
 	$mediapath = $mediapath .'/';
-
-if ($dir[strlen($dir)-1] != '/')
-	$dir = $dir .'/';
-
-// Get current subdir
-$subdir = preg_replace("'" .quotemeta($mediapath) ."'", '', $dir);
+if ($subdir[strlen($subdir)-1] != '/')
+	$subdir = $subdir .'/';
 
 print "<body onorientationchange=\"updateOrientation();\" onload=\"updateOrientation();\">\r\n";
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
 print "<div id=\"leftnav\">\r\n";
-if ($dir == $mediapath)
+
+if ($subdir == '/')
 	print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
 else
-	print "<a href=\"javascript:sendForm('getback')\">Back</a></div>\r\n";
-if ($dir != $mediapath)
 {
+	print "<a href=\"javascript:sendForm('getback')\">Back</a></div>\r\n";
 	print "<div id=\"rightnav\">\r\n";
 	print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
 }
+
 print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
 print "<div id=\"content\">\r\n";
 print " <span class=\"graytitle\">Media</span>\r\n";
 print "<br>";
 print " <ul class=\"pageitem\">";
-print " <li class=\"textbox\"><span class=\"header\">Current path:</span><p>/{$subdir}</p></li>";
+print " <li class=\"textbox\"><span class=\"header\">Current path:</span><p>{$subdir}</p></li>";
 
-$dir_handle = @opendir($dir);
+$dir_handle = @opendir($mediapath .$subdir);
 if (!$dir_handle)
 {
-	print "Unable to open $dir";
+	print "Unable to open $mediapath .$subdir";
 }
 else while ($medianame = readdir($dir_handle))
 {
@@ -47,16 +43,9 @@ else while ($medianame = readdir($dir_handle))
 		continue;
 
 	$medianame_array[] = $medianame;
-	//}
 }
-//closedir?
 
-//
-if ($medianame_array[0] == NULL)
-{
-	//do nothing
-}
-else
+if ($medianame_array[0])
 {
 	// Alphabetical sorting
 	sort($medianame_array);
@@ -66,12 +55,13 @@ else
 		$medianame2=addslashes($value);
 
 		// Directories
-		if (is_dir($dir ."/" .$value))
+		if (is_dir($mediapath .$subdir .$value))
 		{
 			print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
 			print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
-			print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\"/>";
-			print "   <input name=\"dir\" type=\"hidden\" id=\"dir\" value=\"{$dir}{$value}/\" />";
+			print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\"/>";
+			print "  <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />";
+			print "  <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}{$value}\" />\r\n";
 			print "</form>\r\n";
 		}
 		else
@@ -86,24 +76,30 @@ else
 			{
 				print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><img src=\"images/pictos/video.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
 				print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
-				print "   <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
-	                	print "   <input name=\"type\" type=\"hidden\" id=\"type\" value=3 />";
-        		        print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$dir}{$value}\" />";
+				print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
+	                	print "  <input name=\"type\" type=\"hidden\" id=\"type\" value=3 />";
+				print "  <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />";
+				print "  <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
+        		        print "  <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$mediapath}{$subdir}{$value}\" />";
 				print "</form>\r\n";
 			}
 			else if (  preg_match("'" .$fileext ." '", $audiotypes)
                             ||  preg_match("'" .$fileext ." $'", $audiotypes)
                            )
 			{
-			 print "<li class=\"menu\"><a href=\"streammusic.php?dir={$dir}&file={$value}\"><img src=\"images/pictos/audio.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+			 print "<li class=\"menu\"><a href=\"streammusic.php?dir={$mediapath}{$subdir}&file={$value}\"><img src=\"images/pictos/audio.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
 			}
 		}
 	}
 }
 
-$updir = dirname($dir);
+$upsubdir = dirname($subdir);
 
-print "<form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.php\"><input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\"/><input name=\"dir\" type=\"hidden\" id=\"dir\" value=\"{$updir}/\" /></form>\r\n";
+print "<form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.php\">\r\n";
+print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\"/>\r\n";
+print "  <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
+print "  <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$upsubdir}\" />\r\n";
+print "</form>\r\n";
 
 if ($dir_handle)
 	closedir($dir_handle);

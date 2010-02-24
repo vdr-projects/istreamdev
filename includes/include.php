@@ -74,7 +74,9 @@ function selectpage()
 			$qparams = $_REQUEST['qparams'];
 			$category = $_REQUEST['category'];
 			$url = $_REQUEST['url'];
-			start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url);
+			$mediapath = $_REQUEST['mediapath'];
+			$subdir = $_REQUEST['subdir'];
+			start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir);
 			break;
 		 default:
                         gen_home();
@@ -129,7 +131,7 @@ function gen_edit_timer()
 
 
 
-function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url)
+function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir)
 {
 	global $httppath, $ffmpegpath, $segmenterpath;
 
@@ -150,7 +152,7 @@ function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, 
 	exec ($cmd);
 
 	// Write streaminfo
-	writeinfostream($type, $name, $title, $desc, $qname, $category, $url);
+	writeinfostream($type, $name, $title, $desc, $qname, $category, $url, $mediapath, $subdir);
 	
 	include('includes/inc_stream.php');
 }

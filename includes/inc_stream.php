@@ -6,7 +6,7 @@ global $vdrstreamdev, $quality;
 if (infostreamexist())
 {
 	// Get current stream info
-	list($type, $realname, $title, $desc, $mode, $category, $url) = readinfostream();
+	list($type, $realname, $title, $desc, $mode, $category, $url, $mediapath, $subdir) = readinfostream();
 
 	print "<body onorientationchange=\"updateOrientation();\" onload=\"ajax();\">\r\n";
 	
@@ -58,16 +58,19 @@ if (infostreamexist())
 	print " </div>\r\n";
 
 	print " <form name=\"stopstream\" id=\"stopstream\" method=\"post\" action=\"index.php\">";
-	print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"stopstream\" />";
-	print "    <input name =\"actionafterstop\" type=\"hidden\" id=\"actionafterstop\" value=\"stream\" />";
+	print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stopstream\" />";
+	print "    <input name=\"actionafterstop\" type=\"hidden\" id=\"actionafterstop\" value=\"stream\" />";
 	print "    <input name=\"type\" type=\"hidden\" id=\"type\" value={$type} />";
 	switch ($type)
 	{
 		case 1:
 			print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$realname}\" />";
 			break;
-		case 2:
-		case 3:	
+		case 3:
+			print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
+			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
+			// NO BREAK
+		case 2:	
 			print "   <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$url}\" />";
 			break;
 			
@@ -166,48 +169,56 @@ else
 
 	foreach ($quality as $qname => $qparams)
 	{
-		print " <form name=\"{$qname}\" id=\"{$qname}\" method=\"post\" action=\"index.php\">\r\n";
-		print "         <input name =\"action\" type=\"hidden\" id=\"action\" value=\"startstream\" />\r\n";
-		print "         <input name =\"type\" type=\"hidden\" id=\"type\" value={$type} />\r\n";
-		print "         <input name =\"name\" type=\"hidden\" id=\"name\" value=\"{$realname}\" />\r\n";
-		print "         <input name =\"title\" type=\"hidden\" id=\"title\" value=\"{$title}\" />\r\n";
-		print "         <input name =\"desc\" type=\"hidden\" id=\"desc\" value=\"{$desc}\" />\r\n";
-		print "         <input name =\"qname\" type=\"hidden\" id=\"qname\" value=\"{$qname}\" />\r\n";
-		print "         <input name =\"qparams\" type=\"hidden\" id=\"qparams\" value=\"{$qparams}\" />\r\n";
-		print "         <input name =\"category\" type=\"hidden\" id=\"category\" value=\"{$category}\" />\r\n";
+		print "  <form name=\"{$qname}\" id=\"{$qname}\" method=\"post\" action=\"index.php\">\r\n";
+		print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"startstream\" />\r\n";
+		print "    <input name=\"type\" type=\"hidden\" id=\"type\" value={$type} />\r\n";
+		print "    <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$realname}\" />\r\n";
+		print "    <input name=\"title\" type=\"hidden\" id=\"title\" value=\"{$title}\" />\r\n";
+		print "    <input name=\"desc\" type=\"hidden\" id=\"desc\" value=\"{$desc}\" />\r\n";
+		print "    <input name=\"qname\" type=\"hidden\" id=\"qname\" value=\"{$qname}\" />\r\n";
+		print "    <input name=\"qparams\" type=\"hidden\" id=\"qparams\" value=\"{$qparams}\" />\r\n";
+		print "    <input name=\"category\" type=\"hidden\" id=\"category\" value=\"{$category}\" />\r\n";
 		switch ($type)
 		{
 			case 1:
-				print "         <input name =\"url\" type=\"hidden\" id=\"url\" value=\"{$vdrstreamdev}{$channum}\" />\r\n";
+				print "    <input name=\"url\" type=\"hidden\" id=\"url\" value=\"{$vdrstreamdev}{$channum}\" />\r\n";
 				break;
-			case 2:
 			case 3:
-				print "         <input name =\"url\" type=\"hidden\" id=\"url\" value=\"{$name}\" />\r\n";
+				$mediapath = $_REQUEST['mediapath'];
+				$subdir = $_REQUEST['subdir'];
+				print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
+				print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
+				// NO BREAK
+			case 2:
+				print "    <input name=\"url\" type=\"hidden\" id=\"url\" value=\"{$name}\" />\r\n";
                                 break;
 		}
-		print " </form>";
+		print "  </form>";
 	}
 
-	print " <form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.php\">";
+	print "  <form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.php\">";
         switch ($type)
         {
                 case 1:
-			print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"listchannels\" />";
-                        print "    <input name =\"cat\"type=\"hidden\" id=\"cat\" value=\"{$category}\" />";
+			print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"listchannels\" />";
+                        print "    <input name=\"cat\"type=\"hidden\" id=\"cat\" value=\"{$category}\" />";
                         break;
                 default:
                 case 2:
 			$dir = dirname($name);
-			print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"recordings\" />";
-                        print "    <input name =\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
+			print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"recordings\" />";
+                        print "    <input name=\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
                         break;
 		case 3:
+			$mediapath = $_REQUEST['mediapath'];
+			$subdir = $_REQUEST['subdir'];
 			$dir = dirname($name);
-			 print "    <input name =\"action\" type=\"hidden\" id=\"action\" value=\"media\" />";
-			 print "    <input name =\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
+			print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\" />";
+			print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
+			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
                         break;
         }
-        print " </form>\r\n";
+        print "  </form>\r\n";
 
 }
 

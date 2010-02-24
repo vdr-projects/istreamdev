@@ -8,7 +8,7 @@
 	3 : Media
 */
 
-function writeinfostream($type=0, $name="", $title="", $desc="", $mode="", $category="", $url="")
+function writeinfostream($type=0, $name="", $title="", $desc="", $mode="", $category="", $url="", $mediapath="", $subdir="")
 {
 	$infofile = fopen("ram/streaminfo", 'w');
 
@@ -19,6 +19,8 @@ function writeinfostream($type=0, $name="", $title="", $desc="", $mode="", $cate
 	fwrite($infofile, "mode=" .$mode ."\n");
 	fwrite($infofile, "category=" .$category ."\n");
 	fwrite($infofile, "url=" .$url ."\n");
+	fwrite($infofile, "mediapath=" .$mediapath ."\n");
+	fwrite($infofile, "subdir=" .$subdir ."\n");
 
 	fclose($infofile);
 }
@@ -46,11 +48,15 @@ function readinfostream()
                         $category = substr($line, strlen("category="), -1);
 		else if (!strncmp($line, "url=", strlen("url=")))
 			$url = substr($line, strlen("url="), -1);
+		else if (!strncmp($line, "mediapath=", strlen("mediapath=")))
+			$mediapath = substr($line, strlen("mediapath="), -1);
+		else if (!strncmp($line, "subdir=", strlen("subdir=")))
+			$subdir = substr($line, strlen("subdir="), -1);
 	}
 	
 	fclose($infofile);
 
-	return array($type, $name, $title, $desc, $mode, $category, $url);
+	return array($type, $name, $title, $desc, $mode, $category, $url, $mediapath, $subdir);
 }
 
 function infostreamexist()
