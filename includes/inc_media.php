@@ -26,11 +26,25 @@ else
 
 print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
+
 print "<div id=\"content\">\r\n";
-print " <span class=\"graytitle\">Media</span>\r\n";
-print "<br>";
-print " <ul class=\"pageitem\">";
-print " <li class=\"textbox\"><span class=\"header\">Current path:</span><p>{$subdir}</p></li>";
+print "  <span class=\"graytitle\">Media</span>\r\n";
+print "  <br>";
+print "  <ul class=\"pageitem\">";
+print "  <li class=\"textbox\"><span class=\"header\">Current path:</span><p>{$subdir}</p></li>";
+
+// Option to play dir
+
+if (glob($mediapath .$subdir ."*.mp3"))
+{
+	print "  <li class=\"menu\">\r\n";
+	print "    <a href=\"index.php?action=playdir&mediapath={$mediapath}&subdir={$subdir}\">\r\n";
+	print "      <img src=\"images/pictos/playlist.png\" />\r\n";
+	print "      <span class=\"name\">Play current dir</span>\r\n";
+	print "      <span class=\"arrow\"></span>\r\n";
+	print "      </a>\r\n";
+	print "  </li>\r\n";
+}
 
 $dir_handle = @opendir($mediapath .$subdir);
 if (!$dir_handle)
@@ -57,7 +71,11 @@ if ($medianame_array[0])
 		// Directories
 		if (is_dir($mediapath .$subdir .$value))
 		{
-			print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+			print "<li class=\"menu\">\r\n";
+			print "  <a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\">\r\n";
+			print "    <span class=\"name\">$value</span><span class=\"arrow\"></span>\r\n";
+			print "  </a>\r\n";
+			print "</li>\r\n";
 			print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
 			print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\"/>";
 			print "  <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />";
@@ -70,11 +88,16 @@ if ($medianame_array[0])
 			$fileext = end(explode(".", $value));
 
 			// Check if it is supported
-			if (	preg_match("'" .$fileext ." '", $videotypes)
-			    ||	preg_match("'" .$fileext ." $'", $videotypes)
+			if (	preg_match("/" .$fileext ." /", $videotypes)
+			    ||	preg_match("/" .$fileext ." $/", $videotypes)
 			   )
 			{
-				print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\"><img src=\"images/pictos/video.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+				print "<li class=\"menu\">\r\n";
+				print "  <a class=\"noeffect\" href=\"javascript:sendForm('$medianame2');\">\r\n";
+				print "    <img src=\"images/pictos/video.png\" />\r\n";
+				print "    <span class=\"name\">$value</span><span class=\"arrow\"></span>\r\n";
+				print "  </a>\r\n";
+				print "</li>\r\n";
 				print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
 				print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stream\"/>";
 	                	print "  <input name=\"type\" type=\"hidden\" id=\"type\" value=3 />";
@@ -83,11 +106,16 @@ if ($medianame_array[0])
         		        print "  <input name=\"name\" type=\"hidden\" id=\"name\" value=\"{$mediapath}{$subdir}{$value}\" />";
 				print "</form>\r\n";
 			}
-			else if (  preg_match("'" .$fileext ." '", $audiotypes)
-                            ||  preg_match("'" .$fileext ." $'", $audiotypes)
+			else if (  preg_match("/" .$fileext ." /", $audiotypes)
+                            ||  preg_match("/" .$fileext ."$/", $audiotypes)
                            )
 			{
-			 print "<li class=\"menu\"><a href=\"streammusic.php?dir={$mediapath}{$subdir}&file={$value}\"><img src=\"images/pictos/audio.png\" /><span class=\"name\">$value</span><span class=\"arrow\"></span></a></li>\r\n";
+				print "<li class=\"menu\">\r\n";
+				print "  <a href=\"streammusic.php?dir={$mediapath}{$subdir}&file={$value}\">\r\n";
+				print "    <img src=\"images/pictos/audio.png\" />\r\n";
+				print "    <span class=\"name\">$value</span><span class=\"arrow\"></span>\r\n";
+				print "  </a>\r\n";
+				print "</li>\r\n";
 			}
 		}
 	}

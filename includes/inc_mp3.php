@@ -2,26 +2,78 @@
 print "<body class=\"ipodlist\">\r\n";
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
 print "<div id=\"leftnav\">\r\n";
-print "	<a href=\"javascript:sendForm('getback')\">Back</a></div>\r\n";
+print "	 <a href=\"javascript:sendForm('getback')\">Back</a>\r\n";
+print "</div>\r\n";
 print "<div id=\"rightnav\">\r\n";
 print "	<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
 
 print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
 print "<div id=\"content\">\r\n";
-print "	<ul>";
-print "		<li><a class=\"noeffect\" href=\"javascript:document.s1.Play();\">";
-print "		<span class=\"number\">1</span><span class=\"auto\"></span><span class=\"name\">Boom Boom Pow</span><span class=\"time\">4:11</span>";
-print "		</a></li>";
+print "	 <ul>\r\n";
 
-print "		<li><a class=\"noeffect\" href=\"javascript:document.s2.Play();\">";
-print "		<span class=\"number\">2</span><span class=\"auto\"></span><span class=\"name\">Rock That Body</span><span class=\"time\">4:28</span></a></li>";
+$mediapath = $_REQUEST['mediapath'];
+$subdir = $_REQUEST['subdir'];
 
-print "</div>\r\n";
+$dir_handle = @opendir($mediapath .$subdir);
+if (!$dir_handle)
+	print "Unable to open $mediapath .$subdir";
+else while ($medianame = readdir($dir_handle))
+{
+	// Add only mp3 files	
 
-print "<div style=\"position:absolute; left:0; top:0\">";
-print "<embed enablejavascript=\"true\" autoplay=\"false\" height=\"0\" name=\"s1\" src=\"http://a1.phobos.apple.com/us/r2000/004/Music/22/97/88/mzm.lzzanxzf.aac.p.m4a\" width=\"0\" loop=\"true\" controller=\"false\" qtnext1=\"<http://a1.phobos.apple.com/us/r2000/012/Music/a9/6e/92/mzm.chcdvuzt.aac.p.m4a>\" />";
-print "<embed enablejavascript=\"true\" autoplay=\"false\" height=\"0\" name=\"s2\" src=\"http://a1.phobos.apple.com/us/r2000/012/Music/a9/6e/92/mzm.chcdvuzt.aac.p.m4a\" width=\"0\" />";
-print "</div>";
+        if(strstr($medianame, ".mp3")  != ".mp3")
+                continue;
+
+        $medianame_array[] = $medianame;
+}
+
+if ($medianame_array[0])
+{
+        // Alphabetical sorting
+        sort($medianame_array);
+
+	$cnt = 1;
+        foreach($medianame_array as $value)
+        {
+                $medianame2=addslashes($value);
+
+		print "	 <li>\r\n";
+		print "    <a class=\"noeffect\" href=\"javascript:document.s{$cnt}.Play();\">\r\n";
+		print "	     <span class=\"number\">1</span><span class=\"auto\"></span><span class=\"name\">{$value}</span><span class=\"time\">???</span>\r\n";
+		print "	   </a>\r\n";
+		print "  </li>\r\n";
+
+		$cnt++;
+	}
+
+	print "</div>\r\n";
+
+	print "<div style=\"position:absolute; left:0; top:0\">\r\n";
+
+        $count = count($medianame_array);
+        for ($cnt=0; $cnt < $count; $cnt++)
+	{
+		$idx=$cnt+1;
+
+		print "<embed enablejavascript=\"true\" autoplay=\"false\" height=\"0\" name=\"s{$idx}\"";
+		print " src=\"streammusic.php?mediapath={$mediapath}&subdir={$subdir}&file={$medianame_array[$cnt]}\"";
+		print " width=\"0\" loop=\"true\" controller=\"false\"";
+		if (($cnt+1) < $count)
+			print "	qtnext1=\"<streammusic.php?mediapath={$mediapath}&subdir={$subdir}&file={$medianame_array[$cnt+1]}\"";
+		print " />\r\n";
+	}
+
+	print "</div>";
+}
+else
+	 print "</div>\r\n";
+
+print "  <form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.php\">";
+print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\" />";
+print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
+print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
+print "  </form>\r\n";
+
 ?>
 

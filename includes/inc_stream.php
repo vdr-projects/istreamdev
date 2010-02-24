@@ -203,7 +203,6 @@ else
 			print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"listchannels\" />";
                         print "    <input name=\"cat\"type=\"hidden\" id=\"cat\" value=\"{$category}\" />";
                         break;
-                default:
                 case 2:
 			$dir = dirname($name);
 			print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"recordings\" />";
@@ -212,7 +211,6 @@ else
 		case 3:
 			$mediapath = $_REQUEST['mediapath'];
 			$subdir = $_REQUEST['subdir'];
-			$dir = dirname($name);
 			print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\" />";
 			print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
 			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";

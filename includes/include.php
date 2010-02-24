@@ -28,32 +28,33 @@ function selectpage()
 	switch ($action)
 	{
 		case ("stream"):
-			gen_stream();
+			include('includes/inc_stream.php');
 			break;
 		case ("listcategory"):
-			gen_category();
+			include('includes/inc_cat.php');
 			break;
 		case ("listchannels"):
-			gen_channels();
+			include('includes/inc_chan.php');
 			break;
 		case ("recordings"):
-			gen_recordings();
+			include('includes/inc_rec.php');
 			break;
 		case ("media"):
-			gen_media();
+			include('includes/inc_media.php');
 			break;
 		case ("epg"):
-			gen_epg();
+			include('includes/inc_epg.php');
 			break;
 		case ("timers"):
-			gen_timers();
+			include('includes/inc_timers.php');
 			break;
 		case ("edittimer"):
-			gen_edit_timer();
+			include('includes/inc_edittimer.php');
 			break;
 		case ("deletetimer"):
 			$timer = $_REQUEST['timer'];
 			delete_timer($timer);
+			include('includes/inc_timers.php');
 			break;
 		case ("addtimer"):
 			$active = $_REQUEST['timer_active'];
@@ -64,6 +65,7 @@ function selectpage()
 			$desc = $_REQUEST['timer_name'];
 			$prevtimer = $_REQUEST['prevtimer'];
 			set_timer($active, $channame, $date, $stime, $etime, $desc, $prevtimer);
+			include('includes/inc_timers.php');
 			break;
 		case ("startstream"):
 			$type = $_REQUEST['type'];
@@ -77,59 +79,17 @@ function selectpage()
 			$mediapath = $_REQUEST['mediapath'];
 			$subdir = $_REQUEST['subdir'];
 			start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir);
+			include('includes/inc_stream.php');
 			break;
-		 default:
-                        gen_home();
+		case ("playdir"):
+			include('includes/inc_mp3.php');
+			break;
+		default:
+			$_SESSION['currentcat'] = NULL;
+			include('includes/inc_home.php');
                         break;
 	}
 }
-
-function gen_home()
-{
-	$_SESSION['currentcat'] = NULL;
-	include('includes/inc_home.php');
-}
-
-function gen_category()
-{
-	include('includes/inc_cat.php');
-}
-
-function gen_channels()
-{
-	include('includes/inc_chan.php');
-}
-
-function gen_stream()
-{
-	include('includes/inc_stream.php');
-}
-
-
-function gen_recordings()
-{
-	include('includes/inc_rec.php');
-}
-
-function gen_media()
-{
-	include('includes/inc_media.php');
-}
-
-function gen_epg()
-{
-        include('includes/inc_epg.php');
-}
-function gen_timers()
-{
-        include('includes/inc_timers.php');
-}
-function gen_edit_timer()
-{
-        include('includes/inc_edittimer.php');
-}
-
-
 
 function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir)
 {
@@ -181,8 +141,6 @@ function set_timer($active, $channame, $date, $stime, $etime, $desc, $prevtimer)
 		$message = " <li class=\"textbox\"><p><font color='red'>{$retarray[0]}</font></p></li>";
 	else
 		$message = " <li class=\"textbox\"><p>Timer {$settype}ed successfully</p></li>";
-
-	include('includes/inc_timers.php');
 }
 
 ?>
