@@ -1,5 +1,7 @@
 <?php
 
+$audiotypes='mp3 aac';
+
 function mediagetinfostream($stream = "")
 {
 
@@ -43,4 +45,30 @@ function mediagetinfostream($stream = "")
 	return array($title, $info);
 }
 
+function mediagettype($file)
+{
+	global $videotypes, $audiotypes;
+	
+	// Get file extension
+	$fileext = end(explode(".", $file));
 
+	if (is_dir($file))
+		return 3;
+	if ( preg_match("/" .$fileext ." /", $videotypes) || preg_match("/" .$fileext ." $/", $videotypes) )
+		return 1;
+	else if ( preg_match("/" .$fileext ." /", $audiotypes) || preg_match("/" .$fileext ." $/", $audiotypes) )
+		return 2;
+	else
+		return 0;
+}
+
+function mediadirhasaudio($dir)
+{
+	global $audiotypes;
+
+	$audioextarray = explode(' ', $audiotypes);
+	foreach ($audioextarray as $num => $audioext)
+        	if (glob($dir .'*.' .$audioext))
+			return 1;
+	return 0;
+}

@@ -10,6 +10,8 @@ include ('includes/inc_vdr.php');
 include ('includes/inc_files.php');
 include ('includes/inc_streaminfo.php');
 
+$audiotypes='mp3 aac';
+
 function selectpage()
 {
 	$action = $_REQUEST['action'];
