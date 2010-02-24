@@ -1,10 +1,7 @@
-en tête du menu, sous la ligne Current path:
+Bouton playlist:
+en tête de la page listant les fichiers media , sous la ligne Current path:
 
-<li class="menu"><a href="index.php?action=playdir&dir=/mnt/media/Music/Albums/113 - Dans L 
-
-urgence/"><img src="images/pictos/playlist.png" /><span class="name">Play directory</span><span 
-
-class="arrow"></span></a></li>
+<li class="menu"><a href="index.php?action=playdir&dir=/mnt/media/Music/Albums/113 - Dans L urgence/"><img src="images/pictos/playlist.png" /><span class="name">PLAY ALL</span><span class="arrow"></span></a></li>
 
 
 
@@ -21,10 +18,6 @@ print "<body class=\"ipodlist\" onload=\"javascript:document.s3.Play()\">\r\n";
 
 Les fichiers mp3 listés en mode navigation ( non playlist ):
 
-<li class="menu"><a href="index.php?action=playdir&dir=/mnt/media/Music/Albums/113 - Dans L 
-
-urgence/&file=3"><img src="images/pictos/audio.png" /><span class="name">01-113-
-
-a_lechelle_du_monde-mvp.mp3</span><span class="arrow"></span></a></li>
+<li class="menu"><a href="index.php?action=playdir&dir=/mnt/media/Music/Albums/113 - Dans L urgence/&file=3"><img src="images/pictos/audio.png" /><span class="name">01-113-a_lechelle_du_monde-mvp.mp3</span><span class="arrow"></span></a></li>
 
 
