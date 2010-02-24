@@ -1,4 +1,5 @@
 <?php
+
 print "<body class=\"ipodlist\">\r\n";
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
 print "<div id=\"leftnav\">\r\n";
@@ -6,6 +7,8 @@ print "	 <a href=\"javascript:sendForm('getback')\">Back</a>\r\n";
 print "</div>\r\n";
 print "<div id=\"rightnav\">\r\n";
 print "	<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
+
+global $httppath;
 
 print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
@@ -33,6 +36,9 @@ if ($medianame_array[0])
         // Alphabetical sorting
         sort($medianame_array);
 
+	exec('rm playlist/*.mp3');
+	exec('ln -s ' .addcslashes(quotemeta($mediapath .$subdir), " ") .'*.mp3 playlist');
+
 	$cnt = 1;
         foreach($medianame_array as $value)
         {
@@ -57,10 +63,18 @@ if ($medianame_array[0])
 		$idx=$cnt+1;
 
 		print "<embed enablejavascript=\"true\" autoplay=\"false\" height=\"0\" name=\"s{$idx}\"";
-		print " src=\"streammusic.php?mediapath={$mediapath}&subdir={$subdir}&file={$medianame_array[$cnt]}\"";
+//		print " src=\"streammusic.php?mediapath={$mediapath}&subdir={$subdir}&file={$medianame_array[$cnt]}\"";
+		print " src=\"{$httppath}playlist/{$medianame_array[$cnt]}\"";
 		print " width=\"0\" loop=\"true\" controller=\"false\"";
-		if (($cnt+1) < $count)
-			print "	qtnext1=\"<streammusic.php?mediapath={$mediapath}&subdir={$subdir}&file={$medianame_array[$cnt+1]}\"";
+
+		$next=1;
+		for ($cnt2=$cnt+1; $cnt2<$count; $cnt2++)
+		{
+//			print "	qtnext{$next}=\"<streammusic.php?mediapath={$mediapath}&subdir={$subdir}&file={$medianame_array[$cnt2]}\"";
+			print " qtnext{$next}=\"<{$httppath}playlist/{$medianame_array[$cnt2]}>\"";
+			$next++;
+		}
+
 		print " />\r\n";
 	}
 
