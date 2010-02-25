@@ -127,7 +127,6 @@ function delete_timer($timer)
 
 	$message = " <li class=\"textbox\"><p><font color='black'>Timer deleted successfully</font></p></li>";
 
-	include('includes/inc_timers.php');
 }
 
 function set_timer($active, $channame, $date, $stime, $etime, $desc, $prevtimer)

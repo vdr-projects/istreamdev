@@ -12,9 +12,10 @@ in progress:
 - cosmetics fixes
 - added timers support: create/edit/delete.
 - now support moviename.tbn, poster.jpg & folder.jpg thumbnails for movies
-- added sources support for multiple media dirs
-- added mp3 playback support
-- added mp3 dir playback with itune style
+- added sources support for multiple media dirs.
+- added mp3,aac,wav playback support.
+- added switch auto to next track while playing audio files.
+- added audio dir playback with itune style
 - replaced mediainfo by getid3 (http://getid3.sourceforge.net/)
 
 19.02.2010 - V.0.3.6.1
