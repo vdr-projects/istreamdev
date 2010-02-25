@@ -171,6 +171,7 @@ function checkform()
 	{
 	alert('Select a channel to record');
 	return false;
+t
 	}
 	else if ( document.timer.timer_date.value=="" )
 	{
@@ -195,7 +196,7 @@ function checkform()
 function addplayer(path,name,track) {
 
 
-	playercode= "<embed target='myself' src='" + track[0] + "' width='0' height='0' autoplay='false' name='player' type='audio/mp3' loop='true' controller='false' "; 
+	playercode= "<embed src='" + track[0] + "' width='0' height='0' autoplay='false' name='player' type='audio/mp3' loop='true' controller='false' "; 
 	for ( var i=1; i<track.length; i+=1 ){
 		playercode += "qtnext" + i + "='<" + track[i] + ">' ";
 
