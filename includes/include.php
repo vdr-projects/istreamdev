@@ -98,13 +98,13 @@ function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, 
 	switch ($type)
 	{
 		case 1:
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh '" .$url ."' " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." \" | at now";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." \" | at now";
 			break;
 		case 2:
 			$cmd = "export SHELL=\"/bin/sh\";printf \"cat \\\"" .$url ."\\\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." \" | at now";
 			break;
 		case 3:
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh '" .$url ."' " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." \" | at now";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." \" | at now";
                         break;
 		default:
 			$cmd = "";

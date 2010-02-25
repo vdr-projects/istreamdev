@@ -42,8 +42,10 @@ if ($medianame_array[0])
                 // Dirs
                 if (mediagettype($mediapath .$subdir .$medianame_array[$cnt]) == 3)
                 {
+			$medianame2=addslashes($medianame_array[$cnt]);
+
                         print "  <li>\r\n";
-                        print "    <a class=\"noeffect\" href=\"javascript:sendForm('dir_{$medianame_array[$cnt]}');\">\r\n";
+                        print "    <a class=\"noeffect\" href=\"javascript:sendForm('dir_$medianame2');\">\r\n";
 			print "        <span class=\"name\">{$medianame_array[$cnt]}</span><span class=\"time\">></span>\r\n";
                         print "    </a>\r\n";
                         print "  </li>\r\n";
@@ -58,20 +60,24 @@ if ($medianame_array[0])
         $idx = 1;
 	for ($cnt=0; $cnt < $count; $cnt++)
         {
+		$medianame2=addslashes($medianame_array[$cnt]);
+		$mediapath2=addslashes($mediapath);
+		$subdir2=addslashes($subdir);
+
 		// Audio
 		if (mediagettype($mediapath .$subdir .$medianame_array[$cnt]) == 2)
 		{
 			print "	 <li>\r\n";
-			//print "    <a class=\"noeffect\" href=\"javascript:playmusic('{$mediapath}{$subdir}','{$medianame_array[$cnt]}');document.player.Play();\">\r\n";
-			
+					
 			for ($cnt2=$cnt; $cnt2<$count; $cnt2++)
 			{
-			$track[$cnt2] = $httppath."playlist/".$medianame_array[$cnt2];
+			$track[$cnt2] = $httppath."playlist/".$medianame2;
 			
 			}
 			$jsarray = php2js($track);
 			
 			print "	<a class=\"noeffect\" href=\"javascript:var myarray = new Array({$jsarray});addplayer(myarray);document.player.Play();\">\r\n";
+			
 			print "	     <span class=\"number\">$idx</span><span class=\"stop\"></span><span class=\"name\">{$medianame_array[$cnt]}</span>\r\n";
 			print "	   </a>\r\n";
 			print "  </li>\r\n";
