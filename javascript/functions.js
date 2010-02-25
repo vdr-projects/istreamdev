@@ -192,7 +192,7 @@ function checkform()
 
 }
 
-function addplayer(track) {
+function addplayer(path,name,track) {
 
 
 	playercode= "<embed target='myself' src=track[0] width='0' height='0' autoplay='false' type='audio/mp3' loop='true' controller='false' "; 
@@ -202,6 +202,7 @@ function addplayer(track) {
 
 	}
 	playercode+= "</embed>"; 
+	playmusic(path,name);
 	document.getElementById('div_player').innerHTML = playercode;
 
 }

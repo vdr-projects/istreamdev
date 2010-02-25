@@ -71,12 +71,12 @@ if ($medianame_array[0])
 					
 			for ($cnt2=$cnt; $cnt2<$count; $cnt2++)
 			{
-			$track[$cnt2] = $httppath."playlist/".$medianame2;
+			$track[$cnt2-$cnt] = $httppath."playlist/".$medianame2;
 			
 			}
 			$jsarray = php2js($track);
 			
-			print "	<a class=\"noeffect\" href=\"javascript:var myarray = new Array({$jsarray});addplayer(myarray);document.player.Play();\">\r\n";
+			print "	<a class=\"noeffect\" href=\"javascript:var myarray = new Array({$jsarray});addplayer('{$mediapath}{$subdir}','{$medianame2}',myarray);document.player.Play();\">\r\n";
 			
 			print "	     <span class=\"number\">$idx</span><span class=\"stop\"></span><span class=\"name\">{$medianame_array[$cnt]}</span>\r\n";
 			print "	   </a>\r\n";
