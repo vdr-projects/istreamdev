@@ -202,7 +202,6 @@ function addplayer(path,name,track) {
 	}
 	playercode+= "></embed>"; 
 	playmusic(path,name);
-	alert(playercode);
 	document.getElementById('div_player').innerHTML = playercode;
 
 }
