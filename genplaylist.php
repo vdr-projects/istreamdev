@@ -13,7 +13,7 @@
 	$name = $_REQUEST['name'];
 
         exec('rm playlist/*');
-        exec('ln -s ' .addcslashes(quotemeta($path), " &") .'* playlist');
+        exec('ln -s ' .addcslashes(quotemeta($path), " &'") .'* playlist');
 
 	$dir_handle = @opendir($path);
 	if (!$dir_handle)
