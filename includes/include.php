@@ -119,8 +119,6 @@ function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, 
 
 	// Write streaminfo
 	writeinfostream($type, $name, $title, $desc, $qname, $category, $url, $mediapath, $subdir);
-	
-	include('includes/inc_stream.php');
 }
 
 function delete_timer($timer)
