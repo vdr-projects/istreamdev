@@ -51,6 +51,8 @@ function openpls(xhr)
                 if ( streamstatus == 'error' )
                         this.location.href = 'error.php';
                 else
-                        document.player.Play()
+                
+		this.location.href = 'playlist/playlist.m3u';        
+		//document.s1.Play();
         }
 }

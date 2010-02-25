@@ -5,7 +5,6 @@
 	else	
 		include ('config_default.php');
 	include ('includes/inc_files.php');
-
 	header('Content-Type: text/xml'); 
 	echo "<?xml version=\"1.0\"?>\n";
 	echo "<status>\n";
@@ -43,7 +42,7 @@
 						$found=1;
 
 					if ($found)
-	        				fwrite($plfile, "playlist/" .$medianame_array[$cnt] ."\n");
+	        				fwrite($plfile,$httppath . "playlist/" .$medianame_array[$cnt] ."\n");
 				}
 
 			        fclose($plfile);

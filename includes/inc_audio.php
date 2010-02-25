@@ -75,8 +75,8 @@ if ($medianame_array[0])
 	print("</div>");
 
 	print "<div style=\"position:absolute; left:0; top:0\">\r\n";
-			print "<embed enablejavascript=\"true\" autoplay=\"false\" height=\"0\" name=\"player\"";
-			print " src=\"{$httppath}playlist/playlist.m3u\"";
+			print "<embed enablejavascript=\"true\" autoplay=\"false\" height=\"0\" id=\"s1\" name=\"s1\"";
+			print " src=\"playlist/playlist.m3u\"";
 			print " width=\"0\" loop=\"true\" controller=\"false\"";
 			print " />\r\n";
 
