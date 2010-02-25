@@ -91,9 +91,6 @@ if ($medianame_array[0])
 
 	print("</div>");
 
-	print "<div style=\"position:absolute; left:0; top:0\" name=\"div_player\" id=\"div_player\">\r\n";
-
-        print("</div>");
 }
 else
 	print "</div>\r\n";
@@ -105,6 +102,10 @@ print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\" 
 print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
 print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$upsubdir}\" />\r\n";
 print "  </form>\r\n";
+
+print "<div style=\"position:absolute; left:0; top:0\" name=\"div_player\" id=\"div_player\">\r\n";
+
+print("</div>");
 
 ?>
 
