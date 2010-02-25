@@ -9,6 +9,7 @@ include ('includes/inc_auth.php');
 include ('includes/inc_vdr.php');
 include ('includes/inc_files.php');
 include ('includes/inc_streaminfo.php');
+include ('getid3/getid3.php');
 
 function selectpage()
 {

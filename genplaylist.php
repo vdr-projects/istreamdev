@@ -12,8 +12,9 @@
 	$path = $_REQUEST['path'];
 	$name = $_REQUEST['name'];
 
-        exec('rm playlist/*');
-        exec('ln -s ' .addcslashes(quotemeta($path), " &'") .'* playlist');
+	exec('rm playlist/*');
+	exec('echo > playlist/dummy.txt');
+	exec('ln -s ' .addcslashes(quotemeta($path), " &'") .'* playlist');
 
 	echo "<m3u>ok</m3u>\n";
 

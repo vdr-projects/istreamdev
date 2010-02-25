@@ -5,28 +5,14 @@ $audiotypes='mp3 aac wav ';
 function mediagetinfostream($stream = "")
 {
 
-	global $mediainfopath, $ffmpegpath;
+	global $ffmpegpath;
 
 	// Get info
-	exec($mediainfopath ." \"" .$stream ."\"", $mediainfo);
+	$getid3 = new getID3;
+	$fileinfo = $getid3->analyze($stream);
 
-	$info = "";
-	$title = "";
-
-	// Parse info
-	$count = count($mediainfo);
-	for ($i = 0; $i < $count; $i++)
-	{
-		if (!strncmp($mediainfo[$i], "Video", strlen("Video")) || !strncmp($mediainfo[$i], "Audio", strlen("Audio")))
-			break;
-
-		if (!strncmp($mediainfo[$i], "Format", strlen("Format")))
-			$title = substr(strstr($mediainfo[$i], ": "), 2);
-		else if (!strncmp($mediainfo[$i], "Format/Info", strlen("Format/Info")))
-			$title = substr(strstr($mediainfo[$i], ": "), 2);
-		else if (!strncmp($mediainfo[$i], "Duration", strlen("Duration")))
-			$info = substr(strstr($mediainfo[$i], ": "), 2);
-	}
+	$title = $fileinfo['fileformat'];
+	$info = $fileinfo['playtime_string'];
 
 	// Extract a thumbnail
 	exec("rm ram/stream-tb.*");

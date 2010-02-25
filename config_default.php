@@ -14,7 +14,6 @@
 	$vdrrecpath='/video/';	//VDR recording directory
 
 	// Media configuration
-	$mediainfopath='/usr/bin/mediainfo';
 	$videotypes='avi mkv ts mov mp4 wmv flv mpg mpeg mpeg2 mpv ';	// Supported video extensions (must finish with a space)
 	//			Source name	Source path
 	$mediasources=array (	'Video'	=>	'/mnt/media/movies',
