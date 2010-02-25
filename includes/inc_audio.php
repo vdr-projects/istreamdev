@@ -13,11 +13,16 @@ if ($subdir[strlen($subdir)-1] != '/')
 
 print "<body class=\"ipodlist\">\r\n";
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
+
 print "<div id=\"leftnav\">\r\n";
-print "	 <a href=\"javascript:sendForm('getback')\">Back</a>\r\n";
-print "</div>\r\n";
-print "<div id=\"rightnav\">\r\n";
-print "	<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
+if ($subdir == '/')
+	print "  <a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
+else
+{
+	print "	 <a href=\"javascript:sendForm('getback')\">Back</a></div>\r\n";
+	print "<div id=\"rightnav\">\r\n";
+	print "	<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
+}
 
 print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
