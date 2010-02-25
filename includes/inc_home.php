@@ -27,17 +27,27 @@ if ($vdrenabled)
 // Media menus
 print "  <span class=\"graytitle\">MEDIA</span>\r\n";
 print "  <ul class=\"pageitem\">\r\n";
-foreach($mediasources as $sname => $spath)
+foreach($mediasources as $source)
 {
+	$stype = $source[0];
+	$sname = $source[1];
+	$spath = $source[2];
+
 	print "    <li class=\"menu\">\r\n";
 	print "      <a class=\"noeffect\" href=\"javascript:sendForm('media {$sname} {$spath}');\">\r\n";
-	print "        <img src=\"images/pictos/media.png\" />\r\n";
+	if ($stype == 1)
+		print "        <img src=\"images/pictos/video.png\" />\r\n";
+	else
+		print "        <img src=\"images/pictos/audio.png\" />\r\n";
 	print "        <span class=\"name\">{$sname}</span>\r\n";
 	print "        <span class=\"arrow\"></span>\r\n";
 	print "      </a>\r\n";
 	print "    </li>\r\n";
 	print "    <form name=\"media\" id=\"media {$sname} {$spath}\" method=\"post\" action=\"index.php\">\r\n";
-	print "      <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\" />\r\n";
+	if ($stype == 1)
+		print "      <input name=\"action\" type=\"hidden\" id=\"action\" value=\"video\" />\r\n";
+	else
+		print "      <input name=\"action\" type=\"hidden\" id=\"action\" value=\"audio\" />\r\n";
 	print "      <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$spath}\" />\r\n";
 	print "      <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"/\" />\r\n";
 	print "    </form>\r\n";

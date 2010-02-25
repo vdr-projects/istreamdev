@@ -15,9 +15,10 @@
 
 	// Media configuration
 	$videotypes='avi mkv ts mov mp4 wmv flv mpg mpeg mpeg2 mpv ';	// Supported video extensions (must finish with a space)
-	//			Source name	Source path
-	$mediasources=array (	'Video'	=>	'/mnt/media/movies',
-				'Audio'	=>	'/mnt/media/music');
+        //                      1:vid 2:aud     Source name     Source path
+	$mediasource=array();
+	$mediasources[]=array ( 1,              'Video',        '/mnt/media/movies');
+	$mediasources[]=array ( 2,              'Audio',        '/mnt/media/music');
 
 	// Encoding
 	//			Name		Video	Audio	Audio channels	Resolution

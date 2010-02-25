@@ -211,7 +211,7 @@ else
 		case 3:
 			$mediapath = $_REQUEST['mediapath'];
 			$subdir = $_REQUEST['subdir'];
-			print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\" />";
+			print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"video\" />";
 			print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
 			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
                         break;

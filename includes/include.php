@@ -40,8 +40,11 @@ function selectpage()
 		case ("recordings"):
 			include('includes/inc_rec.php');
 			break;
-		case ("media"):
-			include('includes/inc_media.php');
+		case ("video"):
+			include('includes/inc_video.php');
+			break;
+		case ("audio"):
+			include('includes/inc_audio.php');
 			break;
 		case ("epg"):
 			include('includes/inc_epg.php');

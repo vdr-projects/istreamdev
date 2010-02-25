@@ -2,6 +2,15 @@
 
 global $httppath;
 
+$mediapath = $_REQUEST['mediapath'];
+$subdir = $_REQUEST['subdir'];
+
+/* Add last slash to dirs */
+if ($mediapath[strlen($mediapath)-1] != '/')
+        $mediapath = $mediapath .'/';
+if ($subdir[strlen($subdir)-1] != '/')
+        $subdir = $subdir .'/';
+
 print "<body class=\"ipodlist\">\r\n";
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
 print "<div id=\"leftnav\">\r\n";
@@ -50,7 +59,7 @@ if ($medianame_array[0])
                         print "    </a>\r\n";
                         print "  </li>\r\n";
                         print "  <form name=\"dir_{$medianame_array[$cnt]}\" id=\"dir_{$medianame_array[$cnt]}\" method=\"post\" action=\"index.php\">\r\n";
-                        print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\"/>\r\n";
+                        print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"audio\"/>\r\n";
                         print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
                         print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}{$medianame_array[$cnt]}\" />\r\n";
                         print "  </form>\r\n";
@@ -98,7 +107,7 @@ else
 $upsubdir = dirname($subdir);
 
 print "  <form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.php\">\r\n";
-print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"media\" />\r\n";
+print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"audio\" />\r\n";
 print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
 print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$upsubdir}\" />\r\n";
 print "  </form>\r\n";
