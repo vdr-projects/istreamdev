@@ -88,7 +88,7 @@ if ($medianame_array[0])
 
 	print("</div>");
 
-	print "<div style=\"position:absolute; left:0; top:0\" id=\"div_player\">\r\n";
+	print "<div style=\"position:absolute; left:0; top:0\" name=\"div_player\" id=\"div_player\">\r\n";
 
         print("</div>");
 }
