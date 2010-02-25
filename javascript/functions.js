@@ -196,9 +196,9 @@ t
 function addplayer(path,name,track) {
 
 
-	playercode= "<embed src='" + track[0] + "' width='0' height='0' autoplay='false' name='player' type='audio/mp3' loop='true' controller='false' "; 
+	playercode= "<embed src='" + escape(track[0]) + "' width='0' height='0' autoplay='false' name='player' type='audio/mp3' loop='true' controller='false' "; 
 	for ( var i=1; i<track.length; i+=1 ){
-		playercode += "qtnext" + i + "='<" + track[i] + ">' ";
+		playercode += "qtnext" + i + "='<" + escape(track[i]) + ">' ";
 
 	}
 	playercode+= "></embed>"; 
