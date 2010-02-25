@@ -33,8 +33,9 @@ function playmusic(path,name)
     xhr = new XMLHttpRequest();
     //on définit l'appel de la fonction au retour serveur
     xhr.onreadystatechange = function() { openpls(xhr); };
-
-    xhr.open("GET", "genplaylist.php?path=" + path + "&name=" + name, false);
+    encpath=escape(path);
+    encname=escape(name);
+    xhr.open("GET", "genplaylist.php?path=" + encpath + "&name=" + encname, false);
     xhr.send(null);
 
 }
