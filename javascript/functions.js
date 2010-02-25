@@ -189,4 +189,19 @@ function checkform()
 	}
 	
 	return true;
+
+}
+
+function addplayer(track) {
+
+
+	playercode= "<embed target='myself' src=track[0] width='0' height='0' autoplay='false' type='audio/mp3' loop='true' controller='false' "; 
+
+	for ( var i=1; i=track.length; i+=1 ){
+		playercode += "qtnext" + i + "='<" + track[i] + ">' ";
+
+	}
+	playercode+= "</embed>"; 
+	document.getElementById('div_player').innerHTML = playercode;
+
 }

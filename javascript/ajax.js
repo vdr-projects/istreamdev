@@ -48,11 +48,11 @@ function openpls(xhr)
                 var items = docXML.getElementsByTagName("m3u")
 
                 streamstatus = items.item(0).firstChild.data;
-                if ( streamstatus == 'error' )
+                if ( streamstatus == 'error' ) {
                         this.location.href = 'error.php';
-                else
+               		}
                 
-		this.location.href = 'playlist/playlist.m3u';        
+		//this.location.href = 'playlist/playlist.m3u';        
 		//document.s1.Play();
-        }
+	}		
 }

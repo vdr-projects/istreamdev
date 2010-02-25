@@ -37,7 +37,6 @@ if ($medianame_array[0])
         sort($medianame_array);
 
         $count = count($medianame_array);
-
         for ($cnt=0; $cnt < $count; $cnt++)
         {
                 // Dirs
@@ -63,7 +62,16 @@ if ($medianame_array[0])
 		if (mediagettype($mediapath .$subdir .$medianame_array[$cnt]) == 2)
 		{
 			print "	 <li>\r\n";
-			print "    <a class=\"noeffect\" href=\"javascript:playmusic('{$mediapath}{$subdir}','{$medianame_array[$cnt]}');\">\r\n";
+			//print "    <a class=\"noeffect\" href=\"javascript:playmusic('{$mediapath}{$subdir}','{$medianame_array[$cnt]}');document.player.Play();\">\r\n";
+			
+			for ($cnt2=$cnt; $cnt2<$count; $cnt2++)
+			{
+			$track[$cnt2] = $httppath."playlist/".$medianame_array[$cnt2];
+			
+			}
+			$jsarray = php2js($track);
+			
+			print "	<a class=\"noeffect\" href=\"javascript:var myarray = new Array({$jsarray});addplayer(myarray);document.player.Play();\">\r\n";
 			print "	     <span class=\"number\">$idx</span><span class=\"stop\"></span><span class=\"name\">{$medianame_array[$cnt]}</span>\r\n";
 			print "	   </a>\r\n";
 			print "  </li>\r\n";
@@ -74,11 +82,7 @@ if ($medianame_array[0])
 
 	print("</div>");
 
-	print "<div style=\"position:absolute; left:0; top:0\">\r\n";
-			print "<embed enablejavascript=\"true\" autoplay=\"false\" height=\"0\" id=\"s1\" name=\"s1\"";
-			print " src=\"playlist/playlist.m3u\"";
-			print " width=\"0\" loop=\"true\" controller=\"false\"";
-			print " />\r\n";
+	print "<div style=\"position:absolute; left:0; top:0\" id=\"div_player\">\r\n";
 
         print("</div>");
 }
