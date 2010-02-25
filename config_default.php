@@ -2,7 +2,7 @@
 	// Http configuration
 	$user = 'istreamdev';		// Login
 	$pass = 'iguest';		// Password
-	$httppath = '/istreamdev/';	// Path to the index.php file
+	$httppath = '/istreamdev/';	// Absolute path to the index.php file. 					//Don't put http://yourdomain !!
 
 	// VDR configuration
 

@@ -84,8 +84,8 @@
 
  Copy the file in your webfolder. /istreamdev for example.
  Copy config_default.php to config.php and edit it. 
- $httpath can  point to your istreamdev http path or the full url 
- ( '/istreamdev/' or "http://mydomain.com/istreamdev/' )
+ $httpath  is your istreamdev http path NOT the full url 
+ ( '/istreamdev/' NOT 'http://yourdomain/istreamdev' )
 
  the ram folder should be writable. If you want to prevent hard disk 
  usage, you can mount it as ram disk.
