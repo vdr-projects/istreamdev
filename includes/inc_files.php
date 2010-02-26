@@ -68,10 +68,10 @@ function mediagetmusicinfo($file ="")
 	$getid3 = new getID3;
 	$fileinfo = $getid3->analyze($file);
 
-	$name = $fileinfo['tags']['id3v1']['title'][0];
+	$name = $fileinfo['tags']['id3v2']['title'][0];
 	if ($name == "")
 	{
-		$name = $fileinfo['tags']['id3v2']['title'][0];
+		$name = $fileinfo['tags']['id3v1']['title'][0];
 		if ($name == "")
 		{
 			$name = $fileinfo['filename'];
