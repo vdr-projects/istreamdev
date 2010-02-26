@@ -25,20 +25,34 @@ function mediagetinfostream($stream = "")
 	exec("rm ram/stream-tb.*");
 	$path = dirname($stream);
 
-	// Get the right Y resolution
-	if ($fileinfo['video']['resolution_y'] && $fileinfo['video']['resolution_x'])
-		$resy = ($fileinfo['video']['resolution_y'] * 180) / $fileinfo['video']['resolution_x'];
-	else
-		$resy = 100;
+	//Default res Y
+	$resy = 100;
 
 	if (file_exists(substr($stream, 0, -4) .".tbn"))
-		exec("cp \"" .substr($stream, 0, -4) .".tbn\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s 128x180 ram/stream-tb.jpg");
-	else  if (file_exists($path ."/poster.jpg"))
-		exec($ffmpegpath ." -y -i \"" .$path ."/poster.jpg\" -s 128x180 ram/stream-tb.jpg");
-	else  if (file_exists($path ."/folder.jpg"))
-	        exec($ffmpegpath ." -y -i \"" .$path ."/folder.jpg\" -s 128x180 ram/stream-tb.jpg");
+		$file = substr($stream, 0, -4) .".tbn";
+	else if (file_exists($path ."/poster.jpg"))
+		$file = $path ."/poster.jpg";
+	else if (file_exists($path ."/folder.jpg"))
+		$file = $path ."/folder.jpg";
 	else
+		$file = "";
+
+	if ($file)
+	{
+		$getid3 = new getID3;
+		$fileinfo = $getid3->analyze($file);
+		if ($fileinfo['video']['resolution_y'] && $fileinfo['video']['resolution_x'])
+			$resy = ($fileinfo['video']['resolution_y'] * 180) / $fileinfo['video']['resolution_x'];
+
+		exec("cp \"" .$file ."\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s 128x" .$resy ." ram/stream-tb.jpg");
+	}
+	else
+	{
+		if ($fileinfo['video']['resolution_y'] && $fileinfo['video']['resolution_x'])
+			$resy = ($fileinfo['video']['resolution_y'] * 180) / $fileinfo['video']['resolution_x'];
+
 	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s 180x" .$resy ." -f mjpeg ram/stream-tb.png");
+	}
 	
 	return array($title, $info);
 }
