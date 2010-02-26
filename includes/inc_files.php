@@ -10,13 +10,26 @@ function mediagetinfostream($stream = "")
 	$getid3 = new getID3;
 	$fileinfo = $getid3->analyze($stream);
 
-	$title = $fileinfo['fileformat'];
-	$info = $fileinfo['playtime_string'];
+	$title = "Media:";
+	$info = "Duration: <i>" .sec2hms($fileinfo['playtime_seconds']) ."</i><br>";
+	if ($fileinfo['fileformat'])
+		$info .= "Format: <i>" .$fileinfo['fileformat'] ."</i><br>";
+	if ($fileinfo['video']['codec'])
+		$info .= "Video: <i>" .$fileinfo['video']['codec'] ."</i><br>";
+	if ($fileinfo['audio']['codec'])
+		$info .= "Audio: <i>" .$fileinfo['audio']['codec'] ."</i><br>";
+	if ($fileinfo['video']['resolution_x'])
+		$info .= "Resolution: <i>" .$fileinfo['video']['resolution_x'] ."x" .$fileinfo['video']['resolution_y'] ."</i><br>";
 
 	// Extract a thumbnail
 	exec("rm ram/stream-tb.*");
-
 	$path = dirname($stream);
+
+	// Get the right Y resolution
+	if ($fileinfo['video']['resolution_y'] && $fileinfo['video']['resolution_x'])
+		$resy = ($fileinfo['video']['resolution_y'] * 180) / $fileinfo['video']['resolution_x'];
+	else
+		$resy = 100;
 
 	if (file_exists(substr($stream, 0, -4) .".tbn"))
 		exec("cp \"" .substr($stream, 0, -4) .".tbn\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s 128x180 ram/stream-tb.jpg");
@@ -25,7 +38,7 @@ function mediagetinfostream($stream = "")
 	else  if (file_exists($path ."/folder.jpg"))
 	        exec($ffmpegpath ." -y -i \"" .$path ."/folder.jpg\" -s 128x180 ram/stream-tb.jpg");
 	else
-	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s 180x100 -f mjpeg ram/stream-tb.png");
+	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s 180x" .$resy ." -f mjpeg ram/stream-tb.png");
 	
 	return array($title, $info);
 }
