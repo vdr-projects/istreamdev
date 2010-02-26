@@ -28,11 +28,15 @@ function writeinfostream($type=0, $name="", $title="", $desc="", $mode="", $cate
 
 function readinfostream()
 {
+
+	if (!file_exists("ram/streaminfo"))
+		return array(0, "", "", "", "");
+
 	$infofile = fopen("ram/streaminfo", 'r');	
 	if (!$infofile)
 		return array(0, "", "", "", "");
 
-        while ($line = fgets($infofile, 1024))
+	while ($line = fgets($infofile, 1024))
         {
 		if (!strncmp($line, "type=", strlen("type=")))
 			$type = substr($line, strlen("type="), -1);

@@ -20,13 +20,16 @@ function selectpage()
 		$subcmd = "";
 
 		// Get segmenter PID
-		$pidfile = fopen('ram/streamsegmenterpid', 'r');
-		if ($pidfile)
+		if (file_exists("ram/streamsegmenterpid"))
 		{
-			$pid = fgets($pidfile);
-			$pid = substr($pid, 0, -1);
-			$subcmd = "kill " .$pid ." ; ";
-			fclose($pidfile);
+			$pidfile = fopen('ram/streamsegmenterpid', 'r');
+			if ($pidfile)
+			{
+				$pid = fgets($pidfile);
+				$pid = substr($pid, 0, -1);
+				$subcmd = "kill " .$pid ." ; ";
+				fclose($pidfile);
+			}
 		}
 			
 		$cmd= $subcmd ."rm ram/stream*";

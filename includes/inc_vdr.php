@@ -170,7 +170,18 @@ function vdrlistcategories()
 	print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('All');\"><span class=\"name\">All channels</span><span class=\"arrow\"></span></a></li>\r\n";
 	print "<form name=\"All channels\" id=\"All\" method=\"post\" action=\"index.php\"><input name=\"action\" type=\"hidden\" id=\"action\" value=\"listchannels\"/><input name=\"cat\" type=\"hidden\" id=\"cat\" value=\"All\" /></form>\r\n";
 
+	if (!file_exists($vdrchannels))
+	{
+		print "Error: channels file not found";
+		return;
+	}
+
 	$fp = fopen ($vdrchannels,"r");
+	if (!fp)
+	{
+		print "Unable to open channels file";
+		return;
+	}
 	while ($line = fgets($fp, 1024))
 	{
 		// Check if it is a categorie
@@ -203,7 +214,18 @@ function vdrlistchannels($category = "NULL")
 	else
 		$cat_found=0;
 
-	$fp = fopen ($vdrchannels,"r");
+        if (!file_exists($vdrchannels))
+        {
+                print "Error: channels file not found";
+                return;
+        }
+
+        $fp = fopen ($vdrchannels,"r");
+        if (!fp)
+        {
+                print "Unable to open channels file";
+                return;
+        }
 	while ($line = fgets($fp, 1024))
 	{
 		if ($cat_found)
@@ -265,7 +287,18 @@ function vdrlistchannelsdrop($chansel = "")
 
 	$chanselected = 0;
 
-	$fp = fopen ($vdrchannels,"r");
+        if (!file_exists($vdrchannels))
+        {
+                print "Error: channels file not found";
+                return;
+        }
+
+        $fp = fopen ($vdrchannels,"r");
+        if (!fp)
+        {
+                print "Unable to open channels file";
+                return;
+        }
 	while ($line = fgets($fp, 1024))
         {
 		if ($line[0] == ":")
