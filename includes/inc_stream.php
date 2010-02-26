@@ -32,7 +32,7 @@ if (infostreamexist())
 			break;
 		case 2:
 			$channoslash = preg_replace("$/$", " ", $realname);
-			$logopath = "logos/" .$channslash .".png";
+			$logopath = "logos/" .$channoslash .".png";
 			if (!file_exists($logopath))
 				$logopath = "logos/nologoREC.png";
 			break;
