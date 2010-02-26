@@ -11,6 +11,7 @@ if ($subdir[strlen($subdir)-1] != '/')
 
 print "<body onorientationchange=\"updateOrientation();\" onload=\"updateOrientation();\">\r\n";
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
+
 print "<div id=\"leftnav\">\r\n";
 
 if ($subdir == '/')
@@ -31,7 +32,9 @@ print "  <br>";
 print "  <ul class=\"pageitem\">";
 print "  <li class=\"textbox\"><span class=\"header\">Current path:</span><p>{$subdir}</p></li>";
 
-$dir_handle = @opendir($mediapath .$subdir);
+$noslashdir = stripslashes($mediapath.$subdir);
+$dir_handle = @opendir($noslashdir);
+
 if (!$dir_handle)
 {
 	print "Unable to open $mediapath .$subdir";

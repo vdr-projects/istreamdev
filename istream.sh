@@ -28,6 +28,7 @@ fi
 
 if (! ps ax | awk '{print $5}' | grep -q "$SEGMENTERPATH")
 then
+test -L ram && (test -d /dev/shm/ram || mkdir /dev/shm/ram)
 
 cd ram
 2> /dev/null rm "$PREFIX"*.ts
