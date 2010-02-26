@@ -25,12 +25,14 @@ if (infostreamexist())
 	switch ($type)
 	{
 		case 1:
-			$logopath = "logos/" .$realname .".png";
+			$channoslash = preg_replace("$/$", " ", $realname);
+			$logopath = "logos/" .$channoslash .".png";
 			if (!file_exists($logopath))
 				$logopath = "logos/nologoTV.png";
 			break;
 		case 2:
-			$logopath = "logos/" .$realname .".png";
+			$channoslash = preg_replace("$/$", " ", $realname);
+			$logopath = "logos/" .$channslash .".png";
 			if (!file_exists($logopath))
 				$logopath = "logos/nologoREC.png";
 			break;
@@ -129,12 +131,14 @@ else
         switch ($type)
         {
                 case 1:
-                        $logopath = "logos/" .$realname .".png";
+			$channoslash = preg_replace("$/$", " ", $realname);
+                        $logopath = "logos/" .$channoslash .".png";
                         if (!file_exists($logopath))
                                 $logopath = "logos/nologoTV.png";
                         break;
                 case 2:
-                        $logopath = "logos/" .$realname .".png";
+			$channoslash = preg_replace("$/$", " ", $realname);
+                        $logopath = "logos/" .$channoslash .".png";
                         if (!file_exists($logopath))
                                 $logopath = "logos/nologoREC.png";
                         break;

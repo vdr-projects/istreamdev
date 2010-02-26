@@ -248,10 +248,11 @@ function vdrlistchannels($category = "NULL")
 			print "<li class=\"withimage\">";
 			$chan2=addslashes($chan);
 			print "	<a class=\"noeffect\" href=\"javascript:sendForm('$chan2');\">\r\n";
-			if (!file_exists('logos/'.$chan.'.png'))
+			$channoslash = preg_replace("$/$", " ", $chan);
+			if (!file_exists('logos/'.$channoslash.'.png'))
 				print " <img src=\"logos/nologoTV.png\" />\r\n";
 			else
-				print "	<img src=\"logos/{$chan}.png\" />\r\n";
+				print "	<img src=\"logos/{$channoslash}.png\" />\r\n";
 			print " <span class=\"name\">$chan</span>\r\n";
 			print " <span class=\"comment\">$epgtitle</span><span class=\"arrow\"></span></a>\r\n</li>\r\n";
 			print "	<form name=\"$chan\" id=\"$chan\" method=\"post\" action=\"index.php\">";
