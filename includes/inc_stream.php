@@ -45,7 +45,9 @@ if (infostreamexist())
 		                $logopath = "logos/nologoMEDIA.png";
 	}
 
-	print " <center><video id=\"videofeed\" poster=\"{$logopath}\" /></center>\r\n";
+
+	$logowidth = mediagetwidth($logopath);	
+	print " <center><video id=\"videofeed\" width=\"{$logowidth}\" poster=\"{$logopath}\" /></center>\r\n";
 
 	print " </ul>\r\n";
 

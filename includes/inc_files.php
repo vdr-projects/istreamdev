@@ -66,6 +66,15 @@ function mediagetinfostream($stream = "")
 	return array($title, $info);
 }
 
+function mediagetwidth($file)
+{
+
+	$getid3 = new getID3;
+	$fileinfo = $getid3->analyze($file);
+
+	return $fileinfo['video']['resolution_x'];
+}
+
 function mediagettype($file)
 {
 	global $videotypes, $audiotypes;
