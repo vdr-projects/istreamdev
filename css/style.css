@@ -253,11 +253,13 @@ body.ipodlist #footer, body.ipodlist #footer a {
 .pageitem img {
 	border: 0;
 	margin-top: 5px;
+	margin-left: 5px;
 }
 
 .pageitem video {
 	border: 0;
 	margin-top: 5px;
+	margin-left: 5px;
 }
 
 .pageitem {
