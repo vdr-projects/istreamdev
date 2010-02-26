@@ -4,7 +4,6 @@ $audiotypes='mp3 aac wav ';
 
 function mediagetinfostream($stream = "")
 {
-
 	global $ffmpegpath;
 
 	// Get info
@@ -61,4 +60,30 @@ function mediadirhasaudio($dir)
 	}
 
 	return 0;
+}
+
+function mediagetmusicinfo($file ="")
+{
+	// Get info
+	$getid3 = new getID3;
+	$fileinfo = $getid3->analyze($file);
+
+	$name = $fileinfo['tags']['id3v1']['title'][0];
+	if ($name == "")
+	{
+		$name = $fileinfo['tags']['id3v2']['title'][0];
+		if ($name == "")
+		{
+			$name = $fileinfo['filename'];
+			if ($name == "")
+				$name = "unknown";
+		}
+	}
+
+	if (!is_utf8($name))
+		$name = utf8_encode($name);
+
+	$duration = $fileinfo['playtime_string'];
+
+	return array ($name, $duration);
 }

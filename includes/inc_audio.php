@@ -51,9 +51,10 @@ if ($medianame_array[0])
         sort($medianame_array);
 
         $count = count($medianame_array);
+
+	// Directories
         for ($cnt=0; $cnt < $count; $cnt++)
         {
-                // Dirs
                 if (mediagettype($mediapath .$subdir .$medianame_array[$cnt]) == 3)
                 {
 			$medianame2=addslashes($medianame_array[$cnt]);
@@ -71,6 +72,8 @@ if ($medianame_array[0])
                 }
         }
 
+	
+	// Music files
         $idx = 1;
 	for ($cnt=0; $cnt < $count; $cnt++)
         {
@@ -95,19 +98,19 @@ if ($medianame_array[0])
 			
 			print "	<a class=\"noeffect\" href=\"javascript:var myarray = new Array({$jsarray});addplayer('{$mediapath2}{$subdir2}','{$medianame2}',myarray);document.player.Play();\">\r\n";
 			
-			print "	     <span class=\"number\">$idx</span><span class=\"stop\"></span><span class=\"name\">{$medianame_array[$cnt]}</span>\r\n";
+			// Get song info
+			list($name, $duration) = mediagetmusicinfo($mediapath .$subdir .$medianame_array[$cnt]);
+
+			print "	     <span class=\"number\">$idx</span><span class=\"stop\"></span><span class=\"name\">{$name}</span><span class=\"time\">{$duration}</span>\r\n";
 			print "	   </a>\r\n";
 			print "  </li>\r\n";
 		
 			$idx++;
 		}
 	}
-
-	print("</div>");
-
 }
-else
-	print "</div>\r\n";
+
+print "</div>\r\n";
 
 $upsubdir = dirname($subdir);
 
