@@ -61,7 +61,7 @@ function vdrgetinfostream($stream = "NULL", $ischan = 1)
 		// Find the right chan (take the first one)
 		if ($chanfound == 0)
 		{
-			$streamArray = explode(",",$stream);
+			$streamArray = explode(";",$stream);
 			if (strstr($allepg[$i], $streamArray[0]) == $streamArray[0])
 				$chanfound = 1;
 		}
