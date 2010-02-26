@@ -44,7 +44,7 @@ function mediagetinfostream($stream = "")
 		if ($fileinfo['video']['resolution_y'] && $fileinfo['video']['resolution_x'])
 			$resy = ($fileinfo['video']['resolution_y'] * 180) / $fileinfo['video']['resolution_x'];
 
-		exec("cp \"" .$file ."\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s 128x" .$resy ." ram/stream-tb.jpg");
+		exec("cp \"" .$file ."\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s 180x" .$resy ." ram/stream-tb.jpg");
 	}
 	else
 	{
