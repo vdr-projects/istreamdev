@@ -30,7 +30,6 @@ function selectpage()
 		}
 			
 		$cmd= $subcmd ."rm ram/stream*";
-		print $cmd;
 		exec ($cmd);
 
 		$action = $_REQUEST['actionafterstop'];
