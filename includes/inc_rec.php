@@ -26,8 +26,10 @@ print "</div>\r\n";
 print "<div id=\"content\">\r\n";
 print " <span class=\"graytitle\">Recordings</span>\r\n";
 print "<br>";
-print " <span class=\"graytitle\">{$subdir}</span>\r\n";
+print " <span class=\"graytitle\">" . stripslashes($subdir) . "</span>\r\n";
 print " <ul class=\"pageitem\">";
+
+$dir = stripslashes($dir);
 
 $dir_handle = @opendir($dir);
 if (!$dir_handle)
