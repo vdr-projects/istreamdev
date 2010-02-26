@@ -17,7 +17,20 @@ function selectpage()
 	
 	if ($action == "stopstream")
 	{
-		$cmd= "killall segmenter && killall -9 ffmpeg ; rm ram/stream*";
+		$subcmd = "";
+
+		// Get segmenter PID
+		$pidfile = fopen('ram/streamsegmenterpid', 'r');
+		if ($pidfile)
+		{
+			$pid = fgets($pidfile);
+			$pid = substr($pid, 0, -1);
+			$subcmd = "kill " .$pid ." ; ";
+			fclose($pidfile);
+		}
+			
+		$cmd= $subcmd ."rm ram/stream*";
+		print $cmd;
 		exec ($cmd);
 
 		$action = $_REQUEST['actionafterstop'];
@@ -115,7 +128,7 @@ function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, 
 	}
 	
 	$cmd = str_replace('%', '%%', $cmd);
-	exec ($cmd);
+	exec($cmd);
 
 	// Write streaminfo
 	writeinfostream($type, $name, $title, $desc, $qname, $category, $url, $mediapath, $subdir);
