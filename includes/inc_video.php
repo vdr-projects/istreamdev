@@ -30,7 +30,7 @@ print "<div id=\"content\">\r\n";
 print "  <span class=\"graytitle\">Media</span>\r\n";
 print "  <br>";
 print "  <ul class=\"pageitem\">";
-print "  <li class=\"textbox\"><span class=\"header\">Current path:</span><p>{$subdir}</p></li>";
+print "  <li class=\"textbox\"><span class=\"header\">Current path:</span><p>" . stripslashes($subdir) . "</p></li>";
 
 $noslashdir = stripslashes($mediapath.$subdir);
 $dir_handle = @opendir($noslashdir);
