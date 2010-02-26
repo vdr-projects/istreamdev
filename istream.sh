@@ -16,7 +16,7 @@ PREFIX=stream
 
 if [ $# -eq 0 ]
 then
-echo "You must supply a valid channel!"
+echo "Format is : ./istream.sh source video_rate audio_rate audio_channels 480x320 httppath segments_number ffmpeg_path segmenter_path"
 exit 1
 fi
 
