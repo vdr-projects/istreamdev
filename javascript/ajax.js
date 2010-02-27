@@ -6,7 +6,7 @@ function ajax(session)
     //on définit l'appel de la fonction au retour serveur
     xhr.onreadystatechange = function() { alert_ajax(xhr, session); };
 
-    xhr.open("GET", "ram/" + session + "/streamstatus.php", true);
+    xhr.open("GET", "streamstatus.php?session=" + session, true);
     xhr.send(null);
 }
 
