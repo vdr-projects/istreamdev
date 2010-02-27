@@ -11,11 +11,15 @@ $ram = "ram/" .$session ."/";
 // Get current stream info
 list($type, $realname, $title, $desc, $mode, $category, $url, $mediapath, $subdir) = readinfostream($session);
 
-print "<body onorientationchange=\"updateOrientation();\" onload=\"ajax();\">\r\n";
+print "<body onorientationchange=\"updateOrientation();\" onload=\"ajax('{$session}');\">\r\n";
 	
 print "<div id=\"topbar\" class=\"transparent\">\r\n";
 print "<div id=\"leftnav\">\r\n";
 print "<a href=\"javascript:sendForm('stopstream');\">Stop Stream</a></div>\r\n";
+
+print "<div id=\"rightnav\">\r\n";
+print "<a href=\"index.php\"><img alt=\"home\" src=\"images/home.png\" /></a></div>\r\n";
+
 print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
 
@@ -43,6 +47,7 @@ print " </div>\r\n";
 
 print " <form name=\"stopstream\" id=\"stopstream\" method=\"post\" action=\"index.php\">";
 print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stopstream\" />";
+print "    <input name=\"session\" type=\"hidden\" id=\"session\" value=\"{$session}\" />";
 print "    <input name=\"type\" type=\"hidden\" id=\"type\" value={$type} />";
 switch ($type)
 {

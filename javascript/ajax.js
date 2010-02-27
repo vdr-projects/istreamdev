@@ -1,16 +1,16 @@
-function ajax()
+function ajax(session)
 {
     var xhr=null;
-    
+
     xhr = new XMLHttpRequest();
     //on définit l'appel de la fonction au retour serveur
-    xhr.onreadystatechange = function() { alert_ajax(xhr); };
-        
-    xhr.open("GET", "streamstatus.php", true);
+    xhr.onreadystatechange = function() { alert_ajax(xhr, session); };
+
+    xhr.open("GET", "ram/" + session + "/streamstatus.php", true);
     xhr.send(null);
 }
 
-function alert_ajax(xhr)
+function alert_ajax(xhr, session)
 {
 	if (xhr.readyState==4)
 	{
@@ -22,7 +22,7 @@ function alert_ajax(xhr)
 		if ( streamstatus == 'error' )
 			this.location.href = 'error.php';
 		else
-			swapPic();
+			swapPic(session);
 	}
 }
 

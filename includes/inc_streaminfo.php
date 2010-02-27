@@ -32,10 +32,10 @@ function readinfostream($session)
 {
 	$ram = "ram/" .$session ."/";
 
-	if (!file_exists($session ."streaminfo"))
+	if (!file_exists($ram ."streaminfo"))
 		return array(0, "", "", "", "");
 
-	$infofile = fopen($session ."streaminfo", 'r');	
+	$infofile = fopen($ram ."streaminfo", 'r');	
 	if (!$infofile)
 		return array(0, "", "", "", "");
 

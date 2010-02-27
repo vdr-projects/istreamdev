@@ -46,8 +46,8 @@ function sendForm(formid) {
 	frm.submit();
 }
 
-function swapPic() {
-        document.getElementById('videofeed').src = "ram/stream.m3u8";
+function swapPic(session) {
+        document.getElementById('videofeed').src = "ram/" +session +"/stream.m3u8";
 }
 
 function openSelectDate(timer_year,timer_month,timer_day) {

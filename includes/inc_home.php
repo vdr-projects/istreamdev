@@ -9,20 +9,45 @@ print "</div>\r\n";
 print "<div id=\"content\">\r\n";
 
 // Streaming in progress
-$dir_handle = @opendir('ram');
+$dir_handle = @opendir('ram/');
 if ($dir_handle)
 {
-	print "  <span class=\"graytitle\">Streaming...</span>\r\n";
 	print "  <ul class=\"pageitem\">\r\n";
 	while ($session = readdir($dir_handle))
 	{
-		if (!is_dir($session))
+		if($session == "." || $session == ".." || $session == 'lost+found')
+			continue;
+
+		if (!is_dir('ram/' .$session))
 			continue;
 	
+		// Get info
+		list($type, $realname, $title, $desc, $mode, $category, $url, $mediapath, $subdir) = readinfostream($session);
+		
+		switch ($type)
+		{
+			case 1:
+				$sessionname = "Live: ";
+				$picto = "tv";
+				break;
+			case 2:	
+				$sessionname = "Rec: ";
+				$picto = "rec";
+				break;
+			case 3: 
+				$sessionname = "Media: ";
+				$picto = "media";
+				break;
+			default:
+				continue;
+		}
+
+		$sessionname .= $realname;
+
 		print "    <li class=\"menu\">";
 		print "      <a href=\"javascript:sendForm('{$session}');\">";
-		print "        <img src=\"images/pictos/tv.png\" />";
-		print "          <span class=\"name\">{$session}</span><span class=\"arrow\"></span>";
+		print "        <img src=\"images/pictos/{$picto}.png\" />";
+		print "          <span class=\"name\">{$sessionname}</span><span class=\"arrow\"></span>";
 		print "      </a>";
 		print "    </li>\r\n";
 		print "    <form name=\"{$session}\" id=\"{$session}\" method=\"post\" action=\"index.php\">";
@@ -30,7 +55,9 @@ if ($dir_handle)
 		print "      <input name=\"session\" type=\"hidden\" id=\"session\" value=\"{$session}\" />";
 		print "    </form>\r\n";
 	}
-        print "  </ul>\r\n";
+	print "  </ul>\r\n";
+
+	closedir($dir_handle);
 }
 
 // VDR menus

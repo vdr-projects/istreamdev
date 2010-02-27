@@ -26,10 +26,13 @@ function sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category,
 	}
 	
 	$cmd = str_replace('%', '%%', $cmd);
-	exec($cmd);
+	exec ($cmd);
 
 	// Write streaminfo
 	writeinfostream($session, $type, $name, $title, $desc, $qname, $category, $url, $mediapath, $subdir);
+
+	// Copy status waiter
+	exec('cp streamstatus.php ram/' .$session);
 
 	return $session;
 }
@@ -54,4 +57,6 @@ function sessiondelete($session)
 
 	$cmd= $subcmd ."rm -rf " .$ram;
 	exec ($cmd);
+}
+
 ?>
