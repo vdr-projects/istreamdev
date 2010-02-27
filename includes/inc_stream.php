@@ -20,7 +20,7 @@ switch ($type)
 		break;
 	// Media
 	case 3:
-		list($title, $desc) = mediagetinfostream($name, 0);
+		list($title, $desc) = mediagetinfostream($name);
 		$realname = basename($name);
 		break;
 	default:

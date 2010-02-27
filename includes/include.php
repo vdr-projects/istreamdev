@@ -14,6 +14,10 @@ include ('getid3/getid3.php');
 
 function selectpage()
 {
+	// Sanity check
+	if (!file_exists('ram'))
+		die("Error: 'ram/' directory is missing, please create it!");
+
 	$action = $_REQUEST['action'];
 	
 	switch ($action)
