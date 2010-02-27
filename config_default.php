@@ -25,6 +25,7 @@
 	$quality=array (	'Edge'	=>	'128k	64k	1		240x160',
 				'3g'	=>	'350k	64k	1		408x272',
 				'Wifi'	=>	'512k	128k	2		480x320');
+	$maxencodingprocesses=10;                               // Max simultaneous encoding processes
 
 	// Misc
 	$ffmpegpath = '/usr/bin/ffmpeg';	//path to ffmpeg binary
