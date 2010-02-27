@@ -31,7 +31,7 @@ print " <ul class=\"pageitem\">\r\n";
 
 $logopath=$ram ."/logo.png";
 $logowidth = mediagetwidth($logopath);	
-print " <center><video id=\"videofeed\" width=\"{$logowidth}\" poster=\"{$logopath}\" /></center>\r\n";
+print " <center><video id=\"videofeed\" width=\"{$logowidth}\" poster=\"{$logopath}\" ></video></center>\r\n";
 
 print " </ul>\r\n";
 
