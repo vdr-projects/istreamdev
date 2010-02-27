@@ -46,6 +46,10 @@ if ($dir_handle)
 				continue;
 		}
 
+		// Check if encoding
+		if (file_exists('ram/' .$session .'/segmenter.pid'))
+			$sessionname = "*" .$sessionname;
+
 		$sessioncnt++;
 
 		$sessionname .= $realname;
