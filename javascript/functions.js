@@ -206,3 +206,8 @@ function addplayer(path,name,track) {
 	document.getElementById('div_player').innerHTML = playercode;
 
 }
+function errorMsg(errmessage) {
+	htmlmsg="<span class='graytitle'>Error</span><ul class='pageitem'><li class='textbox'><span class='header'>Error</span><p><strong>" + errmessage + "</strong></li></ul>";
+	document.getElementById('content').innerHTML = htmlmsg;
+}
+
