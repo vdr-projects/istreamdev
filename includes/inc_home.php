@@ -8,11 +8,15 @@ print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
 print "<div id=\"content\">\r\n";
 
+$sessioncnt = 0;
+
+print "  <span class=\"graytitle\">SESSIONS</span>\r\n";
+print "  <ul class=\"pageitem\">\r\n";
+
 // Streaming in progress
 $dir_handle = @opendir('ram/');
 if ($dir_handle)
 {
-	print "  <ul class=\"pageitem\">\r\n";
 	while ($session = readdir($dir_handle))
 	{
 		if($session == "." || $session == ".." || $session == 'lost+found')
@@ -32,7 +36,7 @@ if ($dir_handle)
 				break;
 			case 2:	
 				$sessionname = "Rec: ";
-				$picto = "rec";
+				$picto = "record";
 				break;
 			case 3: 
 				$sessionname = "Media: ";
@@ -41,6 +45,8 @@ if ($dir_handle)
 			default:
 				continue;
 		}
+
+		$sessioncnt++;
 
 		$sessionname .= $realname;
 
@@ -55,10 +61,14 @@ if ($dir_handle)
 		print "      <input name=\"session\" type=\"hidden\" id=\"session\" value=\"{$session}\" />";
 		print "    </form>\r\n";
 	}
-	print "  </ul>\r\n";
 
 	closedir($dir_handle);
 }
+
+if (!$sessioncnt)
+	print "<li class=\"textbox\"><p>none</p></li>\r\n";
+
+print "  </ul>\r\n";
 
 // VDR menus
 if ($vdrenabled)

@@ -20,7 +20,7 @@ switch ($type)
 		break;
 	// Media
 	case 3:
-		list($title, $desc) = mediagetinfostream($name);
+		list($title, $desc) = mediagetinfostream($name, 0);
 		$realname = basename($name);
 		break;
 	default:
@@ -49,30 +49,13 @@ print " <span class=\"graytitle\">Select stream mode</span>\r\n";
 // Print the right logo
 print " <ul class=\"pageitem\">\r\n";
 
-switch ($type)
-{
-	case 1:
-		$channoslash = preg_replace("$/$", " ", $realname);
-		$logopath = "logos/" .$channoslash .".png";
-		if (!file_exists($logopath))
-			$logopath = "logos/nologoTV.png";
-		break;
-	case 2:
-		$channoslash = preg_replace("$/$", " ", $realname);
-		$logopath = "logos/" .$channoslash .".png";
-		if (!file_exists($logopath))
-			$logopath = "logos/nologoREC.png";
-		break;
-	case 3:
-		if (file_exists("ram/stream-tb.png"))
-		$logopath = "ram/stream-tb.png";
-		else if (file_exists("ram/stream-tb.jpg"))
-			$logopath = "ram/stream-tb.jpg";
-		else
-			$logopath = "logos/nologoMEDIA.png";
-}
+// Get logo
+if ($type == 2)
+	generatelogo($type, $realname, 'ram/tmp-logo.png');
+else
+	generatelogo($type, $name, 'ram/tmp-logo.png');
 
-print " <center><img src=\"{$logopath}\"></img></center>\r\n";
+print " <center><img src=\"ram/tmp-logo.png\"></img></center>\r\n";
 
 print " </ul>\r\n";
 

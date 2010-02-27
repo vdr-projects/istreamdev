@@ -4,8 +4,14 @@ function sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category,
 {
 	global $httppath, $ffmpegpath, $segmenterpath;
 
-	// TODO: Get a session
-	$session = session0;
+	// Get a free session
+	$i=0;
+	for ($i=0; $i<1000; $i++)
+	{
+		$session = "session" .$i;
+		if (!file_exists('ram/' .$session))
+			break;
+	}
 
 	// Create session
 	exec('mkdir ram/' .$session);
@@ -30,6 +36,12 @@ function sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category,
 
 	// Write streaminfo
 	writeinfostream($session, $type, $name, $title, $desc, $qname, $category, $url, $mediapath, $subdir);
+
+	// Create logo
+	if ($type == 3)
+		generatelogo($type, $url, 'ram/' .$session .'/logo.png');
+	else
+		generatelogo($type, $name, 'ram/' .$session .'/logo.png');
 
 	// Copy status waiter
 	exec('cp streamstatus.php ram/' .$session);

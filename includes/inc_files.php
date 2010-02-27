@@ -2,7 +2,27 @@
 
 $audiotypes='mp3 aac wav ';
 
-function mediagetinfostream($stream = "")
+function mediagetinfostream($stream)
+{
+        // Get info
+        $getid3 = new getID3;
+        $fileinfo = $getid3->analyze($stream);
+
+        $title = "Media:";
+        $info = "Duration: <i>" .sec2hms($fileinfo['playtime_seconds']) ."</i><br>";
+        if ($fileinfo['fileformat'])
+                $info .= "Format: <i>" .$fileinfo['fileformat'] ."</i><br>";
+        if ($fileinfo['video']['codec'])
+                $info .= "Video: <i>" .$fileinfo['video']['codec'] ."</i><br>";
+        if ($fileinfo['audio']['codec'])
+                $info .= "Audio: <i>" .$fileinfo['audio']['codec'] ."</i><br>";
+        if ($fileinfo['video']['resolution_x'])
+                $info .= "Resolution: <i>" .$fileinfo['video']['resolution_x'] ."x" .$fileinfo['video']['resolution_y'] ."</i><br>";
+
+        return array($title, $info);
+}
+
+function mediagentb($stream, $dest)
 {
 	global $ffmpegpath;
 
@@ -10,19 +30,7 @@ function mediagetinfostream($stream = "")
 	$getid3 = new getID3;
 	$fileinfo = $getid3->analyze($stream);
 
-	$title = "Media:";
-	$info = "Duration: <i>" .sec2hms($fileinfo['playtime_seconds']) ."</i><br>";
-	if ($fileinfo['fileformat'])
-		$info .= "Format: <i>" .$fileinfo['fileformat'] ."</i><br>";
-	if ($fileinfo['video']['codec'])
-		$info .= "Video: <i>" .$fileinfo['video']['codec'] ."</i><br>";
-	if ($fileinfo['audio']['codec'])
-		$info .= "Audio: <i>" .$fileinfo['audio']['codec'] ."</i><br>";
-	if ($fileinfo['video']['resolution_x'])
-		$info .= "Resolution: <i>" .$fileinfo['video']['resolution_x'] ."x" .$fileinfo['video']['resolution_y'] ."</i><br>";
-
-	// Extract a thumbnail
-	exec("rm ram/stream-tb.*");
+	exec("rm " .$dest);
 	$path = dirname($stream);
 
 	if (file_exists(substr($stream, 0, -4) .".tbn"))
@@ -39,7 +47,7 @@ function mediagetinfostream($stream = "")
 
 	if ($file)
 	{
-                $getid3 = new getID3;
+		$getid3 = new getID3;
 		$fileinfo = $getid3->analyze($file);
 	}
 	
@@ -57,13 +65,13 @@ function mediagetinfostream($stream = "")
 		}
 	}
 
-
 	if ($file)
-		exec("cp \"" .$file ."\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s " .$resx ."x" .$resy ." ram/stream-tb.jpg");
+		exec("cp \"" .$file ."\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s " .$resx ."x" .$resy ." " .$dest ." ; rm ram/stream-tb-tmp.jpg");
 	else
-	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s " .$resx ."x" .$resy ." -f mjpeg ram/stream-tb.png");
-	
-	return array($title, $info);
+	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s " .$resx ."x" .$resy ." -f mjpeg " .$dest);
+
+	if (!file_exists($dest))
+		exec('cp logos/nologoMEDIA.png ' .$dest);
 }
 
 function mediagetwidth($file)
@@ -132,3 +140,30 @@ function mediagetmusicinfo($file ="")
 
 	return array ($name, $duration);
 }
+
+function generatelogo($type, $name, $dest)
+{
+        switch ($type)
+        {
+                case 1:
+                        $channoslash = preg_replace("$/$", " ", $name);
+                        $logopath = "logos/" .$channoslash .".png";
+                        if (!file_exists($logopath))
+                                $logopath = "logos/nologoTV.png";
+                        exec("cp \"" .$logopath ."\" " .$dest);
+                        break;
+                case 2:
+                        $channoslash = preg_replace("$/$", " ", $name);
+                        $logopath = "logos/" .$channoslash .".png";
+                        if (!file_exists($logopath))
+                                $logopath = "logos/nologoREC.png";
+                        exec("cp \"" .$logopath ."\" " .$dest);
+                        break;
+                case 3:
+                        // Generate TB
+                        mediagentb($name, $dest);
+                        break;
+        }
+}
+
+?>
