@@ -45,26 +45,32 @@
  - Channels listed with logo and current epg.
  - Streaming format selection: Edge, 3g, Wifi
  - Recording streaming
- - Media streaming ( only videos for now ) 
+ - Media streaming ( All video files & mp3/aac/Wav files )
+
  
  Webapp:
  -------
 
- Add iStreamdev to your iPhone home menu to launch it in 
- fullscreen mode as a normal app.
+ Add iStreamdev to your iPhone home menu. This makes it looking likes an appstore app without Safari interface.
 
  Usage:
  ------
 
- Really simple. Select a channels category, then a channel. 
+ Select a channels category, then a channel. 
  Select your stream mode: Edge , 3g or Wifi. The Play icon
  will appear automatically after few seconds when the feed is
  ready.
+ This is the same for recorinds and videos files.
  To Stop the stream server, hit Stop stream button.
- If a stream encoding is already running, to prevent multiple 
- users asking for different channels, it will automaticaly 
- redirect any access to iStreamdev on the current streaming 
- channel page.
+
+ Video thumbnails:
+ iStreamdev takes videoname.tbn , poster.jpg or folder.jpg file ( from xbmc export library ) as thumbnail source, or grab a pi cture in the video stream if there's not.
+
+ Channel logos: 
+ Put your 80x80 png logos in logos/ folder. They needs to have the same name/caps as your channels.conf If a channel have a / character in the name, replace it by _ ( cf RTL/TELEVISION > RTL_TELEVISION.png ) 
+ 
+ Music:
+ iStreamdev generate a playlist from the requested file to the last file of the folder. Then you can goes Next easily. To play an album, just launch the first track.
 
  
  What you need:
@@ -87,7 +93,10 @@
  ( '/istreamdev/' NOT 'http://yourdomain/istreamdev' )
 
  the ram folder should be writable. If you want to prevent hard disk 
- usage, you can mount it as ram disk.
+ usage, you can mount it in ram with /dev/shm:
+
+ mkdir /dev/shm/ram
+ ln -s /dev/shm/ram ram
  
  Check everything is ok with ffmpeg by launching the above 
  command logued as your http server user ( www-data ) :
