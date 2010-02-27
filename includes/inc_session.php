@@ -52,21 +52,12 @@ function sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category,
 function sessiondelete($session)
 {
 	$ram = "ram/" .$session ."/";
-	$subcmd = "";  
 
 	// Get segmenter PID if any
 	if (file_exists($ram ."segmenter.pid"))
-	{
-		$pidfile = fopen($ram ."segmenter.pid", 'r');
-		if ($pidfile)
-		{
-			$pid = fgets($pidfile);
-			$subcmd = "kill " .$pid ." ; ";
-			fclose($pidfile);
-		}
-	}
+		$cmd = "kill `cat " .$ram ."segmenter.pid`; rm " .$ram ."segmenter.pid; ";
 
-	$cmd= $subcmd ."rm -rf " .$ram;
+	$cmd .= "rm -rf " .$ram;
 	exec ($cmd);
 }
 
