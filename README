@@ -23,29 +23,28 @@
 
  About:
  -----
- 
- iStreamdev lets you stream TV channels & recordings from VDR 
- and your Media files to your unjailbroken iPhone Quicktime player.
 
- Your iPhone needs to have at least firmware 3.0 to support
- HTTP Live Streaming protocol.
-			 
- It gets vdr-streamdev plugins TS feeds, and recodes it   
- to TS mux with h264 level 3.0 video and mp3 audio using 
- ffmpeg. Segmenter receives output from pipe, cuts it in 
- 10 seconds video file and updates the m3u8 playlist in
- live.
-							 
+iStreamdev lets you stream TV channels & recordings from VDR and all your Video & Music files from your PC to your iPhone.
+Your Iphone don't needs to be jailbroken, it uses native iphone Quicktime player.
+You needs at least firmware 3.0 to support HTTP Live Streaming protocol.
+
+It gets vdr-streamdev plugins TS feeds, and recodes it to TS mux with h264 level 3.0 video and mp3 audio using ffmpeg. 
+Segmenter receives output from pipe, cuts it in 10 seconds video file and updates the m3u8 playlist in live.
+
+Audio files are not rencoded but streamed directly to their native formats. So only mp3, aac & wave are supported.
+
 							 
  Features:
  ---------
 
- - 100% webapp compatible user interface using iWebkit framework ( http://iwebkit.net )
- - Channel selection throught categories
- - Channels listed with logo and current epg.
- - Streaming format selection: Edge, 3g, Wifi
- - Recording streaming
- - Media streaming ( All video files & mp3/aac/Wav files )
+ •100% webapp compatible user interface using iWebkit framework ( http://iwebkit.net )
+ •Channel selection throught categories
+ •Channels listed with logo and current epg.
+ •Streaming format selection: Edge, 3g, Wifi
+ •Recording streaming: Access your vdr recordings with epg.
+ •Timers support: Add/Edit/Delete/Activate/Deactivate timers.
+ •Video files support: Stream to all your video files ( avi, mkv, mov, etc ) to your Iphone. If you have a movie.tbn poster.jpg or folder.jpg file in the same folder as the video file, it will display it as thumbnail. If there's no picture, it will generate a thumbnail from the video.
+ •Music files support: Access to your mp3/aac/Wav files remotly and stream them with playlist support.
 
  
  Webapp:
@@ -82,7 +81,7 @@
    Check on your /etc/at/deny if www-data is there, and remove it if so.
  - PHP is allowed to use exec() function.
  - ffmpeg compiled with x264 support
- - segmenter: modified version now included in istreamdev path (http://www.ioncannon.net/programming/452/iphone-http-streaming-with-ffmpeg-and-an-open-source-segmenter/)
+ - segmenter: You need to use modified version included in istreamdev path.
 
  Install iStreamdev:
  -------------------
@@ -91,6 +90,9 @@
  Copy config_default.php to config.php and edit it. 
  $httpath  is your istreamdev http path NOT the full url 
  ( '/istreamdev/' NOT 'http://yourdomain/istreamdev' )
+
+ Compiles segmenter provided by typing make in segmenter folder and install it:
+ "make & cp segmenter /usr/bin/"
 
  the ram folder should be writable. If you want to prevent hard disk 
  usage, you can mount it in ram with /dev/shm:
