@@ -8,6 +8,31 @@ print "<div id=\"title\">iStreamdev</div>\r\n";
 print "</div>\r\n";
 print "<div id=\"content\">\r\n";
 
+// Streaming in progress
+$dir_handle = @opendir('ram');
+if ($dir_handle)
+{
+	print "  <span class=\"graytitle\">Streaming...</span>\r\n";
+	print "  <ul class=\"pageitem\">\r\n";
+	while ($session = readdir($dir_handle))
+	{
+		if (!is_dir($session))
+			continue;
+	
+		print "    <li class=\"menu\">";
+		print "      <a href=\"javascript:sendForm('{$session}');\">";
+		print "        <img src=\"images/pictos/tv.png\" />";
+		print "          <span class=\"name\">{$session}</span><span class=\"arrow\"></span>";
+		print "      </a>";
+		print "    </li>\r\n";
+		print "    <form name=\"{$session}\" id=\"{$session}\" method=\"post\" action=\"index.php\">";
+		print "      <input name=\"action\" type=\"hidden\" id=\"action\" value=\"streaming\" />";
+		print "      <input name=\"session\" type=\"hidden\" id=\"session\" value=\"{$session}\" />";
+		print "    </form>\r\n";
+	}
+        print "  </ul>\r\n";
+}
+
 // VDR menus
 if ($vdrenabled)
 {

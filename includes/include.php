@@ -4,6 +4,7 @@ if (file_exists('config.php'))
 	include ('config.php');
 else
 	include ('config_default.php');
+include ('includes/inc_session.php');
 include ('includes/inc_utils.php');
 include ('includes/inc_auth.php');
 include ('includes/inc_vdr.php');
@@ -15,34 +16,28 @@ function selectpage()
 {
 	$action = $_REQUEST['action'];
 	
-	if ($action == "stopstream")
-	{
-		$subcmd = "";
-
-		// Get segmenter PID
-		if (file_exists("ram/streamsegmenterpid"))
-		{
-			$pidfile = fopen('ram/streamsegmenterpid', 'r');
-			if ($pidfile)
-			{
-				$pid = fgets($pidfile);
-				$pid = substr($pid, 0, -1);
-				$subcmd = "kill " .$pid ." ; ";
-				fclose($pidfile);
-			}
-		}
-			
-		$cmd= $subcmd ."rm ram/stream*";
-		exec ($cmd);
-
-		$action = $_REQUEST['actionafterstop'];
-	}
-
-	if (infostreamexist())
-		$action = "stream";
-
 	switch ($action)
 	{
+		case ("streaming"):
+			include('includes/inc_streaming.php');
+			break;
+                case ("startstream"):
+			$type = $_REQUEST['type'];
+			$name = $_REQUEST['name'];
+			$title = $_REQUEST['title'];
+			$desc = stripslashes ($_REQUEST['desc']);
+			$qname = $_REQUEST['qname'];
+			$qparams = $_REQUEST['qparams'];
+			$category = $_REQUEST['category'];
+			$url = $_REQUEST['url'];
+			$mediapath = $_REQUEST['mediapath'];
+			$subdir = $_REQUEST['subdir'];                        
+			$session = sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir);
+			include('includes/inc_streaming.php');
+                        break;
+		case ("stopstream"):
+			sessiondelete($_REQUEST['session']);
+			// NO BREAK;
 		case ("stream"):
 			include('includes/inc_stream.php');
 			break;
@@ -97,8 +92,8 @@ function selectpage()
 			$url = $_REQUEST['url'];
 			$mediapath = $_REQUEST['mediapath'];
 			$subdir = $_REQUEST['subdir'];
-			start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir);
-			include('includes/inc_stream.php');
+			$session = start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir);
+			include('includes/inc_streaming.php');
 			break;
 		case ("playdir"):
 			include('includes/inc_mp3.php');
@@ -108,32 +103,6 @@ function selectpage()
 			include('includes/inc_home.php');
                         break;
 	}
-}
-
-function start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir)
-{
-	global $httppath, $ffmpegpath, $segmenterpath;
-
-	switch ($type)
-	{
-		case 1:
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." \" | at now";
-			break;
-		case 2:
-			$cmd = "export SHELL=\"/bin/sh\";printf \"cat \\\"" .$url ."\\\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." \" | at now";
-			break;
-		case 3:
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." \" | at now";
-                        break;
-		default:
-			$cmd = "";
-	}
-	
-	$cmd = str_replace('%', '%%', $cmd);
-	exec($cmd);
-
-	// Write streaminfo
-	writeinfostream($type, $name, $title, $desc, $qname, $category, $url, $mediapath, $subdir);
 }
 
 function delete_timer($timer)

@@ -8,9 +8,11 @@
 	3 : Media
 */
 
-function writeinfostream($type=0, $name="", $title="", $desc="", $mode="", $category="", $url="", $mediapath="", $subdir="")
+function writeinfostream($session, $type=0, $name="", $title="", $desc="", $mode="", $category="", $url="", $mediapath="", $subdir="")
 {
-	$infofile = fopen("ram/streaminfo", 'w');
+	$ram = "ram/" .$session ."/";
+
+	$infofile = fopen($ram ."streaminfo", 'w');
 
 	fwrite($infofile, "type=" .$type ."\n");
 	fwrite($infofile, "name=" .$name ."\n");
@@ -26,13 +28,14 @@ function writeinfostream($type=0, $name="", $title="", $desc="", $mode="", $cate
 }
 
 
-function readinfostream()
+function readinfostream($session)
 {
+	$ram = "ram/" .$session ."/";
 
-	if (!file_exists("ram/streaminfo"))
+	if (!file_exists($session ."streaminfo"))
 		return array(0, "", "", "", "");
 
-	$infofile = fopen("ram/streaminfo", 'r');	
+	$infofile = fopen($session ."streaminfo", 'r');	
 	if (!$infofile)
 		return array(0, "", "", "", "");
 
@@ -61,11 +64,6 @@ function readinfostream()
 	fclose($infofile);
 
 	return array($type, $name, $title, $desc, $mode, $category, $url, $mediapath, $subdir);
-}
-
-function infostreamexist()
-{
-	return  file_exists("ram/streaminfo");
 }
 
 ?>
