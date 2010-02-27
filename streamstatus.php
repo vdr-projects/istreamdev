@@ -21,7 +21,7 @@ else
 	$session = $_REQUEST['session'];
 
 	$cnt = 0;
-	while ( ( count(glob('ram/' .$session '/*.ts')) < 2 ) && ( $cnt < 25 ) )
+	while ( ( count(glob('ram/' .$session . '/*.ts')) < 2 ) && ( $cnt < 25 ) )
 	{
 		// wait for stream available
 		sleep(1);
