@@ -36,6 +36,3 @@ cd ram/$SESSION
  -sc_threshold 40 -i_qfactor 0.71 -bt $VRATE -maxrate $VRATE -bufsize $VRATE -rc_eq 'blurCplx^(1-qComp)' -qcomp 0.6 \
  -qmin 10 -qmax 51 -qdiff 4 -level 30  -g 30 -async 2 -threads 4 - | \
 $SEGMENTERPATH - $SEGDUR stream stream.m3u8 $HTTP_PATH$SESSION/ $SEGWIN &
-
-// Save segmenterpid
-echo "$!" > streamsegmenterpid

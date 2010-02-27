@@ -55,13 +55,12 @@ function sessiondelete($session)
 	$subcmd = "";  
 
 	// Get segmenter PID if any
-	if (file_exists($ram ."streamsegmenterpid"))
+	if (file_exists($ram ."segmenter.pid"))
 	{
-		$pidfile = fopen($ram ."streamsegmenterpid", 'r');
+		$pidfile = fopen($ram ."segmenter.pid", 'r');
 		if ($pidfile)
 		{
 			$pid = fgets($pidfile);
-			$pid = substr($pid, 0, -1);
 			$subcmd = "kill " .$pid ." ; ";
 			fclose($pidfile);
 		}

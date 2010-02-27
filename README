@@ -76,8 +76,7 @@
    Check on your /etc/at/deny if www-data is there, and remove it if so.
  - PHP is allowed to use exec() function.
  - ffmpeg compiled with x264 support
- - segmenter: follow the instruction here to install it:
-   http://www.ioncannon.net/programming/452/iphone-http-streaming-with-ffmpeg-and-an-open-source-segmenter/
+ - segmenter: modified version now included in istreamdev path (http://www.ioncannon.net/programming/452/iphone-http-streaming-with-ffmpeg-and-an-open-source-segmenter/)
 
  Install iStreamdev:
  -------------------
