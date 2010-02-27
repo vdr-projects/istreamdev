@@ -17,7 +17,7 @@ in progress:
 - added switch auto to next track while playing audio files.
 - added audio dir playback with itune style
 - replaced mediainfo by getid3 (http://getid3.sourceforge.net/)
-- trick channel names having a \ for logos. Replace the \ by a _ in the logo name. ex CHAN\CHAN gives CHAN_CHAN.png.
+- trick channel names having a \ for logos. Replace the \ by a space in the logo name. ex "CHAN\CHAN" gives "CHAN CHAN.png".
 - fixed Thumbnails aspect/ratio. Now it checks sources resolution before generating the thumb.
 - Added more info for video.
 - no more killall ffmpeg command. Now the pid is checked and killed.
