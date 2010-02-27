@@ -46,7 +46,7 @@ function selectpage()
 				include('includes/inc_streaming.php');
 			}
 			else
-				include('includes/inc_stream.php');
+				include('includes/inc_streaming.php');
 			break;
 		case ("stopstream"):
 			sessiondelete($_REQUEST['session']);
