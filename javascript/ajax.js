@@ -18,10 +18,11 @@ function alert_ajax(xhr, session)
 		var streamstatus = null;
 		var items = docXML.getElementsByTagName("streamstatus");
 		streamstatus = items.item(0).firstChild.data;
-		if ( streamstatus == 'error' )
+		if ( streamstatus == 'error' ) {
 		var items2 =  docXML.getElementsByTagName("message");
                 var errmessage = items2.item(0).firstChild.data;
 		errorMsg(errmessage);
+		}
 		else
 			swapPic(session);
 	}
