@@ -13,8 +13,8 @@ echo "<?xml version=\"1.0\"?>\n";
 echo "<status>\n";
 
 // First check that we are allowed to create a new encoding process
-$nbencprocess = exec("find -name segmenter.pid | wc | awk '{ print $1 }'");
-if ($nbencprocess > $maxencodingprocesses)
+$nbencprocess = exec("find ram/ -name segmenter.pid | wc | awk '{ print $1 }'");
+if ($nbencprocess >= $maxencodingprocesses)
 	echo "<streamstatus>error</streamstatus><message>Error: maximun number of sessions reached</message>\n";
 else
 {
