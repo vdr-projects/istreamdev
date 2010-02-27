@@ -14,6 +14,8 @@ include ('getid3/getid3.php');
 
 function selectpage()
 {
+	global $maxencodingprocesses;
+
 	// Sanity check
 	if (!file_exists('ram'))
 		die("Error: 'ram/' directory is missing, please create it!");
@@ -26,19 +28,26 @@ function selectpage()
 			include('includes/inc_streaming.php');
 			break;
                 case ("startstream"):
-			$type = $_REQUEST['type'];
-			$name = $_REQUEST['name'];
-			$title = $_REQUEST['title'];
-			$desc = stripslashes ($_REQUEST['desc']);
-			$qname = $_REQUEST['qname'];
-			$qparams = $_REQUEST['qparams'];
-			$category = $_REQUEST['category'];
-			$url = $_REQUEST['url'];
-			$mediapath = $_REQUEST['mediapath'];
-			$subdir = $_REQUEST['subdir'];                        
-			$session = sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir);
-			include('includes/inc_streaming.php');
-                        break;
+			// Dont create a session if too much are running already
+			$nbencprocess = exec("find ram/ -name segmenter.pid | wc | awk '{ print $1 }'");
+			if ($nbencprocess < $maxencodingprocesses)
+			{
+				$type = $_REQUEST['type'];
+				$name = $_REQUEST['name'];
+				$title = $_REQUEST['title'];
+				$desc = stripslashes ($_REQUEST['desc']);
+				$qname = $_REQUEST['qname'];
+				$qparams = $_REQUEST['qparams'];
+				$category = $_REQUEST['category'];
+				$url = $_REQUEST['url'];
+				$mediapath = $_REQUEST['mediapath'];
+				$subdir = $_REQUEST['subdir'];                        
+				$session = sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir);
+				include('includes/inc_streaming.php');
+			}
+			else
+				include('includes/inc_stream.php');
+			break;
 		case ("stopstream"):
 			sessiondelete($_REQUEST['session']);
 			// NO BREAK;

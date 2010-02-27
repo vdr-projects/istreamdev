@@ -43,9 +43,6 @@ function sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category,
 	else
 		generatelogo($type, $name, 'ram/' .$session .'/logo.png');
 
-	// Copy status waiter
-	exec('cp streamstatus.php ram/' .$session);
-
 	return $session;
 }
 
