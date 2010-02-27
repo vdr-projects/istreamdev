@@ -25,8 +25,6 @@ fi
 # sending it to the segmenter via a PIPE
 ##############################################################
 
-test -L ram && (test -d /dev/shm/ram || mkdir /dev/shm/ram)
-
 cd ram/$SESSION
 
 2> /dev/null rm stream*.ts
