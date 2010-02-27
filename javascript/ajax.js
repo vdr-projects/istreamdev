@@ -19,9 +19,8 @@ function alert_ajax(xhr, session)
 		var items = docXML.getElementsByTagName("streamstatus");
 		streamstatus = items.item(0).firstChild.data;
 		var items2 =  docXML.getElementsByTagName("message");
-		errmessage = items2.item(0).firstChild.data;
+		var errmessage = items2.item(0).firstChild.data;
 		if ( streamstatus == 'error' )
-			//this.location.href = 'error.php';
 			errorMsg(errmessage);
 		else
 			swapPic(session);
