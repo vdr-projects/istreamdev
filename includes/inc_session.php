@@ -32,7 +32,6 @@ function sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category,
 	}
 	
 	$cmd = str_replace('%', '%%', $cmd);
-	print $cmd;
 	exec ($cmd);
 
 	// Write streaminfo
