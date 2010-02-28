@@ -94,20 +94,6 @@ function selectpage()
 			set_timer($active, $channame, $date, $stime, $etime, $desc, $prevtimer);
 			include('includes/inc_timers.php');
 			break;
-		case ("startstream"):
-			$type = $_REQUEST['type'];
-			$name = $_REQUEST['name'];
-			$title = $_REQUEST['title'];
-			$desc = stripslashes ($_REQUEST['desc']);
-			$qname = $_REQUEST['qname'];
-			$qparams = $_REQUEST['qparams'];
-			$category = $_REQUEST['category'];
-			$url = $_REQUEST['url'];
-			$mediapath = $_REQUEST['mediapath'];
-			$subdir = $_REQUEST['subdir'];
-			$session = start_stream($type, $name, $title, $desc, $qname, $qparams, $category, $url, $mediapath, $subdir);
-			include('includes/inc_streaming.php');
-			break;
 		case ("playdir"):
 			include('includes/inc_mp3.php');
 			break;

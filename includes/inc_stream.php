@@ -16,6 +16,7 @@ switch ($type)
 		break;
 	// Recording
 	case 2:
+		$realname = $name;
 		list($title, $desc, $realname) = vdrgetinfostream($name, 0);
 		break;
 	// Media
@@ -97,7 +98,7 @@ foreach ($quality as $qname => $qparams)
 			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
 			// NO BREAK
 		case 2:
-			print "    <input name=\"url\" type=\"hidden\" id=\"url\" value=\"{$name}\" />\r\n";
+			print "    <input name=\"url\" type=\"hidden\" id=\"url\" value=\"" . stripslashes($name) ."\" />\r\n";
 			break;
 	}
 	print "  </form>";
@@ -107,13 +108,20 @@ print "  <form name=\"getback\" id=\"getback\" method=\"post\" action=\"index.ph
 switch ($type)
 {
 	case 1:
+		if ($category==null)
+		{
+		print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"listcategory\" />";
+		}
+		else
+		{
 		print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"listchannels\" />";
 		print "    <input name=\"cat\"type=\"hidden\" id=\"cat\" value=\"{$category}\" />";
+		}
 		break;
 	case 2:
 		$dir = dirname($name);
 		print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"recordings\" />";
-		print "    <input name=\"dir\"type=\"hidden\" id=\"dir\" value=\"{$dir}\" />";
+		print "    <input name=\"dir\"type=\"hidden\" id=\"dir\" value=\"" . stripslashes($dir) . "\" />";
 		break;
 	case 3:
 		$mediapath = $_REQUEST['mediapath'];
