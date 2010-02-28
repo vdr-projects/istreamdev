@@ -94,6 +94,7 @@ foreach ($quality as $qname => $qparams)
 		case 3:
 			$mediapath = $_REQUEST['mediapath'];
 			$subdir = $_REQUEST['subdir'];
+			$subdir = stripslashes($subdir);
 			print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
 			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"" . stripslashes(subdir) . "\" />\r\n";
 			// NO BREAK
