@@ -2,6 +2,8 @@
 
 $mediapath = $_REQUEST['mediapath'];
 $subdir = $_REQUEST['subdir'];
+$mediapath = stripslashes($mediapath);
+$subdir = stripslashes($subdir);
 
 /* Add last slash to dirs */
 if ($mediapath[strlen($mediapath)-1] != '/')

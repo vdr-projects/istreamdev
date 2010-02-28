@@ -95,7 +95,7 @@ foreach ($quality as $qname => $qparams)
 			$mediapath = $_REQUEST['mediapath'];
 			$subdir = $_REQUEST['subdir'];
 			print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
-			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
+			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"" . stripslashes(subdir) . "\" />\r\n";
 			// NO BREAK
 		case 2:
 			print "    <input name=\"url\" type=\"hidden\" id=\"url\" value=\"" . stripslashes($name) ."\" />\r\n";
@@ -126,6 +126,8 @@ switch ($type)
 	case 3:
 		$mediapath = $_REQUEST['mediapath'];
 		$subdir = $_REQUEST['subdir'];
+		$subdir = stripslashes($subdir);
+		
 		print "    <input name=\"action\" type=\"hidden\" id=\"action\" value=\"video\" />";
 		print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
 		print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}\" />\r\n";
