@@ -96,10 +96,10 @@ foreach ($quality as $qname => $qparams)
 			$subdir = $_REQUEST['subdir'];
 			$subdir = stripslashes($subdir);
 			print "    <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />\r\n";
-			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"" . stripslashes(subdir) . "\" />\r\n";
+			print "    <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"" .stripslashes($subdir) ."\" />\r\n";
 			// NO BREAK
 		case 2:
-			print "    <input name=\"url\" type=\"hidden\" id=\"url\" value=\"" . stripslashes($name) ."\" />\r\n";
+			print "    <input name=\"url\" type=\"hidden\" id=\"url\" value=\"" .stripslashes($name) ."\" />\r\n";
 			break;
 	}
 	print "  </form>";
