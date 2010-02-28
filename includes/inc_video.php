@@ -71,7 +71,7 @@ if ($medianame_array[0])
 				print "<form name=\"$value\" id=\"$value\" method=\"post\" action=\"index.php\">";
 				print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"video\"/>";
 				print "  <input name=\"mediapath\" type=\"hidden\" id=\"mediapath\" value=\"{$mediapath}\" />";
-				print "  <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"{$subdir}{$value}\" />\r\n";
+				print "  <input name=\"subdir\" type=\"hidden\" id=\"subdir\" value=\"" . stripslashes($subdir) . stripslashes($value) . "\" />\r\n";
 				print "</form>\r\n";
 				break;
 			}
