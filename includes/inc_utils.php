@@ -50,7 +50,7 @@ function php2js ($var)
 		return $var;
 
 	elseif (is_string($var))
-		return "\"" . addslashes(stripslashes($var)) . "\"";
+		return "\"" .$var . "\"";
 	
 	else
 		return false;

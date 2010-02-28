@@ -16,7 +16,7 @@ function vdrsendcommand($cmd)
 function vdrgetinfostream($stream = "NULL", $ischan = 1)
 {
 	global $allepg, $allepgfilled;
-
+	$stream=stripslashes($stream);
 	if ($ischan)
 	{
 		// Fill epg if not yet done

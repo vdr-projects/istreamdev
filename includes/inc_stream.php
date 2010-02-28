@@ -6,7 +6,7 @@ $category = $_SESSION['currentcat'];
 
 $type = $_REQUEST['type'];
 $name = $_REQUEST['name'];
-
+$name = stripslashes($name);
 switch ($type)
 {
 	// Live TV
