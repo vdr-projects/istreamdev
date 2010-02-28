@@ -90,8 +90,7 @@ function mediagettype($file)
 	// Get file extension
 	$fileext = end(explode(".", $file));
 	$file = str_replace("\\'", "'", $file);
-	print ("file=" .$file);
-	print ("fileext=".$filext);
+
 	if (is_dir($file))
 		return 3;
 	if (preg_match("/" .$fileext ." /", $videotypes))
