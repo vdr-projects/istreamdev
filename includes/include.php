@@ -54,6 +54,11 @@ function selectpage()
 		case ("stream"):
 			include('includes/inc_stream.php');
 			break;
+		case ("stopallstreamings"):
+			sessiondelete('all');
+			$_SESSION['currentcat'] = NULL;
+			include('includes/inc_home.php');
+			break;
 		case ("listcategory"):
 			include('includes/inc_cat.php');
 			break;

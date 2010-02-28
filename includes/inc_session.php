@@ -48,6 +48,33 @@ function sessioncreate($type, $name, $title, $desc, $qname, $qparams, $category,
 
 function sessiondelete($session)
 {
+	if ($session == 'all')
+	{
+		$dir_handle = @opendir('ram/');
+		if ($dir_handle)
+		{
+			while ($session = readdir($dir_handle))
+			{
+				if($session == "." || $session == ".." || $session == 'lost+found')
+					continue;
+
+				if (!is_dir('ram/' .$session))
+					continue;
+
+				// Get info
+				list($type, $realname, $title, $desc, $mode, $category, $url, $mediapath, $subdir) = readinfostream($session);
+
+				if ($type)
+					sessiondeletesingle($session);
+			}
+		}
+	}
+	else
+		return sessiondeletesingle($session);
+}
+
+function sessiondeletesingle($session)
+{
 	$ram = "ram/" .$session ."/";
 
 	// Get segmenter PID if any

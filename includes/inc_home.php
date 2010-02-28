@@ -70,9 +70,21 @@ if ($dir_handle)
 }
 
 if (!$sessioncnt)
-	print "<li class=\"textbox\"><p>none</p></li>\r\n";
-
-print "  </ul>\r\n";
+{
+	print "  <li class=\"textbox\"><p>none</p></li>\r\n";
+	print "</ul>\r\n";
+}
+else
+{
+        print "</ul>\r\n";
+        print "<form name=\"killall\" id=\"killall\" method=\"post\" action=\"index.php\">\r\n";
+        print "  <input name=\"action\" type=\"hidden\" id=\"action\" value=\"stopallstreamings\" />\r\n";
+        print "  <ul class=\"pageitem\">\r\n";
+        print "  <li class=\"button\">\r\n";
+        print "  <input name=\"Submit\" type=\"submit\" value=\"Delete all sessions\" /></li>\r\n";
+        print "</ul>\r\n";
+        print "</form>\r\n";
+}
 
 // VDR menus
 if ($vdrenabled)
