@@ -37,7 +37,7 @@ else
 	}
 
 	if ( count(glob('ram/' .$session . '/*.ts')) < 2 )
-		echo "<streamstatus>error</streamstatus><message>Error: encoding did not start correclty</message>\n";
+		echo "<streamstatus>error</streamstatus><message>Error: encoding did not start correctly</message>\n";
 	else
 		echo "<streamstatus>ok</streamstatus>\n";
 }
