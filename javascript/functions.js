@@ -66,11 +66,10 @@ function openSelectDate(timer_year,timer_month,timer_day) {
 	var layer = 'layer_date';
 	var days = { };
 	var years = { };
-	var months = { '01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May','06': 'Jun', '07': 'Jul', '08': 'Aug', '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' };
+	var months = { '01': '01', '02': '02', '03': '03', '04': '04', '05': '05','06': '06', '07': '07', '08': '08', '09': '09', '10': '10', '11': '11', '12': '12' };
 	
 	for( var i = 1; i < 32; i += 1 ) {
-		i = str_pad(i, 2, '0', 'STR_PAD_LEFT');
-		days[i] = i;
+		days[i] = str_pad(i, 2, '0', 'STR_PAD_LEFT');
 	}
 
 	for( i = now.getFullYear(); i < now.getFullYear()+5; i += 1 ) {
@@ -88,6 +87,7 @@ function openSelectDate(timer_year,timer_month,timer_day) {
 
 function done_date() {
 	var results = SpinningWheel.getSelectedValues();
+	
 	document.getElementById('layer_date').innerHTML = results.keys.join('-');
 	document.timer.timer_date.value = results.keys.join('-');
 	
