@@ -6,16 +6,21 @@ session_start();
 
 if (isset($_COOKIE['istream']))
 {
-        $authorized=true;
+       if(sha1($pass) == $_COOKIE['istream'] ) {
+ 		setcookie ("istream", sha1($pass), time()+60*60*24*30);
+		$authorized = true;
+	} else {
+		$authorised = false;
+	}
 }
 
 # checkup login and password
 if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']))
 {
-    if (($user == $_SERVER['PHP_AUTH_USER']) && ($pass == ($_SERVER['PHP_AUTH_PW'])) && isset($_SESSION['auth']))
+    if (($user == $_SERVER['PHP_AUTH_USER']) && ($pass == ($_SERVER['PHP_AUTH_PW'])) )
     {
+    setcookie ("istream", sha1($pass), time()+60*60*24*30);
     $authorized = true;
-    setcookie ("istream", "true", time()+60*60*24*30);
     }
 }
 
@@ -24,7 +29,6 @@ if (!$authorized)
 {
     header('WWW-Authenticate: Basic Realm="Login please"');
     header('HTTP/1.0 401 Unauthorized');
-    $_SESSION['auth'] = true;
     echo "Login";
     exit;
 }
