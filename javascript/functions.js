@@ -69,7 +69,8 @@ function openSelectDate(timer_year,timer_month,timer_day) {
 	var months = { '01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May','06': 'Jun', '07': 'Jul', '08': 'Aug', '09': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' };
 	
 	for( var i = 1; i < 32; i += 1 ) {
-		days[i] = str_pad(i, 2, '0', 'STR_PAD_LEFT');
+		i = str_pad(i, 2, '0', 'STR_PAD_LEFT');
+		days[i] = i;
 	}
 
 	for( i = now.getFullYear(); i < now.getFullYear()+5; i += 1 ) {
