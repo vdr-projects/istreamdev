@@ -93,7 +93,9 @@ function mediagettype($file)
 
 	if (is_dir($file))
 		return 3;
-	if (preg_match("/" .$fileext ." /", $videotypes))
+	else if (preg_match("$/$", $fileext))
+		return 0;
+	else if (preg_match("/" .$fileext ." /", $videotypes))
 		return 1;
 	else if (preg_match("/" .$fileext ." /", $audiotypes))
 		return 2;
