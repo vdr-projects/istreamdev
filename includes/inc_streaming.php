@@ -36,7 +36,7 @@ print " <center><video id=\"videofeed\" width=\"{$logowidth}\" poster=\"{$logopa
 print " </ul>\r\n";
 
 print " <ul class=\"pageitem\">\r\n";
-print " <li class=\"textbox\"><span class=\"header\">{$realname}</span><p><strong>{$title}</strong>\r\n";
+print " <li class=\"textbox\"><span class=\"header\">{$realname}</span><p><strong>" .stripslashes($title). "</strong>\r\n";
 print " <br>{$desc}</p></li></ul>\r\n";
 	
 print " <ul class=\"pageitem\">\r\n";
