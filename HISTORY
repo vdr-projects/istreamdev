@@ -22,6 +22,7 @@ in progress:
 - Added more info for video.
 - no more killall ffmpeg command. Now the pid is checked and killed.
 - allow multiple streaming sessions
+- added button to kill all active sessions.
 
 19.02.2010 - V.0.3.6.1
 
