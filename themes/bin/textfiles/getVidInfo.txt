@@ -1,0 +1,13 @@
+{
+	"program":
+	{
+		"name": "Mavideo.avi",
+		"desc": "",
+		"duration": "1:41:55",
+		"format": "avi",
+		"video": "XviD MPEG-4",
+		"audio": "MPEG Layer 3",
+		"resolution": "608x256" 
+	}
+}
+

@@ -1,0 +1,10 @@
+{
+	"program":
+	{
+		"name": "Journal de 13h",
+		"channel": "TF1",
+		"recorded": "2010-02-02 at 19h30",
+		"desc": "Les informations de 13h..." 
+	}
+}
+

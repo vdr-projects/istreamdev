@@ -1,0 +1,551 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" manifest="istreamdev.manifest">
+    <head>
+        <meta charset="UTF-8" />
+        <title>iStreamdev</title>
+        <style type="text/css" media="screen">@import "jqtouch/jqtouch.css";</style>
+        <style type="text/css" media="screen">@import "themes/jqt/theme.css";</style>
+        <script src="jqtouch/jquery.1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src="jqtouch/jqtouch.transitions.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src="js/spinningwheel.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src="js/functions.js" type="application/x-javascript" charset="utf-8"></script>
+		<style type="text/css" media="screen">@import "css/spinningwheel.css";</style>
+        <script type="text/javascript" charset="utf-8">
+			
+            $.jQTouch({
+                icon: 'img/istreamdev.png',
+                addGlossToIcon: true,
+				useFastTouch: true,
+                startupScreen: 'img/startup.png',
+                statusBar: 'black',
+				iconIsGlossy: true,
+				fullscreen: true,
+				preloadImages: [
+				'themes/jqt/img/chevron.png',
+				'themes/jqt/img/back_button.png',
+				'themes/jqt/img/back_button_clicked.png',
+				'themes/jqt/img/button_clicked.png',
+				'themes/jqt/img/button.png',
+				'theme/jqt/img/button_clicked.png',
+				'theme/jqt/img/loading.gif',
+				'theme/jqt/img/toolbar.png',
+				'theme/jqt/img/on_off.png',
+				'img/audio.png',
+				'img/epg.png',
+				'img/media.png',
+				'img/record.png',
+				'img/timers.png',
+				'img/timeron.png',
+				'img/timeroff.png',
+				'img/timerrec.png',
+				'img/tv.png',
+				'img/video.png',
+				'img/stream.png',
+				'img/stream_clicked.png',
+				'img/istreamdev.png',
+				'img/mask.png',
+				'img/nologoTV.png',
+				'img/nologoREC.png',
+				'img/nologoMEDIA.png',
+				'img/rec.png',
+				'img/rec_clicked.png',
+				'img/sw-alpha.png',
+				'img/sw-button-cancel.png',
+				'img/sw-button-done.png',
+				'img/sw-header.png',
+				'img/sw-slot-border.png'
+				]
+            });
+
+			$(document).ready(function(e){ 
+			$('#streaming').bind('pageAnimationEnd', function(event, info){ 
+				if (info.direction == 'in') {
+					$('#player').html('<video id="videofeed" width="80" height="80" poster="logos/TF1.png" ></video>');
+					} 
+				})
+			$('#streaming').bind('pageAnimationStart', function(event, info){ 
+				if (info.direction == 'out') {
+					$('#player').html('<img class="thumbnail" id="thumbnail" src="logos/TF1.png"></img>');
+					}  
+				})
+			});
+ 
+			$('#home_but').tap(function(event) {
+				event.preventDefault();
+				window.location = "#home";
+			});
+			
+			$(function() {
+				$('a[class="abutton"]').click(function() {
+				$(this).removeClass('active');
+				});
+			
+			});
+			
+			$(function() {   
+				$('.formerror').hide();   
+				$(".submit_form").click(function() {
+					$(this).removeClass('active');
+  
+					$('.formerror').hide();   
+					var timer_name = $("input#timer_name").val();   
+					if (timer_name == "") {   
+						$("li#timer_name_error").show();   
+						$("input#timer_name").focus();   
+					return false;   
+					}   
+					var timer_chan = $("input#timer_date").val();   
+					if (timer_chan == "") {   
+						$("li#timer_date_error").show();   
+						$("a#a_date").focus();   
+					return false;   
+					}
+					var timer_starttime = $("input#timer_starttime").val();   
+					if (timer_starttime == "") {   
+						$("li#timer_starttime_error").show();   
+						$("a#a_starttime").focus();   
+					return false;   
+					}   
+					var timer_endtime = $("input#timer_endtime").val();   
+					if (timer_endtime == "") {   
+						$("li#timer_endtime_error").show();   
+						$("a#a_endtime").focus();   
+					return false;   
+					}
+					var timer_chan = $("select#timer_chan").val();
+					var timer_active = $("input#timer_active").val();
+					var dataString = 'action=edittimer&timer_name='+ timer_name + '&timer_chan=' + timer_chan + '&timer_date=' + timer_date + '&timer_starttime=' + timer_starttime + 'timer_endtime=' + timer_endtime + 'timer_active=' + timer_active;
+					$.ajax({
+						type: "POST",
+						url: "bin/process.php",
+						data: dataString,
+						success: function() {
+							window.location = "#timers";
+							$('#timer_status').html('New timer created successfully');
+							$('#timer_status').show();
+							return false;
+							}
+					
+						});
+					window.location = "#timers";
+					$('#timer_status').html('Error: Timer was not created');
+					$('#timer_status').show();
+					return false;
+				}); 
+			}); 
+        </script>
+		<style type="text/css">
+			img.menuicon {
+			vertical-align: middle;
+			}
+			.menuname {
+			vertical-align: middle;
+			margin: 0 0 0 10px;
+			}
+	
+			li.forward > a > span, span.substring {
+			vertical-align: middle;
+			}
+			li.channellist {
+			height: 55px;
+			background-image: url(img/chevron.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4c4d4e), to(#404142));
+			background-position: right center;
+			background-repeat: no-repeat;
+			}
+			
+			li.channellist img {
+			width: 55px;
+			height: 55px;
+			vertical-align: middle;
+			position: relative;
+			-webkit-mask-box-image: url(img/mask.png) 80 stretch;
+			top: 0px;
+			}
+			
+			li.channellist span.name {
+			margin: 10px 0 0 0px;
+			left: 90px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			max-width: 80%!important;
+			white-space: nowrap;
+			font-size: 17px;
+			line-height: normal;
+			position: absolute;
+			font-weight: bold;
+		
+			}
+			li.channellist span.comment {
+			margin: 28px 0 0 0px;
+			left: 90px;
+			max-width: 80%!important;
+			font-size: 14px;
+			line-height: normal;
+			position: absolute;
+			top: 15 px;
+			font-style: italic;
+			font-weight: normal;
+			}
+			ul.thumb {
+			-webkit-border-radius: 8px;
+			-webkit-box-shadow: rgba(0,0,0,.3) 1px 1px 3px;
+			}
+			
+			.thumbnail {
+			-webkit-mask-box-image: url(img/mask.png) 80 stretch;
+			vertical-align: middle;
+			margin: 5px 0 5px 0;
+			}
+			
+			span.streamButton a{
+			margin: 5px 5px 5px 5px;
+			border-width: 0 12px;
+			padding: 8px;
+			text-align: center;
+			font-size: 14px;
+			font-weight: bold;
+			text-decoration: inherit;
+			color: inherit;
+			-webkit-border-image: url(img/stream.png) 0 12 0 12;
+			color: #FFFFFF;
+			}
+			span.streamButton a:active{
+			color: #aaa;
+			-webkit-border-image: url(img/stream_clicked.png) 0 12 0 12;
+			}
+			span.recButton a{
+			margin: 5px 5px 5px 5px;
+			border-width: 0 12px;
+			padding: 8px;
+			text-align: center;
+			font-size: 14px;
+			font-weight: bold;
+			text-decoration: inherit;
+			color: inherit;
+			-webkit-border-image: url(img/rec.png) 0 12 0 12;
+			color: #FFFFFF;
+			}
+			span.recButton a:active{
+			color: #aaa;
+			-webkit-border-image: url(img/rec_clicked.png) 0 12 0 12;
+			}
+			
+			ul.streaminfo {
+			-webkit-border-radius: 8px;
+			-webkit-box-shadow: rgba(0,0,0,.3) 1px 1px 3px;
+			}
+			
+			ul.streaminfo span.name {
+			padding-top: 10px;
+			padding-right: 10px;
+			padding-left: 10px;
+			font-size: 17px;
+			font-weight: bold;
+			display: block;
+			color: white;
+			text-shadow: rgba(0,0,0,.8) 0 1px 0;
+			}
+			ul.streaminfo span.epgtime {
+			padding-top: 5px;
+			padding-right: 10px;
+			padding-left: 10px;
+			font-size: 14px;
+			font-weight: bold;
+			display: block;
+			text-shadow: rgba(0,0,0,.8) 0 1px 0;
+			}
+			ul.streaminfo span.desc {
+			position: relative;
+			padding-top: 10px;
+			padding-right: 10px;
+			padding-bottom: 10px;
+			padding-left: 10px;
+			display: block;
+			color: white;
+			font-size: 14px;
+			font-style: italic;
+			font-weight: normal;
+			line-height: normal;
+			
+			}
+			ul.streamstatus {
+			-webkit-border-radius: 8px;
+			-webkit-box-shadow: rgba(0,0,0,.3) 1px 1px 3px;
+			}
+			ul.streamstatus span.title {
+			padding-top: 10px;
+			padding-right: 10px;
+			padding-left: 10px;
+			font-size: 17px;
+			font-weight: bold;
+			display: block;
+			color: white;
+			text-shadow: rgba(0,0,0,.8) 0 1px 0;
+			}
+			
+			ul.streamstatus span.mode {
+			position: relative;
+			padding-top: 10px;
+			padding-right: 10px;
+			padding-bottom: 10px;
+			padding-left: 10px;
+			display: block;
+			color: white;
+			font-size: 14px;
+			font-style: italic;
+			font-weight: normal;
+			line-height: normal;
+			}
+			#jqt ul li select option{
+			color: #000000;
+			}
+			#jqt ul li select optgroup{
+			color: #999;
+			}
+			span.timertitle {
+			padding-right: 10px;
+			padding-left: 10px;
+			font-size: 14px;
+			font-weight: bold;
+			color: #999;
+			text-shadow: rgba(0,0,0,.8) 0 1px 0;
+			}
+			span.menutitle {
+			padding-right: 10px;
+			padding-left: 10px;
+			font-size: 17px;
+			font-weight: bold;
+			color: #999;
+			text-shadow: rgba(0,0,0,.8) 0 1px 0;
+			}
+			.formerrormsg {
+			padding-right: 10px;
+			padding-left: 10px;
+			font-size: 12px;
+			color: #FF8300;
+			
+			}
+			#timers .info {
+			display: none;
+			}
+			
+		</style>
+    </head>
+    <body>
+	<div id="jqt">
+	<!---------------------------------- HOME SCREEN ---------------------------------->
+        <div id="home" class="current">
+            <div class="toolbar">
+                <h1>HOME</h1>
+            </div>
+            <ul class="rounded">
+				<li><span class="menutitle">VDR</span></li>
+                <li class="arrow"><a class="cube" href="#categories"><img class="menuicon" src="img/tv.png" /><span class="menuname">Watch TV</span></a></li>
+                <li class="arrow"><a class="cube" href="#browser"><img class="menuicon" src="img/record.png" /><span class="menuname">Recordings</span></a></li>
+                <li class="arrow"><a class="cube" href="#timers"><img class="menuicon" src="img/timers.png" /><span class="menuname">Timers</span></a></li>
+				<li class="arrow"><a class="cube" href="#epg"><img class="menuicon" src="img/epg.png" /><span class="menuname">Program Guide</span></a></li>
+            </ul>
+			<ul class="rounded">
+				<li><span class="menutitle">FILES</span></li>
+                <li class="arrow"><a class="cube" href="#browser"><img class="menuicon" src="img/video.png" /><span class="menuname">Video</span></a></li>
+                <li class="arrow"><a class="cube" href="#audio"><img class="menuicon" src="img/audio.png" /><span class="menuname">Audio</span></a></li>
+            </ul>
+        </div>
+	 <!----------------------------------/ HOME SCREEN ---------------------------------->
+	 
+	 <!---------------------------------- CHAN CATEGORY SCREEN ---------------------------------->
+        <div id="categories">
+            <div class="toolbar">
+                <a href="#home" class="back">Home</a>
+                <h1>CATEGORIES</h1>
+            </div>
+            <ul class="rounded">
+			<li class="arrow"><a class="cube" href="#channels" rel="Nationales & Tnt">NATIONALES & TNT</a><small class="counter">17</small></li>
+			<li class="arrow"><a class="cube" href="#channels" rel="Divertissements">DIVERTISSEMENTS</a><small class="counter">12</small></li>
+        </div>
+	<!---------------------------------- /CHAN CATEGORY SCREEN ---------------------------------->
+	<!---------------------------------- CHANNELS SCREEN ---------------------------------->
+		<div id="channels">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button slideup">Home</a>
+                <h1>CHANNELS</h1>
+			</div>
+			<ul class="rounded">
+			<li class="channellist"><a class="cube" href="#startstream" rel="TF1"><img src="logos/TF1.png"/><span class="name">TF1</span><span class="comment">Journal de 13h</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="FRANCE 2"><img src="logos/FRANCE 2.png"/><span class="name">FRANCE 2</span><span class="comment">Tournez Manège</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="FRANCE 3"><img src="logos/FRANCE 3.png"/><span class="name">FRANCE 3</span><span class="comment">Journal Régional</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="TF1"><img src="logos/TF1.png"/><span class="name">TF1</span><span class="comment">Journal de 13h</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="TF1"><img src="logos/TF1.png"/><span class="name">TF1</span><span class="comment">Journal de 13h</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="TF1"><img src="logos/TF1.png"/><span class="name">TF1</span><span class="comment">Journal de 13h</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="TF1"><img src="logos/TF1.png"/><span class="name">TF1</span><span class="comment">Journal de 13h</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="TF1"><img src="logos/TF1.png"/><span class="name">TF1</span><span class="comment">Journal de 13h</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="TF1"><img src="logos/TF1.png"/><span class="name">TF1</span><span class="comment">Journal de 13h</span></a></li>
+			<li class="channellist"><a class="cube" href="#startstream" rel="TF1"><img src="logos/TF1.png"/><span class="name">TF1</span><span class="comment">Journal de 13h</span></a></li>
+			
+			</ul>
+		</div>
+	<!---------------------------------- /CHANNELS SCREEN ---------------------------------->
+	<!---------------------------------- START STREAM ---------------------------------->
+		<div id="startstream">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button slideup">Home</a>
+                <h1>TF1</h1>
+			</div>
+			<center><ul class="thumb" style="width:90px"><img class="thumbnail" id="thumbnail" src="logos/TF1.png" /></ul></center>
+			
+			<ul class="streaminfo">
+			<span class="epgtime">Now: 19h00-19h45</span>
+			<span class="name">Tout le monde veut prendre sa place</span>
+			<span class="desc">Jeu présenté par Nagui. Six candidats s'affrontent lors d'un quiz pour prendre la place du champion et remporter des gains.</span>
+			<span class="epgtime">Next:  19h45-20h45</span>
+			<span class="name">Informations</span>
+			</ul>
+			<center>
+			<span class="streamButton"><a href="#streaming" class="cube">Edge</a></span><span class="streamButton"><a href="#streaming" class="cube"> 3G </a></span><span class="streamButton"><a href="#streaming" class="cube">Wifi</a></span><span class="recButton"><a href="#" class="cube">Rec.</a></span>
+			</center>		
+		</div>
+		<!---------------------------------- /START STREAM ---------------------------------->
+		<!---------------------------------- STREAMING ---------------------------------->
+		<div id="streaming">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button slideup">Home</a>
+                <h1>TF1</h1>
+			</div>
+			<center><ul class="thumb" id="player" style="width:90px"><img class="thumbnail" id="thumbnail" src="logos/TF1.png" /></ul></center>
+			
+			<ul class="streaminfo">
+			<span class="epgtime">2010-03-02 19h00-19h45</span>
+			<span class="name">Tout le monde veut prendre sa place</span>
+			<span class="desc">Jeu présenté par Nagui. Six candidats s'affrontent lors d'un quiz pour prendre la place du champion et remporter des gains.</span>
+			</ul>
+			<ul class="streamstatus">
+			<span class="title">Status</span>
+			<span class="mode">Now streaming in 3G mode</span>
+			</ul>
+			<center>
+			<span class="streamButton"><a href="#startstream" class="slide goback">Stop stream</a></span>
+			<span class="recButton"><a href="#" class="cube">Rec.</a></span>
+			<br><br>
+			</center>		
+		</div>
+		<!---------------------------------- /STREAMING ---------------------------------->
+		<!---------------------------------- BROWSER ---------------------------------->
+		<div id="browser">
+			<div class="toolbar">
+			<a href="#" class="back">Home</a>
+                <h1>RECORDINGS</h1>
+			</div>
+				<ul class="rounded">
+                <li class="arrow"><a class="cube" href="#browser2"><span class="menuname">Movies</span></a></li>
+                <li class="arrow"><a class="cube" href="#browser2"><span class="menuname">TV Shows</span></a></li>
+                <li><a class="cube" href="#startstream"><img class="menuicon" src="img/video.png" /><span class="menuname">Gran.Torino-Trailer.avi</span></a></li>
+            </ul>
+			</div>
+			
+		<!---------------------------------- /BROWSER --------------------------------->
+				<!---------------------------------- BROWSER ---------------------------------->
+		<div id="browser2">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button slideup">Home</a>
+                <h1>RECORDINGS</h1>
+			</div>
+				<ul class="rounded">
+                <li><a class="cube" href="#startstream"><img class="menuicon" src="img/video.png" /><span class="menuname">Ghostbuster.avi</span></a></li>
+                <li><a class="cube" href="#startstream"><img class="menuicon" src="img/video.png" /><span class="menuname">Starwars-Ep.1.avi</span></a></li>
+                <li><a class="cube" href="#startstream"><img class="menuicon" src="img/video.png" /><span class="menuname">Starwars-Ep.2.avi</span></a></li>
+            </ul>
+			</div>
+			
+		<!---------------------------------- /BROWSER --------------------------------->
+		<!---------------------------------- TIMERS --------------------------------->
+		<div id="timers">
+			<div class="toolbar">
+			<a href="#" class="back">Home</a>
+                <h1>TIMERS</h1>
+			</div>
+			<div class="info" id="timer_status"></div>
+			<ul class="rounded">
+			<li><span class="menutitle">Current timers</span></li>
+			<li class="arrow"><a class="cube" href="#edittimer"><img class="menuicon" src="img/timeron.png" /><span class="menuname">2010-03-08 La Ferme Célébrité</span></a></li>
+			<li class="arrow"><a class="cube" href="#edittimer"><img class="menuicon" src="img/timeroff.png" /><span class="menuname">2010-03-12 Football</span></a></li>
+			<li class="arrow"><a class="cube" href="#edittimer"><img class="menuicon" src="img/timerrec.png" /><span class="menuname">2010-03-05 Le Journal</span></a></li>
+			</ul>
+			<ul class="rounded">
+			<li class="arrow"><a class="cube" href="#edittimer"><span class="menuname">New Timer</span></a></li>
+			</ul>
+		</div>
+		<!---------------------------------- /TIMERS --------------------------------->
+		<!---------------------------------- EDIT TIMERS --------------------------------->
+		<div id="edittimer">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button slideup">Home</a>
+                <h1>EDIT TIMER</h1>
+			</div>
+			<form name="timer" id="timer" action="">
+			<ul class="rounded">
+				<li><span class="timertitle">Active</span><span class="toggle"><input id="timer_active" name="timer_active" type="checkbox" checked/></span></li>
+			</ul>
+			<ul class="rounded">
+				<li><span class="timertitle">Name</span></li>
+				<li class="formerror" id="timer_name_error"><span class="formerrormsg">Recording name is missing</span></li>
+				<li><input type="text" name="name" placeholder="Enter recording name" id="timer_name" style="color: #FFFFFF"/></li>
+			</ul>
+			<ul class="rounded">
+				<li><span class="timertitle">Channel</span></li>
+				<li><select id="timer_chan">
+					<optgroup label="NATIONALES & TNT">
+						<option value="1">TF1</option>
+						<option value="2">FRANCE 2</option>
+						<option value="3">FRANCE 3</option>
+						<option value="4">FRANCE 4</option>
+						<option value="5">TV5</option>
+						<option value="6">M6</option>
+					</optgroup>
+					<optgroup label="DIVERTISSEMENT">
+						<option value="11">COMEDIE!</option>
+						<option value="12">13EME RUE</option>
+						<option value="13">FOX LIFE</option>
+					</optgroup>
+				</select>
+				</li>
+			</ul>
+			<ul class="rounded">
+				<li><span class="timertitle">Date</span></li>
+				<li class="formerror" id="timer_date_error"><span class="formerrormsg">Date is missing</span></li>
+				<li class="arrow"><a id="a_date" class="abutton" href="javascript:openSelectDate(2010,03,05);" onClick="$('#timer_date_error').hide();"><span class="menuname" id="layer_date">Select date</span></a></li>
+				
+			</ul>
+			<ul class="rounded">
+				<li><span class="timertitle">Start time</span></li>
+				<li class="formerror" id="timer_starttime_error"><span class="formerrormsg">Starting time is missing</span></li>
+				<li class="arrow"><a id="a_starttime" class="abutton" href="javascript:openSelectTime('layer_starttime','20','30')" onClick="$('#timer_starttime_error').hide();"><span class="menuname" id="layer_starttime">Select start time</span></a></li>
+				
+			</ul>
+			<ul class="rounded">
+				<li><span class="timertitle">End time</span></li>
+				<li class="formerror" id="timer_endtime_error"><span class="formerrormsg">Ending time is missing</span></li>
+				<li class="arrow"><a id="a_endtime" class="abutton" href="javascript:openSelectTime('layer_endtime','20','30')" onClick="$('#timer_endtime_error').hide();"><span class="menuname" id="layer_endtime">Select end time</span></a></li>
+			</ul>
+			
+			<input name="timer_date" type="hidden" id="timer_date" value="" \>
+			<input name="timer_starttime" type="hidden" id="timer_starttime" value="" />
+			<input name="timer_endtime" type="hidden" id="timer_endtime" value="" />
+			<ul class="individual">
+				<li><a class="submit_form" href="#">Edit</a></li>
+				<li><a class="abutton" href="javascript:deletetimer('montimer');">Delete</a></li>
+			</ul>
+			<ul class="rounded">
+				<li><center><a class="submit_form" href="#">Create</a></center></li>
+			</ul>
+			</form>
+		</div>
+		<!---------------------------------- /EDIT TIMERS --------------------------------->
+	</div>
+    </body>
+</html>

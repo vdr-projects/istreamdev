@@ -1,0 +1,14 @@
+{
+	playlist:
+	[
+		{
+		"file": "/istreamdev/playlist/track1.mp3" 
+		},
+		{    
+		"file": "/istreamdev/playlist/track2.mp3" 
+		},
+		{    
+		"file": "/istreamdev/playlist/track3.mp3" 
+		}
+	]
+}

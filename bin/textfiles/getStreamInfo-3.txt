@@ -1,0 +1,17 @@
+{
+	"stream":
+	{
+		"session": "3",
+		"type": "vid",
+		"name": "Mavideo.avi",
+		"desc": "",
+		"duration": "1:41:55",
+		"format": "avi",
+		"video": "XviD MPEG-4",
+		"audio": "MPEG Layer 3",
+		"resolution": "608x256", 
+		"mode": "3G",
+		"thumbwidth": "180",
+		"thumbheight": "100" 
+	}
+}

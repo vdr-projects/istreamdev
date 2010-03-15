@@ -1,0 +1,34 @@
+{
+	"category":
+	[
+		{
+			"name": "Nationales&TNT",
+			"channel": 
+			[
+				{
+				"name": "TF1",
+				"number": "1"
+				},{
+				"name": "FRANCE 2",
+				"number": "2"
+				},{
+				"name": "FRANCE 3",
+				"number": "3"
+				}
+			]
+		},
+		{
+			"name":	"Divertissement",
+			"channel":
+			[
+				{
+				"name": "Paris Première",
+				"number": "10"
+				},{
+				"name": "RTL Télévision",
+				"number": "11"
+				}
+			]
+		}
+	]
+}

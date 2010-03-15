@@ -1,0 +1,16 @@
+{
+	"categories": 
+	[
+		{
+		"name": "Nationales&TNT",
+		"channels": "17"
+		},{
+		"name": "Divertissements",
+		"channels": "12"
+		},{
+		"name": "Information",
+		"channels": "6"
+		}
+	]
+}
+

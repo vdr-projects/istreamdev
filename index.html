@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" manifest="istreamdev.manifest">
+    <head>
+        <meta charset="UTF-8" />
+        <title>iStreamdev</title>
+        <style type="text/css" media="screen">@import "jqtouch/jqtouch.css";</style>
+        <style type="text/css" media="screen">@import "themes/jqt/theme.css";</style>
+		<style type="text/css" media="screen">@import "css/istreamdev.css";</style>
+        <script src="jqtouch/jquery.1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src="jqtouch/jqtouch.transitions.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src="extensions/jquery.scrollTo-min.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src="js/spinningwheel.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src="js/functions.js" type="application/x-javascript" charset="utf-8"></script>
+		<script src="js/istreamdev.js" type="application/x-javascript" charset="utf-8"></script>
+		<style type="text/css" media="screen">@import "css/spinningwheel.css";</style>
+    </head>
+    <body>
+	<div id="loader"></div>
+	<div id="jqt">
+	<!---------------------------------- HOME SCREEN (always present) ---------------------------------->
+        <div id="home" class="current">
+            <div class="toolbar">
+                <h1>HOME</h1>
+            </div>
+            <ul class="rounded">
+				<li><span class="menutitle">VDR</span></li>
+                <li class="arrow"><a id="categories_but" href="#"><img class="menuicon" src="img/tv.png" /><span class="menuname">Watch TV</span></a></li>
+                <li class="arrow"><a id="recording_but" href="#"><img class="menuicon" src="img/record.png" /><span class="menuname">Recordings</span></a></li>
+                <li class="arrow"><a id="timers_but" href="#"><img class="menuicon" src="img/timers.png" /><span class="menuname">Timers</span></a></li>
+				<li class="arrow"><a id="epg_but" href="#"><img class="menuicon" src="img/epg.png" /><span class="menuname">Program Guide</span></a></li>
+            </ul>
+			<ul class="rounded">
+				<li><span class="menutitle">FILES</span></li>
+                <li class="arrow"><a id="video_but" href="#browser"><img class="menuicon" src="img/video.png" /><span class="menuname">Video</span></a></li>
+                <li class="arrow"><a id="audio_but" class="cube" href="#audio"><img class="menuicon" src="img/audio.png" /><span class="menuname">Audio</span></a></li>
+            </ul>
+        </div>
+	 <!----------------------------------/ HOME SCREEN ---------------------------------->
+	 <!---------------------------------- CHAN CATEGORY SCREEN ---------------------------------->
+        <!----------------------------------categories------------------------------>
+		<div id="categories">
+            <div class="toolbar">
+                <a href="#" class="back">Home</a>
+                <h1><img class="menuicon" src="img/tv.png" /> CATEGORIES</h1>
+            </div>
+            <ul id="cat_menu" class="rounded">
+			</ul>
+        </div>
+	<!----------------------------------channels------------------------------>
+		<div id="channels">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button">Home</a>
+                <h1><img class="menuicon" src="img/tv.png" /> CHANNELS</h1>
+			</div>
+			<ul id="chan_menu" class="rounded">
+			</ul>
+		</div>
+	<!---------------------------------- /CHAN CATEGORY SCREEN ---------------------------------->
+	<!---------------------------------- STREAM SCREEN ---------------------------------->
+		<!------------------------ tv start stream ----------------------------------------->
+		<div id="streamchannel">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button">Home</a>
+                <h1><img class="menuicon" src="img/tv.png" />Channel</h1>
+			</div>
+			<center><ul class="thumb" style="width:90px"><img class="thumbnail" id="thumbnail" src="" /></ul></center>
+			<ul class="streaminfo">
+			<li><span class="name_now"></span>
+			<span class="epgtime_now"></span>
+			<span class="desc_now"></span></li>
+			<li>
+			<span class="name_next"></span>
+			<span class="epgtime_next"></span></li>
+			</ul>
+			<center>
+			<br>
+			<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="cube"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="cube">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>
+			<br><br>
+			</center>
+			<div rel="dataholder" style="visibility:hidden">
+                <span rel="type"></span>
+                <span rel="url"></span>
+            </div>			
+		</div>
+		
+		<div id="streamrec">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button">Home</a>
+                <h1>Recordings</h1>
+			</div>
+			<center><ul class="thumb" style="width:90px"><img class="thumbnail" id="thumbnail" src="" /></ul></center>
+			<ul class="streaminfo">
+				<li>
+					<span class="name_now"></span>
+					<span class="epgtime_now"></span>
+					<span class="desc_now"></span>
+				</li>
+			</ul>
+			<center><br>
+			<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="cube"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="cube">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>
+			<br><br>
+			</center>
+			<div rel="dataholder" style="visibility:hidden">
+                <span rel="type"></span>
+                <span rel="url"></span>
+            </div>	
+		</div>
+		<div id="streamvid">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button">Home</a>
+                <h1>Video</h1>
+			</div>
+			<center><ul class="thumb" style="width:190px;"><img class="thumbnail" id="thumbnail" src="" /></ul></center>
+			<ul class="streaminfo">
+				<li>
+					<span class="name_now"></span>
+					<span class="epgtime_now"></span>
+					<span class="desc_now"></span>
+				</li>
+			</ul>
+			<center><br>
+			<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="cube"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="cube">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>
+			<br><br>
+			</center>
+			<div rel="dataholder" style="visibility:hidden">
+                <span rel="type"></span>
+                <span rel="url"></span>
+            </div>	
+		</div>
+
+		<div id="streaming">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button">Home</a>
+                <h1></h1>
+			</div>
+			<center><ul class="thumb" id="player"><img class="thumbnail" id="thumbnail" src="" /></ul></center>
+			<ul class="streamstatus">
+				<span class="title">Status</span>
+				<span class="mode"></span>
+			</ul>
+			<ul class="streaminfo">
+			</ul>
+			<center>
+				<span class="streamButton"><a rel="stopbroadcast" href="#">Stop stream</a></span>
+				<span class="recButton"><a rel="rec" href="#">Rec.</a></span>
+				<br><br>
+			</center>
+			<div rel="dataholder" style="visibility:hidden">
+                <span rel="session"></span>
+				<span rel="name"></span>
+				<span rel="thumbwidth"></span>
+				<span rel="thumbheight"></span>
+            </div>						
+		</div>		
+		
+		<!---------------------------------- /STREAM SCREEN ---------------------------------->
+		<!---------------------------------- TIMERS SCREEN ---------------------------------->
+		
+		<div id="timers">
+			<div class="toolbar">
+			<a href="#" class="back">Home</a>
+				<h1><img class="menuicon" src="img/timers.png" /> TIMERS</h1>
+			</div>
+			<div class="info" id="timer_status"></div>
+			<ul class="rounded" rel="timers">
+			</ul>
+			<ul class="rounded">
+			<li class="arrow"><a href="#" rel="new"><span class="menuname">New Timer</span></a></li>
+			</ul>
+		</div>
+		
+		<div id="edittimer">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button slideup">Home</a>
+                <h1></h1>
+			</div>
+			<form name="timer" id="timer" action="">
+			<ul class="rounded">
+				<li><span class="timertitle">Active</span><span class="toggle"><input id="timer_active" name="timer_active" type="checkbox" /></span></li>
+			</ul>
+			<ul class="rounded" rel="name">
+				<li><span class="timertitle">Name</span></li>
+				<li class="formerror" id="timer_name_error"><span class="formerrormsg">Recording name is missing</span></li>
+				<li><input type="text" name="name" placeholder="Enter recording name" id="timer_name" style="color: #FFFFFF" /></li>
+			</ul>
+			<ul class="rounded" rel="channel">
+				<li>
+					<span class="timertitle">Channel</span>
+				</li>
+				<li>
+					<select id="timer_chan">
+					</select>
+				</li>
+			</ul>
+			<ul class="rounded" rel="date">
+				<li><span class="timertitle">Date</span></li>
+				<li class="formerror" id="timer_date_error"><span class="formerrormsg">Date is missing</span></li>
+				<li class="arrow"><a id="a_date" class="abutton" href="#" onClick="$('#timer_date_error').hide();"><span class="menuname" id="layer_date">Select date</span></a></li>
+				
+			</ul>
+			<ul class="rounded" rel="stime">
+				<li><span class="timertitle">Start time</span></li>
+				<li class="formerror" id="timer_starttime_error"><span class="formerrormsg">Starting time is missing</span></li>
+				<li class="arrow"><a id="a_starttime" class="abutton" href="#" onClick="$('#timer_starttime_error').hide();"><span class="menuname" id="layer_starttime">Select start time</span></a></li>
+				
+			</ul>
+			<ul class="rounded" rel="etime">
+				<li><span class="timertitle">End time</span></li>
+				<li class="formerror" id="timer_endtime_error"><span class="formerrormsg">Ending time is missing</span></li>
+				<li class="arrow"><a id="a_endtime" class="abutton" href="#" onClick="$('#timer_endtime_error').hide();"><span class="menuname" id="layer_endtime">Select end time</span></a></li>
+			</ul>
+			<input name="timer_id" type="hidden" id="timer_id" value="" />
+			<input name="timer_date" type="hidden" id="timer_date" value="" />
+			<input name="timer_starttime" type="hidden" id="timer_starttime" value="" />
+			<input name="timer_endtime" type="hidden" id="timer_endtime" value="" />
+			</form>
+		</div>
+		<!---------------------------------- /TIMERS SCREEN ---------------------------------->
+		<!---------------------------------- AUDIO ---------------------------------------->
+		<div id="audio">
+			<div class="toolbar">
+			<a href="#" class="back">Home</a>
+                <h1><img class="menuicon" src="img/audio.png" /> Audio</h1>
+			</div>
+			<ul class="rounded">
+                <li class="arrow"><a class="cube" href="#audio"><span class="menuname">Album1</span></a></li>
+                <li class="arrow"><a class="cube" href="#audio"><span class="menuname">Album2</span></a></li>
+                <li class="track"><div class="numberbox"><span class="number">1</span></div><a class="cube" href="#startstream"><span class="tracktitle">track1.mp3</span></a><div class="timebox"><span class="time">2:35</span></div></li>
+				<li class="track"><div class="numberbox"><span class="number">2</span></div><a class="cube" href="#startstream"><span class="tracktitle">track2.mp3</span></a><div class="timebox"><span class="time">1:12</span></div></li>
+				<li class="track"><div class="numberbox"><span class="number">3</span></div><a class="cube" href="#startstream"><span class="tracktitle">track3.mp3</span></a><div class="timebox"><span class="time">3:25</span></div></li>
+				<li class="track"><div class="numberbox"><span class="number">4</span></div><a class="cube" href="#startstream"><span class="tracktitle">track4.mp3</span></a><div class="timebox"><span class="time">4:02</span></div></li>
+            </ul>
+		</div>
+		<!---------------------------------- /AUDIO ---------------------------------------->	
+	</div>
+    </body>
+</html>
