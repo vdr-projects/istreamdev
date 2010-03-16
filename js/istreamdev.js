@@ -167,7 +167,7 @@ function gen_categories() {
 //Gen Channels
 function gen_channels(category) {
 		$("#chan_menu").html('');
-		var dataString = "action=getTvChan&cat=" + (category);
+		var dataString = "action=getTvChan&cat='" + category + "'";
 		//Json call to get category array
 		$.getJSON("bin/backend.php",
 		dataString,
@@ -324,7 +324,7 @@ function gen_streaming(session) {
 
 //Start broadcast
 function start_broadcast(type,url,mode) {
-     var dataString = 'action=startBroadcast&type='+type+'&url='+url+'mode='mode;
+     var dataString = 'action=startBroadcast&type='+type+'&url='+url+'&mode=' + mode;
 	 $.getJSON("bin/backend.php",
 	 dataString,
 	 function(data){
