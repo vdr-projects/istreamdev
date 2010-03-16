@@ -397,7 +397,7 @@ function playvideo(session,name) {
 
 //	[BROWSER SECTION]
 //buttons
-$('ul[rel="filelist"] li a').tap(function(event) {
+$('ul[rel="filelist"] li[class="arrow"] a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	var type = $(this).attr('rel');
@@ -432,10 +432,13 @@ $('ul[rel="filelist"] li a').tap(function(event) {
 	else if ( type == "audio" )
 		{
 		var track = $(this).find('span[class="number"]').html();
-		addplayer(path,name,track);
-		}	
+		addplayer(path,name,track,(browser-1));
+		}
 	return false;
 });
+
+
+
 
 $('div[rel="browser"] a[class="back"]').tap(function(event) {
 	event.preventDefault();
@@ -450,6 +453,8 @@ $('div[rel="browser"] #home_but').tap(function(event) {
 			
 		});
 });
+
+
 
 //Generate browser div according to type
 function gen_browser(path,browser,name,foldertype) {
@@ -507,7 +512,7 @@ function gen_browser(path,browser,name,foldertype) {
 				$("#browser" + browser).find('ul').append('<li class="arrow"><a href="#" rel="video"><img class="menuicon" src="img/video.png" /><span class="menuname">' + list.name + '</span></a></li>');	
 				}
 				else if ( list.type == "audio" ) {
-				$("#browser" + browser).find('ul').append('<li class="track"><a href="" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle">' + list.name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
+				$("#browser" + browser).find('ul').append('<li class="track"><a href="javascript:document.player.Play();" onclick="addplayer(this);" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle">' + list.name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
 				}
 			});
 			json_complete('#browser' + browser,'cube');
@@ -515,26 +520,36 @@ function gen_browser(path,browser,name,foldertype) {
 }
 
 //Add audio player code when needed
-function addplayer(path,name,track) {
-	$('#div_player').remove();
-	$('#jqt').append('<div style="position:absolute; left:0; top:0" name="div_player" id="div_player">');
+function addplayer(button) {
+	json_start(button);
+	var name = $(button).find('span[class="tracktitle"]').html();
+	var path = $(button).parents('div').find('span[rel="path"]').html();
+	var browser = $(button).parents('div').find('span[rel="currentbrowser"]').html();
+	browser = parseInt(browser);
+	$('#browser'+browser+' #div_player').remove();
+	$('#browser'+browser).append('<div style="position:absolute; left:0; top:0" name="div_player" id="div_player"></div>');
 	//get playlist data
 	dataString = 'action=streamAudio&path=' + path + '&file=' + name;
-	$.getJSON("bin/backend.php",
-	dataString,
-	function(data) {
-	track = data.track;
-	playercode= "<embed target='myself' src='" + escape(track[track.length-1].file) + "' width='0' height='0' autoplay='true' name='player' type='audio/mp3' loop='true' controller='false' "; 
-	for ( var i=track.length-1; i>1; i-=1 ){
-		playercode += "qtnext" + i + "='<" + escape(track[i].file) + ">' ";
+	$.ajax({
+	url: "bin/backend.php",
+	dataType: 'json',
+	data: dataString,
+	async: false,
+	success: function(json) {
+		var track = json.track;
+		playercode = "<embed id='musicplayer' enablejavascript='true' id='musicplayer' src='" + track[0].file + "' width='0' height='0' autoplay='false' name='player' type='audio/mp3' loop='true' controller='false'"; 
+		for ( var i=1; i<track.length; i+=1 ) {
+			qtattr = "'<" + track[i].file + ">'";
+			playercode += "qtnext" + i + "=" + qtattr;
+			}
+		playercode += "></embed>";
+		$('#div_player').html(playercode);
+		hide_loader();
+		return true;
 		}
-	playercode+= "></embed>"; 
-	$('#div_player').html(playercode);
-	hide_loader();
-	$('#div_player player').play();
+
 	});
 }
-
 //	[/BROWSER SECTION]
 
 //  [TIMER SECTION]

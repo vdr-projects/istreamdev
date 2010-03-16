@@ -276,7 +276,7 @@ li.track a .numberbox {
 position: relative;
 width: 23px;
 height: 42px;
-top: -10px;
+top: -12px;
 display: block;
 float: left;
 margin-right: 3px;
@@ -299,7 +299,7 @@ li.track a div.timebox {
 position: relative;
 width: 30px;
 height: 42px;
-top: -38px;
+top: -12px;
 display: block;
 float: right;
 margin-left: 3px;
@@ -309,7 +309,7 @@ border-left: 1px solid #333333;
 li.track a .time {
 position: absolute;
 color: #9c9ea0;
-top: 13px;
+top: 12px;
 left: 5px;
 font-size: 14px;
 }
