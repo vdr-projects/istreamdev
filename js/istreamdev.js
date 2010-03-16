@@ -324,7 +324,7 @@ function gen_streaming(session) {
 
 //Start broadcast
 function start_broadcast(type,url,mode) {
-     var dataString = 'action=startBroadcast&type='+type+'&url='+url;
+     var dataString = 'action=startBroadcast&type='+type+'&url='+url+'mode='mode;
 	 $.getJSON("bin/backend.php",
 	 dataString,
 	 function(data){
