@@ -122,7 +122,7 @@ function vdrgetcategories()
 	return $catlist;
 }
 
-function vdrgetchannels($category = "", $now)
+function vdrgetchannels($category, $now)
 {
         global $vdrchannels;
 
@@ -141,6 +141,8 @@ function vdrgetchannels($category = "", $now)
 		return $chanlist;
         }
 
+	$cat_found = 0;
+
 	while ($line = fgets($fp, 1024))
 	{
 		if (!$cat_found)
@@ -156,8 +158,8 @@ function vdrgetchannels($category = "", $now)
 				$cat = substr($cat, strlen($cat[0])+1);
 			}
 
-			if ($cat = $category)
-				$cat_found = TRUE;
+			if ($cat == $category)
+				$cat_found = 1;
 		}
 		else if ($line[0] != "")
 		{
