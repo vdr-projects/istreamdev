@@ -165,6 +165,10 @@ function vdrgetchannels($category, $now)
 
 	$cat_found = 0;
 
+	// Get NOW epg
+	if ($now)
+		$epgnow = vdrsendcommand("LSTE NOW");
+
 	while ($line = fgets($fp, 1024))
 	{
 		if (!$cat_found)
@@ -197,8 +201,40 @@ function vdrgetchannels($category, $now)
 			$tmpchan['number'] = vdrgetchannum($channame);
 			if ($now)
 			{
-				$info = vdrgetchaninfo($tmpchan['number']);
-				$tmpchan['now_title'] = $info['now_title'];
+				// Extract now
+				$chanfound = 0;
+				$count = count($epgnow);
+				$info = "";
+				for ($i = 0; $i < $count; $i++)
+				{
+					// Find the right chan (take the first one)
+					if ($chanfound == 0)
+					{
+						if (strstr($epgnow[$i], $channame) == $channame)
+							$chanfound = 1;
+					}
+					else
+					{
+						// Now find T or C
+						if(ereg("^C", $epgnow[$i]))
+						{
+							if (!strstr($epgnow[$i], $channame) == $channame)
+							{
+								$chanfound = 0;
+								continue;
+							}
+						}
+						else if(ereg("^T", $epgnow[$i]))
+						{
+							$info=substr($epgnow[$i], 2);
+							if (!is_utf8($info))
+								$info = utf8_encode($info);
+							break;
+						}
+					}
+				}
+
+				$tmpchan['now_title'] = $info;
 			}
 			$chanlist[] = $tmpchan;
 		}
