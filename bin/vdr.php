@@ -1,5 +1,5 @@
 <?php
-include ('./svdrp.php');
+include ('./svdrp_old.php');
 
 function getGlobals()
 {
@@ -16,6 +16,50 @@ function getGlobals()
 
 function getTvCat()
 {
+	$ret = array();
+	$ret['categories'] = vdrgetcategories();
+	
+	return json_encode($ret);
+}
+
+function getFullChanList()
+{
+	$catlist = array();
+
+	// Get all categories
+	$categories = vdrgetcategories();
+
+	// For all categories
+	$count = count($categories);
+	for ($i = 0; $i < $count; $i++)
+	{
+		$tmpcat = array();
+
+		$tmpcat['name'] = $categories[$i]['name'];
+		$tmpcat['channel'] = vdrgetchannels($tmpcat['name'], 0);
+
+		$catlist[] = $tmpcat;
+	}
+
+	$ret = array();
+	$ret['category'] = $catlist;
+
+	return json_encode($ret);
+}
+
+function getTvChan($cat = "")
+{
+	$ret = array();
+	$ret['channel'] = vdrgetchannels($cat, 1);
+
+	return json_encode($ret);
+}
+
+
+/********************* LOCAL ************************/
+
+function vdrgetcategories()
+{
 	global $vdrchannels;
 
 	$catlist = array();
@@ -23,16 +67,14 @@ function getTvCat()
 	if (!file_exists($vdrchannels))
 	{
 		print "Error: channels file not found";
-		$ret['categories'] = $catlist;
-		return json_encode($ret);
+		return $catlist;
 	}
 
 	$fp = fopen ($vdrchannels,"r");
 	if (!fp)
 	{
 		print "Unable to open channels file";
-		$ret['categories'] = $catlist;
-		return json_encode($ret);
+		return $catlist;
 	}
 
 	$curcat = "";
@@ -43,7 +85,7 @@ function getTvCat()
 		// Check if it is a categorie
 		if ($line[0] == ":")
 		{
-			// Close current cat
+			// Close current category
 			if ($curcat != "")
 			{
 				$tmpcat = array();
@@ -77,11 +119,72 @@ function getTvCat()
 
         fclose($fp);
 
-	$ret['categories'] = $catlist;
-	return json_encode($ret);
+	return $catlist;
+}
+
+function vdrgetchannels($category = "", $now)
+{
+        global $vdrchannels;
+
+	$chanlist=array();
+
+        if (!file_exists($vdrchannels))
+        {
+                print "Error: channels file not found";
+                return $chanlist;
+        }
+
+        $fp = fopen ($vdrchannels,"r");
+        if (!fp)
+        {
+                print "Unable to open channels file";
+		return $chanlist;
+        }
+
+	while ($line = fgets($fp, 1024))
+	{
+		if (!$cat_found)
+		{
+			if ($line[0] != ":")
+				continue;
+
+			// Get category name			
+			$cat = substr($line, 1, -1);
+			if($cat[0] == '@')
+			{
+				$catarray = explode(' ', $cat);
+				$cat = substr($cat, strlen($cat[0])+1);
+			}
+
+			if ($cat = $category)
+				$cat_found = TRUE;
+		}
+		else if ($line[0] != "")
+		{
+			if ($line[0] == ":")
+				break;
+
+			$channame = explode(":", $line);
+			$channame = explode(";", $channame[0]);
+			$channame = $channame[0];
+
+			$tmpchan = array();
+			$tmpchan['name'] = $channame;
+			$tmpchan['number'] = vdrgetchannum($channame);
+			if ($now)
+				$tmpchan['now_title'] = vdrgetchannow($channame);
+			$chanlist[] = $tmpchan;
+		}
+	}
+
+	fclose($fp);
+
+	return $chanlist;
 }
 
 
+
+/********************* LOCAL ************************/
 
 function vdrsendcommand($cmd)
 {
@@ -94,6 +197,85 @@ function vdrsendcommand($cmd)
 
 	return $ret;
 }
+
+
+function vdrgetchannum($chan = "NULL")
+{
+	global $channels;
+
+	if ($channels == "")
+		$channels = vdrsendcommand("LSTC");
+
+	// Get channel number
+	$chans = preg_grep(quotemeta('"'.$chan.';|'.$chan.':"'), $channels);
+
+	$chans = explode(" ", $chans[key($chans)]);
+	$channum = $chans[0];
+
+	return $channum;
+}
+
+function vdrgetchannow($channame)
+{
+	global $allepg, $allepgfilled;
+
+	// Fill epg if not yet done
+	if ($allepgfilled == 0)
+	{
+		$allepg = vdrsendcommand("LSTE NOW");
+		$allepgfilled = 1;
+	}
+
+	$chanfound = 0;
+	$epgtitle="";
+	
+	// For all epg
+	$count = count($allepg);
+	for ($i = 0; $i < $count; $i++)
+	{
+		// Find the right chan (take the first one)
+		if ($chanfound == 0)
+		{
+			if(!ereg("^C", $allepg[$i]))
+				continue;
+
+			if (strstr($allepg[$i], $channame) == $channame)
+				$chanfound = 1;
+		}
+		else
+		{
+			// Now find T or C
+			if(ereg("^C", $allepg[$i]))
+			{
+				if (strstr($allepg[$i], $channame) != $channame)
+				{
+					$chanfound = 0;
+					continue;
+				}
+			}
+			else if(ereg("^T", $allepg[$i]))
+			{
+				$epgtitle = substr($allepg[$i], 2);
+				break;
+			}
+		}
+	}
+	
+	// Convert if needed
+	if (!is_utf8($epgtitle))
+		$epgtitle = utf8_encode($epgtitle);
+
+	return $epgtitle;
+}
+
+
+
+
+
+
+
+
+
 
 function vdrgetinfostream($stream = "NULL", $ischan = 1)
 {
@@ -216,20 +398,6 @@ function vdrgettimerinfo($timernum=-1)
 	return array($type, $channame, $date, $stime, $etime, $desc);
 }
 
-function vdrgetchannum($chan = "NULL")
-{
-	$channels = vdrsendcommand("LSTC");
-
-	// Get channel number
-	$channels = preg_grep(quotemeta('"'.$chan.';|'.$chan.':"'), $channels);
-	reset($channels);
-
-	$channels = explode(" ", $channels[key($channels)]);
-	$channum = $channels[0];
-
-	return $channum;
-}
-
 function vdrgetchanname($channum = 0)
 {
 	$channel = vdrsendcommand("LSTC " .$channum);
@@ -241,49 +409,6 @@ function vdrgetchanname($channum = 0)
 	$channame = substr($channame, strlen($channum)+1);
 
         return $channame;
-}
-
-
-function vdrlistcategories()
-{
-	global $vdrchannels;
-
-	// All chans
-	print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('All');\"><span class=\"name\">All channels</span><span class=\"arrow\"></span></a></li>\r\n";
-	print "<form name=\"All channels\" id=\"All\" method=\"post\" action=\"index.php\"><input name=\"action\" type=\"hidden\" id=\"action\" value=\"listchannels\"/><input name=\"cat\" type=\"hidden\" id=\"cat\" value=\"All\" /></form>\r\n";
-
-	if (!file_exists($vdrchannels))
-	{
-		print "Error: channels file not found";
-		return;
-	}
-
-	$fp = fopen ($vdrchannels,"r");
-	if (!fp)
-	{
-		print "Unable to open channels file";
-		return;
-	}
-	while ($line = fgets($fp, 1024))
-	{
-		// Check if it is a categorie
-		if ($line[0] == ":")
-		{
-			// Remove : and @
-			$cat = substr($line, 1, -1);
-			if($cat[0] == '@')
-			{
-				$cat_array = explode(' ', $cat);
-				$cat = substr($cat, strlen($cat_array[0])+1);
-			}
-			
-			$cat2 = addslashes($cat);
-				
-                        print "<li class=\"menu\"><a class=\"noeffect\" href=\"javascript:sendForm('$cat2');\"><span class=\"name\">$cat</span><span class=\"arrow\"></span></a></li>\r\n";
-                        print "<form name=\"$cat\" id=\"$cat\" method=\"post\" action=\"index.php\"><input name=\"action\" type=\"hidden\" id=\"action\" value=\"listchannels\"/><input name=\"cat\" type=\"hidden\" id=\"cat\" value=\"$cat\" /></form>\r\n";
-                }
-        }
-        fclose($fp);
 }
 
 function vdrlistchannels($category = "NULL")

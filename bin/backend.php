@@ -6,6 +6,7 @@ if (file_exists('../config.php'))
 	include ('../config.php');
 else
 	include ('../config_default.php');
+include ('./utils.php');
 include ('./vdr.php');
 
 $action=$_REQUEST['action'];
@@ -22,12 +23,12 @@ switch ($action)
 		break;
 		
 		case ("getFullChanList"):
-		$tree = file_get_contents("textfiles/getFullChanList.txt");
+		$tree = getFullChanList();
 		print $tree;
 		break;
 		
 		case ("getTvChan"):
-		$tree = file_get_contents("textfiles/getTvChan.txt");
+		$tree = GetTvChan($_REQUEST['cat']);
                 print $tree;
 		break;
 		
