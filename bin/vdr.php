@@ -177,7 +177,7 @@ function vdrgetchannels($category, $now)
 			if($cat[0] == '@')
 			{
 				$catarray = explode(' ', $cat);
-				$cat = substr($cat, strlen($cat[0])+1);
+				$cat = substr($cat, strlen($catarray[0])+1);
 			}
 
 			if ($cat == $category)
