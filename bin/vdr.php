@@ -47,7 +47,7 @@ function getFullChanList()
 	return json_encode($ret);
 }
 
-function getTvChan($cat = "")
+function getTvChan($cat)
 {
 	$ret = array();
 	$ret['channel'] = vdrgetchannels($cat, 1);
@@ -55,8 +55,30 @@ function getTvChan($cat = "")
 	return json_encode($ret);
 }
 
+function getChanInfo($channum)
+{
+	$ret = array();
+	
+	$info = array();
+	$ret['program'] = vdrgetchaninfo($channum);
+
+	return json_encode($ret);
+}
+
 
 /********************* LOCAL ************************/
+
+function vdrsendcommand($cmd)
+{
+        global $svdrpip, $svdrpport;
+
+        $svdrp = new SVDRP($svdrpip, $svdrpport);
+        $svdrp->Connect();
+        $ret = $svdrp->Command($cmd);
+        $svdrp->Disconnect();
+
+        return $ret;
+}
 
 function vdrgetcategories()
 {
@@ -174,7 +196,10 @@ function vdrgetchannels($category, $now)
 			$tmpchan['name'] = $channame;
 			$tmpchan['number'] = vdrgetchannum($channame);
 			if ($now)
-				$tmpchan['now_title'] = vdrgetchannow($channame);
+			{
+				$info = vdrgetchaninfo($tmpchan['number']);
+				$tmpchan['now_title'] = $info['now_title'];
+			}
 			$chanlist[] = $tmpchan;
 		}
 	}
@@ -184,24 +209,7 @@ function vdrgetchannels($category, $now)
 	return $chanlist;
 }
 
-
-
-/********************* LOCAL ************************/
-
-function vdrsendcommand($cmd)
-{
-	global $svdrpip, $svdrpport;
-
-	$svdrp = new SVDRP($svdrpip, $svdrpport);
-	$svdrp->Connect();
-        $ret = $svdrp->Command($cmd);
-	$svdrp->Disconnect();
-
-	return $ret;
-}
-
-
-function vdrgetchannum($chan = "NULL")
+function vdrgetchannum($chan)
 {
 	global $channels;
 
@@ -217,58 +225,104 @@ function vdrgetchannum($chan = "NULL")
 	return $channum;
 }
 
-function vdrgetchannow($channame)
+function vdrgetchanname($channum)
 {
-	global $allepg, $allepgfilled;
+        $channel = vdrsendcommand("LSTC " .$channum);
 
-	// Fill epg if not yet done
-	if ($allepgfilled == 0)
-	{
-		$allepg = vdrsendcommand("LSTE NOW");
-		$allepgfilled = 1;
-	}
+        // Get channel name
+        $chanarray = explode(":", $channel);
+        $chanarray = explode(";", $chanarray[0]);
+        $channame = $chanarray[0];
+        $channame = substr($channame, strlen($channum)+1);
 
-	$chanfound = 0;
-	$epgtitle="";
-	
+        return $channame;
+}
+
+function vdrgetchaninfo($channum)
+{
+	$info = array();
+
+	$info['name'] = vdrgetchanname($channum);
+	$info['number'] = $channum;
+	list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetchanepg($channum, 1);
+	list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetchanepg($channum, 0);
+
+	return $info;
+}
+
+function vdrgetchanepg($channum, $now)
+{
+	if ($now)
+		$cmd = "LSTE " .$channum ." NOW";
+	else
+		$cmd = "LSTE " .$channum ." NEXT";
+
+	$epg = vdrsendcommand($cmd);
+
+	$time="";
+	$title="";
+	$desc="";
+
 	// For all epg
-	$count = count($allepg);
+	$count = count($epg);
 	for ($i = 0; $i < $count; $i++)
 	{
-		// Find the right chan (take the first one)
-		if ($chanfound == 0)
+		if(ereg("^T ", $epg[$i]))
+			$title = substr($epg[$i], 2);
+		else if(ereg("^D ", $epg[$i]))
+			$desc = substr($epg[$i], 2);
+		else if(ereg("^E ", $epg[$i]))
 		{
-			if(!ereg("^C", $allepg[$i]))
-				continue;
+			$time = substr($epg[$i], 2);
+			$timearray = explode(" ", $time);
 
-			if (strstr($allepg[$i], $channame) == $channame)
-				$chanfound = 1;
-		}
-		else
-		{
-			// Now find T or C
-			if(ereg("^C", $allepg[$i]))
-			{
-				if (strstr($allepg[$i], $channame) != $channame)
-				{
-					$chanfound = 0;
-					continue;
-				}
-			}
-			else if(ereg("^T", $allepg[$i]))
-			{
-				$epgtitle = substr($allepg[$i], 2);
-				break;
-			}
+			$time = date('H\hi', $timearray[1]) ."-" .date('H\hi', $timearray[1]+$timearray[2]);
 		}
 	}
 	
 	// Convert if needed
-	if (!is_utf8($epgtitle))
-		$epgtitle = utf8_encode($epgtitle);
+	if (!is_utf8($title))
+		$title = utf8_encode(title);
+	if (!is_utf8($desc))
+		$desc = utf8_encode($desc);
 
-	return $epgtitle;
+	return array($time, $title, $desc);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -398,19 +452,6 @@ function vdrgettimerinfo($timernum=-1)
 	$channame = vdrgetchanname($channel);
 	
 	return array($type, $channame, $date, $stime, $etime, $desc);
-}
-
-function vdrgetchanname($channum = 0)
-{
-	$channel = vdrsendcommand("LSTC " .$channum);
-
-	// Get channel name
-	$chanarray = explode(":", $channel);
-	$chanarray = explode(";", $chanarray[0]);
-	$channame = $chanarray[0];
-	$channame = substr($channame, strlen($channum)+1);
-
-        return $channame;
 }
 
 function vdrlistchannels($category = "NULL")

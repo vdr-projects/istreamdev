@@ -33,7 +33,7 @@ switch ($action)
 		break;
 		
 		case ("getChanInfo"):
-		$tree = file_get_contents("textfiles/getChanInfo.txt");
+		$tree = getChanInfo($_REQUEST['chan']);
                 print $tree;
 		break;
 		
