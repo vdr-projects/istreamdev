@@ -167,7 +167,7 @@ function gen_categories() {
 //Gen Channels
 function gen_channels(category) {
 		$("#chan_menu").html('');
-		var dataString = "action=getTvChan&cat='" + category + "'";
+		var dataString = "action=getTvChan&cat=" + encodeURIComponent(category);
 		//Json call to get category array
 		$.getJSON("bin/backend.php",
 		dataString,
