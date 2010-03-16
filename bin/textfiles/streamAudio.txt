@@ -2,13 +2,13 @@
 	track:
 	[
 		{
-		"file": "/istreamdev/playlist/track1.mp3" 
+		"file": "http://alib.hd.free.fr/istreamdev2/playlist/track1.mp3" 
 		},
 		{    
-		"file": "/istreamdev/playlist/track2.mp3" 
+		"file": "http://alib.hd.free.fr/istreamdev2/playlist/track2.mp3" 
 		},
 		{    
-		"file": "/istreamdev/playlist/track3.mp3" 
+		"file": "http://alib.hd.free.fr/istreamdev2/playlist/track3.mp3" 
 		}
 	]
 }
