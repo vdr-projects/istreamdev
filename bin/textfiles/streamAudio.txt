@@ -1,5 +1,5 @@
 {
-	playlist:
+	track:
 	[
 		{
 		"file": "/istreamdev/playlist/track1.mp3" 

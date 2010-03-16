@@ -1,0 +1,36 @@
+{
+	"list":
+	[
+		{
+		"type": "folder",
+		"name": "album1",
+		"path": "/mnt/music/album1" 
+		},
+		{
+		"type": "folder",
+		"name": "album2",
+		"path": "/mnt/music/album2" 
+		},
+		{
+		"type": "audio",
+		"name": "audiofile.mp3",
+		"number": "1",
+		"length": "3.30",
+		"path": "/mnt/music/audiofile.mp3" 
+		},
+		{
+                "type": "audio",
+                "name": "audiofile2.mp3",
+                "number": "2",
+                "length": "2.27",
+                "path": "/mnt/music/audiofile2.mp3"
+                },
+		{
+                "type": "audio",
+                "name": "audiofile3.mp3",
+                "number": "3",
+                "length": "4.03",
+                "path": "/mnt/music/audiofile3.mp3"
+                }
+	]
+}

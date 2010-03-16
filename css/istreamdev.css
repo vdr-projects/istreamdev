@@ -272,7 +272,7 @@ height: 20px;
 padding: 0;
 }
 
-li.track .numberbox {
+li.track a .numberbox {
 position: relative;
 width: 23px;
 height: 42px;
@@ -283,7 +283,7 @@ margin-right: 3px;
 border-right: 1px solid #333333;
 -webkit-box-shadow: rgba(255,255,255,.1) 0 1px 0;
 }
-li.track .number {
+li.track a .number {
 position: absolute;
 color: #9c9ea0;
 top: 10px;
@@ -295,7 +295,7 @@ left: 32px;
 padding-left: 4px;
 top: -3px;
 }
-li.track div.timebox {
+li.track a div.timebox {
 position: relative;
 width: 30px;
 height: 42px;
@@ -306,7 +306,7 @@ margin-left: 3px;
 border-left: 1px solid #333333;
 -webkit-box-shadow: rgba(255,255,255,.1) 0 1px 0;
 }
-li.track .time {
+li.track a .time {
 position: absolute;
 color: #9c9ea0;
 top: 13px;

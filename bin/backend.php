@@ -105,8 +105,15 @@ switch ($action)
 		if ( $path == "/video/" ) {
 		$tree = file_get_contents("textfiles/browseFolder-rec.txt");
                 }
-		else {
+		else if ( $path == "/mnt/media/Videos/" ) {
 		$tree = file_get_contents("textfiles/browseFolder-vid.txt");
+		}
+		else if ( $path == "/mnt/media/Music/" ) {
+		$tree = file_get_contents("textfiles/browseFolder-aud.txt");
+		}
+		else
+		{
+		$tree = file_get_contents("textfiles/browseFolder-rec.txt");
 		}
 		print $tree;
 		break;

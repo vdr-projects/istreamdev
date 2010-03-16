@@ -120,6 +120,14 @@ $('#video_but').tap(function(event) {
 	gen_browser(video_path,browser,"Videos","vid");
 	return false;
 });
+
+$('#audio_but').tap(function(event) {
+	event.preventDefault();
+	json_start(this);
+	browser = 1;
+	gen_browser(audio_path,browser,"Audio","aud");
+	return false;
+});
 //	[/HOME SECTION]
 
 //	[TV SECTION]
@@ -389,11 +397,16 @@ function playvideo(session,name) {
 
 //	[BROWSER SECTION]
 //buttons
-$('ul[rel="filelist"] li.arrow a').tap(function(event) {
+$('ul[rel="filelist"] li a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	var type = $(this).attr('rel');
+	if ( type == 'audio' ) {
+	var name = $(this).find('span[class="tracktitle"]').html();
+	}
+	else {
 	var name = $(this).find('span[class="menuname"]').html();
+	}
 	var path = $(this).parents('div').find('span[rel="path"]').html();
 	var browser = $(this).parents('div').find('span[rel="currentbrowser"]').html();
 	var foldertype = $(this).parents('div').find('span[rel="foldertype"]').html();
@@ -412,6 +425,15 @@ $('ul[rel="filelist"] li.arrow a').tap(function(event) {
 		{
 		gen_streamvid(name,path);
 		}
+	else if ( type == "rec" )
+		{
+		gen_streamrec(name,path);
+		}
+	else if ( type == "audio" )
+		{
+		var track = $(this).find('span[class="number"]').html();
+		addplayer(path,name,track);
+		}	
 	return false;
 });
 
@@ -429,7 +451,7 @@ $('div[rel="browser"] #home_but').tap(function(event) {
 		});
 });
 
-//functions
+//Generate browser div according to type
 function gen_browser(path,browser,name,foldertype) {
 	browser_template = '<div class="toolbar"></div>';
 	browser_template += '<ul rel="filelist" class="rounded"></ul>';
@@ -440,26 +462,32 @@ function gen_browser(path,browser,name,foldertype) {
 	browser_template += '</div>';
 	$('#jqt').append('<div id="browser' + browser + '" rel="browser"></div>'),
 	$('#browser'+browser).html(browser_template);
-	if ( path == rec_path || path == video_path ) {
-	toolbar = '<a href="#" class="back">Home</a>';
-	if ( foldertype == 'rec' ){
+	if ( path == rec_path || path == video_path || path == audio_path ) {
+		toolbar = '<a href="#" class="back">Home</a>';
+		if ( foldertype == 'rec' ){
 		toolbar += '<h1><img class="menuicon" src="img/record.png" /> ' + name + '</h1>';
-	} 
-	else {
-		toolbar += '<h1><img class="menuicon" src="img/video.png" /> ' + name + '</h1>';
+		} 
+		else if ( foldertype == 'vid' ){
+			toolbar += '<h1><img class="menuicon" src="img/video.png" /> ' + name + '</h1>';
+		}
+		else if ( foldertype == 'aud' ){
+			toolbar += '<h1><img class="menuicon" src="img/audio.png" /> ' + name + '</h1>';
+		}
+		$('#browser' + browser + ' div[class="toolbar"]').html(toolbar);
 	}
-	$('#browser' + browser + ' div[class="toolbar"]').html(toolbar);
-	}
 	else {
-	toolbar = '<a href="#" class="back">Back</a>';
-	toolbar += '<a href="#home" id="home_but" class="button">Home</a>';
-	if ( foldertype == 'rec' ){
-		toolbar += '<h1><img class="menuicon" src="img/record.png" /> ' + name + '</h1>';
-	} 
-	else {
-		toolbar += '<h1><img class="menuicon" src="img/video.png" /> ' + name + '</h1>';
-	}
-	$('#browser' + browser + ' div[class="toolbar"]').html(toolbar);
+		toolbar = '<a href="#" class="back">Back</a>';
+		toolbar += '<a href="#home" id="home_but" class="button">Home</a>';
+		if ( foldertype == 'rec' ){
+			toolbar += '<h1><img class="menuicon" src="img/record.png" /> ' + name + '</h1>';
+		} 
+		else if ( foldertype == 'vid' ){
+			toolbar += '<h1><img class="menuicon" src="img/video.png" /> ' + name + '</h1>';
+		}
+		else if ( foldertype == 'aud' ){
+			toolbar += '<h1><img class="menuicon" src="img/audio.png" /> ' + name + '</h1>';
+		}
+		$('#browser' + browser + ' div[class="toolbar"]').html(toolbar);
 	}
 	var dataString = 'action=browseFolder&path='+path+'&browser=' + browser;
 	$.getJSON("bin/backend.php",
@@ -478,11 +506,34 @@ function gen_browser(path,browser,name,foldertype) {
 				else if ( list.type == "video" ) {
 				$("#browser" + browser).find('ul').append('<li class="arrow"><a href="#" rel="video"><img class="menuicon" src="img/video.png" /><span class="menuname">' + list.name + '</span></a></li>');	
 				}
+				else if ( list.type == "audio" ) {
+				$("#browser" + browser).find('ul').append('<li class="track"><a href="" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle">' + list.name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
+				}
 			});
 			json_complete('#browser' + browser,'cube');
     });
 }
 
+//Add audio player code when needed
+function addplayer(path,name,track) {
+	$('#div_player').remove();
+	$('#jqt').append('<div style="position:absolute; left:0; top:0" name="div_player" id="div_player">');
+	//get playlist data
+	dataString = 'action=streamAudio&path=' + path + '&file=' + name;
+	$.getJSON("bin/backend.php",
+	dataString,
+	function(data) {
+	track = data.track;
+	playercode= "<embed target='myself' src='" + escape(track[track.length-1].file) + "' width='0' height='0' autoplay='true' name='player' type='audio/mp3' loop='true' controller='false' "; 
+	for ( var i=track.length-1; i>1; i-=1 ){
+		playercode += "qtnext" + i + "='<" + escape(track[i].file) + ">' ";
+		}
+	playercode+= "></embed>"; 
+	$('#div_player').html(playercode);
+	hide_loader();
+	$('#div_player player').play();
+	});
+}
 
 //	[/BROWSER SECTION]
 
