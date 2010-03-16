@@ -1,15 +1,23 @@
 <?php
+
 header('Content-type: text/html');
+
+if (file_exists('../config.php'))
+	include ('../config.php');
+else
+	include ('../config_default.php');
+include ('./vdr.php');
+
 $action=$_REQUEST['action'];
 switch ($action)
         {
 	        case ("getGlobals"):
-		$tree = file_get_contents("textfiles/getGlobals.txt");
+		$tree = getGlobals();
 		print $tree;
 		break;
 
 		case ("getTvCat"):
-		$tree = file_get_contents("textfiles/getTvCat.txt");
+		$tree = getTvCat();
                 print $tree;
 		break;
 		
