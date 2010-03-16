@@ -28,7 +28,7 @@
                 <li class="arrow"><a id="categories_but" href="#"><img class="menuicon" src="img/tv.png" /><span class="menuname">Watch TV</span></a></li>
                 <li class="arrow"><a id="recording_but" href="#"><img class="menuicon" src="img/record.png" /><span class="menuname">Recordings</span></a></li>
                 <li class="arrow"><a id="timers_but" href="#"><img class="menuicon" src="img/timers.png" /><span class="menuname">Timers</span></a></li>
-				<li class="arrow"><a id="epg_but" href="#"><img class="menuicon" src="img/epg.png" /><span class="menuname">Program Guide</span></a></li>
+				<li class="arrow"><a id="epg_but" href="#epg"><img class="menuicon" src="img/epg.png" /><span class="menuname">Program Guide</span></a></li>
             </ul>
 			<ul class="rounded">
 				<li><span class="menutitle">FILES</span></li>
@@ -223,6 +223,49 @@
 			</form>
 		</div>
 		<!---------------------------------- /TIMERS SCREEN ---------------------------------->
+		<!------------------------------------ EPG ------------------------------------------->
+		<div id="epg">
+			<div class="toolbar">
+					<a href="#" class="back">Home</a>
+						<h1>EPG</h1>
+				</div>
+			<ul class="rounded">
+				<li class="arrow"><a href="#now"><span class="menuname">What's Now</span></a></li>
+				<li class="arrow"><a href="#at"><span class="menuname">What's At</span></a></li>
+				<li class="arrow"><a href="#on"><span class="menuname">What's On</span></a></li>
+			</ul>
+		</div>
+		
+		<div id="on">
+			<div class="toolbar">
+				<a href="#" class="back">Back</a>
+				<a href="#home" id="home_but" class="button slideup">Home</a>
+                <h1>WHAT'S ON</h1>
+			</div>
+			<form name="epg_chanselector" id="epg_chanselector" action="">
+				<ul class="rounded">
+					<li><span class="timertitle">Select a Channel</span></li>
+					<li><select id="epg_chan" onchange="epg_selectchan()">
+						<optgroup label="NATIONALES & TNT">
+							<option value="1">TF1</option>
+							<option value="2">FRANCE 2</option>
+							<option value="3">FRANCE 3</option>
+							<option value="4">FRANCE 4</option>
+							<option value="5">TV5</option>
+							<option value="6">M6</option>
+						</optgroup>
+						<optgroup label="DIVERTISSEMENT">
+							<option value="11">COMEDIE!</option>
+							<option value="12">13EME RUE</option>
+							<option value="13">FOX LIFE</option>
+						</optgroup>
+					</select>
+					</li>
+				</ul>
+			</form>	
+				
+		</div>
+		<!---------------------------------- /EPG --------------------------------------->
 	</div>
     </body>
 </html>

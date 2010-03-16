@@ -167,7 +167,7 @@ function gen_categories() {
 //Gen Channels
 function gen_channels(category) {
 		$("#chan_menu").html('');
-		var dataString = "action=getTvChan&cat=" + category;
+		var dataString = "action=getTvChan&cat=" + escape(category);
 		//Json call to get category array
 		$.getJSON("bin/backend.php",
 		dataString,
@@ -674,6 +674,7 @@ function gen_formchanlist() {
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data) {
+	$('#jqt').data('channellist',data);
 	$.each(data.category, function(i,category){
 		$('#timer_chan').append('<optgroup label="' + category.name + '">');
 			var catname = category.name;
@@ -740,3 +741,24 @@ function showStatus( timeout, message ) {
     } 
 }
 //  [/TIMER SECTION]
+
+//   [EPG SECTION]
+function gen_epgchanlist() {
+	data = $('#jqt').data('channellist');
+	$.each(data.category, function(i,category){
+		$('#epg_chan').append('<optgroup label="' + category.name + '">');
+			var catname = category.name;
+			$.each(category.channel, function(j, channel){
+				$('#epg_chan optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
+			});
+		$('#epg_chan').append('</optgroup>');
+		});
+}
+
+// check if chan is slected
+function epg_selectchan() {
+	selectedchan = $('#epg_chan').val();
+	alert(selectedchan);
+}
+
+//   [/EPG SECTION]
