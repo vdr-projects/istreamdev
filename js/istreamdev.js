@@ -239,7 +239,7 @@ function gen_streamchannel(channame,channumber) {
 }
 
 function gen_streamrec(folder,path) {
-	var dataString = "action=getRecInfo&rec=" + path + folder;
+	var dataString = "action=getRecInfo&rec=" + encodeURIComponent(path) + encodeURIComponent(folder);
 	//Json call to get rec info
 	$.getJSON("bin/backend.php",
 			dataString,
@@ -257,7 +257,7 @@ function gen_streamrec(folder,path) {
 }
 
 function gen_streamvid(filename,path) {
-	var dataString = "action=getVidInfo&file=" + path + filename;
+	var dataString = "action=getVidInfo&file=" + encodeURIComponent(path) + encodeURIComponent(filename);
 	//Json call to get rec info
 	$.getJSON("bin/backend.php",
 			dataString,
@@ -324,7 +324,7 @@ function gen_streaming(session) {
 
 //Start broadcast
 function start_broadcast(type,url,mode) {
-     var dataString = 'action=startBroadcast&type='+type+'&url='+url+'&mode=' + mode;
+     var dataString = 'action=startBroadcast&type='+type+'&url='+encodeURIComponent(url)+'&mode=' + mode;
 	 $.getJSON("bin/backend.php",
 	 dataString,
 	 function(data){
@@ -384,7 +384,7 @@ function playvideo(session,name) {
 	}
 	
 	var status_Start = function(session,prevmsg) {
-		dataString = "action=getStreamStatus&session=" + session + "&msg=" + prevmsg;
+		dataString = "action=getStreamStatus&session=" + session + "&msg=" + encodeURIComponent(prevmsg);
 		$.getJSON("bin/backend.php",
 		dataString,
 		function(data){	
@@ -494,7 +494,7 @@ function gen_browser(path,browser,name,foldertype) {
 		}
 		$('#browser' + browser + ' div[class="toolbar"]').html(toolbar);
 	}
-	var dataString = 'action=browseFolder&path='+path+'&browser=' + browser;
+	var dataString = 'action=browseFolder&path='+encodeURIComponent(path)+'&browser=' + browser;
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data) {
@@ -529,7 +529,7 @@ function addplayer(button) {
 	$('#browser'+browser+' #div_player').remove();
 	$('#browser'+browser).append('<div style="position:absolute; left:0; top:0" name="div_player" id="div_player"></div>');
 	//get playlist data
-	dataString = 'action=streamAudio&path=' + path + '&file=' + name;
+	dataString = 'action=streamAudio&path=' + encodeURIComponent(path) + '&file=' + encodeURIComponent(name);
 	$.ajax({
 	url: "bin/backend.php",
 	dataType: 'json',
@@ -718,7 +718,7 @@ $('.submit_form').tap(function(event) {
 		var timer_id = $("input#timer_id").val();
 		var timer_chan = $("select#timer_chan").val();
 		var timer_active = $("input#timer_active").val();
-		var dataString = 'action=editTimer&id=' + timer_id + '&active=' + timer_active + '&channumber=' + timer_chan + '&date=' + timer_date + '&starttime=' + timer_starttime + '&endtime=' + timer_endtime; 
+		var dataString = 'action=editTimer&id=' + timer_id + '&active=' + timer_active + '&name=' + encodeURIComponent(timer_name) + '&channumber=' + timer_chan + '&date=' + timer_date + '&starttime=' + timer_starttime + '&endtime=' + timer_endtime; 
 		$.getJSON("bin/backend.php",
 		dataString,
 		function(data) {
