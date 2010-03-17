@@ -75,6 +75,18 @@ function getRecInfo($rec)
 	return json_encode($ret);
 }
 
+function getVidInfo($file)
+{
+	$ret = array();
+
+	// Generate logo
+	generatelogo('vid', $file, '../ram/temp-logo.png');
+	
+	$ret['program'] = mediagetinfostream($file);
+
+	return json_encode($ret);
+}
+
 function startBroadcast($type, $url, $mode)
 {
 	$ret = array();

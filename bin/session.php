@@ -140,6 +140,13 @@ function sessiongetinfo($session)
 			list($channame, $info['name'], $info['desc'], $info['recorded']) = vdrgetrecinfo($url);
 			break;
 		case 'vid':
+			$infovid = mediagetinfostream($url);
+			$info['desc'] = $infovid['desc'];
+			$info['duration'] = $infovid['duration'];
+			$info['format'] = $infovid['format'];
+			$info['video'] = $infovid['video'];
+			$info['audio'] = $infovid['audio'];
+			$info['resiolution'] = $infovid['resiolution'];
 			break;
 	}
 

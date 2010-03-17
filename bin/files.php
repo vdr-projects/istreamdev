@@ -2,22 +2,21 @@
 
 function mediagetinfostream($stream)
 {
+	$info = array();
+
         // Get info
         $getid3 = new getID3;
         $fileinfo = $getid3->analyze($stream);
 
-        $title = "Media:";
-        $info = "Duration: <i>" .sec2hms($fileinfo['playtime_seconds']) ."</i><br>";
-        if ($fileinfo['fileformat'])
-                $info .= "Format: <i>" .$fileinfo['fileformat'] ."</i><br>";
-        if ($fileinfo['video']['codec'])
-                $info .= "Video: <i>" .$fileinfo['video']['codec'] ."</i><br>";
-        if ($fileinfo['audio']['codec'])
-                $info .= "Audio: <i>" .$fileinfo['audio']['codec'] ."</i><br>";
-        if ($fileinfo['video']['resolution_x'])
-                $info .= "Resolution: <i>" .$fileinfo['video']['resolution_x'] ."x" .$fileinfo['video']['resolution_y'] ."</i><br>";
+	$info['name'] = basename($stream);
+	$info['desc'] = "";
+	$info['duration'] = sec2hms($fileinfo['playtime_seconds']);
+	$info['format'] = $fileinfo['fileformat'];
+	$info['video'] = $fileinfo['video']['codec'];
+	$info['audio'] = $fileinfo['audio']['codec'];
+	$info['resolution'] = $fileinfo['video']['resolution_x'] ."x" .$fileinfo['video']['resolution_y'];
 
-        return array($title, $info);
+	return $info;
 }
 
 function mediagentb($stream, $dest)
@@ -64,12 +63,12 @@ function mediagentb($stream, $dest)
 	}
 
 	if ($file)
-		exec("cp \"" .$file ."\" ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ram/stream-tb-tmp.jpg -s " .$resx ."x" .$resy ." " .$dest ." ; rm ram/stream-tb-tmp.jpg");
+		exec("cp \"" .$file ."\" ../ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ../ram/stream-tb-tmp.jpg -s " .$resx ."x" .$resy ." " .$dest ." ; rm ../ram/stream-tb-tmp.jpg");
 	else
 	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s " .$resx ."x" .$resy ." -f mjpeg " .$dest);
 
 	if (!file_exists($dest))
-		exec('cp logos/nologoMEDIA.png ' .$dest);
+		exec('cp ../logos/nologoMEDIA.png ' .$dest);
 }
 
 function mediagetwidth($file)

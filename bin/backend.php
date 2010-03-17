@@ -6,6 +6,7 @@ if (file_exists('../config.php'))
 	include ('../config.php');
 else
 	include ('../config_default.php');
+include ('../getid3/getid3.php');
 include ('./utils.php');
 include ('./files.php');
 include ('./streaminfo.php');
@@ -50,9 +51,9 @@ switch ($action)
 			break;
 		
 		case ("getVidInfo"):
-		$tree = file_get_contents("textfiles/getVidInfo.txt");
-                print $tree;
-		break;
+			$tree = getVidInfo($_REQUEST['file']);
+        	        print $tree;
+			break;
 		
 		case ("getStreamInfo"):
 			$tree = getStreamInfo($_REQUEST['session']);
