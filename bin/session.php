@@ -127,10 +127,19 @@ function sessiongetinfo($session)
 	switch ($type)
 	{
 		case 'tv':
-			$info['channel'] = $channame;
+			$info['name'] = $channame;
+			$info['thumbwidth'] = 80;
+			$info['thumbheight'] = 80;
+			$channum = vdrgetchannum($channame);
+			list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetchanepg($channum, 1);
+			list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetchanepg($channum, 0);
+
 			break;
 		case 'rec':
 			$info['channel'] = $channame;
+			$info['thumbwidth'] = 80;
+			$info['thumbheight'] = 80;
+			list($channame, $info['name'], $info['desc']) = vdrgetrecinfo($url);
 			break;
 		case 'vid':
 			break;
