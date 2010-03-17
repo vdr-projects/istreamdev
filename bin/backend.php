@@ -1,6 +1,6 @@
 <?php
 
-header('Content-Type: application/json; charset: UTF-8');
+header('Content-Type: application/json; charset: utf-8');
 
 if (file_exists('../config.php'))
 	include ('../config.php');
@@ -25,7 +25,7 @@ switch ($action)
 			print $tree;
 			break;
 		case ("getTvCat"):
-			$tree = getTvCat();
+			$tree =  getTvCat();
         	        print $tree;
 			break;
 		
