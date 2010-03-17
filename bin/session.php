@@ -122,21 +122,23 @@ function sessiongetinfo($session)
 	$info['type'] = $type;
 	$info['mode'] = $mode;
 
+	// Get info
+	$getid3 = new getID3;
+	$fileinfo = $getid3->analyze('../ram/' .$session .'/thumb.png');
+	$info['thumbwidth'] = $fileinfo['video']['resolution_x'];
+	$info['thumbheight'] = $fileinfo['video']['resolution_y']; 
+
 	// Type info
 	switch ($type)
 	{
 		case 'tv':
 			$info['name'] = $channame;
-			$info['thumbwidth'] = 80;
-			$info['thumbheight'] = 80;
 			$channum = vdrgetchannum($channame);
 			list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetchanepg($channum, 1);
 			list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetchanepg($channum, 0);
 			break;
 		case 'rec':
 			$info['channel'] = $channame;
-			$info['thumbwidth'] = 80;
-			$info['thumbheight'] = 80;
 			list($channame, $info['name'], $info['desc'], $info['recorded']) = vdrgetrecinfo($url);
 			break;
 		case 'vid':
@@ -146,7 +148,7 @@ function sessiongetinfo($session)
 			$info['format'] = $infovid['format'];
 			$info['video'] = $infovid['video'];
 			$info['audio'] = $infovid['audio'];
-			$info['resiolution'] = $infovid['resiolution'];
+			$info['resolution'] = $infovid['resolution'];
 			break;
 	}
 

@@ -11,9 +11,18 @@ function mediagetinfostream($stream)
 	$info['name'] = basename($stream);
 	$info['desc'] = "";
 	$info['duration'] = sec2hms($fileinfo['playtime_seconds']);
-	$info['format'] = $fileinfo['fileformat'];
-	$info['video'] = $fileinfo['video']['codec'];
-	$info['audio'] = $fileinfo['audio']['codec'];
+	if ($fileinfo['fileformat'])
+		$info['format'] = $fileinfo['fileformat'];
+	else
+		$info['format'] = "unkown";
+	if ($fileinfo['video']['codec'])
+		$info['video'] = $fileinfo['video']['codec'];
+	else
+		$info['video'] = "unkown";
+	if ($fileinfo['audio']['codec'])
+		$info['audio'] = $fileinfo['audio']['codec'];
+	else
+		 $info['audio'] = "unkown";
 	$info['resolution'] = $fileinfo['video']['resolution_x'] ."x" .$fileinfo['video']['resolution_y'];
 
 	return $info;

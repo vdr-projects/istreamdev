@@ -339,7 +339,7 @@ function gen_streamvid(filename,path) {
 			$("#streamvid").find('span[class="epgtime_now"]').html( 'Duration: ' + program.duration );
 			desc='<b>format: </b>' + program.format + '<br><b>video: </b>' + program.video + '<br><b>audio: </b>' + program.audio + '<br><b>resolution: </b>' + program.resolution;
 			$("#streamvid").find('span[class="desc_now"]').html( desc );
-			$("#streamvid").find('span[rel="url"]').html( path + filename );
+			$("#streamvid").find('span[rel="url"]').html( path + "/" + filename );
             $("#streamvid").find('span[rel="type"]').html('vid');
 			json_complete('#streamvid','cube');
 			});
