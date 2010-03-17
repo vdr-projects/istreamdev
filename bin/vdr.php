@@ -58,6 +58,9 @@ function vdrgetcategories()
 				$catarray = explode(' ', $curcat);
 				$curcat = substr($curcat, strlen($catarray[0])+1);
 			}
+
+			if (!is_utf8($curcat))
+				$curcat = utf8_encode($curcat);
                 }
 		else if ($line[0] != "")
 			$curcatchancount++;
@@ -117,6 +120,9 @@ function vdrgetchannels($category, $now)
 				$cat = substr($cat, strlen($catarray[0])+1);
 			}
 
+			 if (!is_utf8($cat))
+                                $cat = utf8_encode($cat);
+
 			if ($cat == $category)
 				$cat_found = 1;
 		}
@@ -169,6 +175,10 @@ function vdrgetchannels($category, $now)
 
 				$tmpchan['now_title'] = $info;
 			}
+
+			if (!is_utf8($tmpchan['name']))
+				$tmpchan['name'] = utf8_encode($tmpchan['name']);
+
 			$chanlist[] = $tmpchan;
 		}
 	}
@@ -203,6 +213,9 @@ function vdrgetchanname($channum)
         $chanarray = explode(";", $chanarray[0]);
         $channame = $chanarray[0];
         $channame = substr($channame, strlen($channum)+1);
+
+	if(!is_utf8($channame))
+		$channame = utf8_encode($channame);
 
         return $channame;
 }
