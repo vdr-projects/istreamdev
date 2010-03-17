@@ -69,6 +69,7 @@ $.getJSON("bin/backend.php",
 $('#home_but').tap(function(event) {
 	event.preventDefault();
 	getRunningSessions();
+	reinitDivs();
 	jQT.goTo('#home','flip');
 });
 
@@ -86,6 +87,12 @@ function json_complete(destination,effect) {
 function hide_loader() {
 	$('#loader').removeClass("loader");
 	$('a').removeClass('active');
+}
+
+function reinitDivs() {
+	$('#categories #cat_menu').html('');
+	$('#channels #chan_menu').html('');
+	$('#timers ul[rel="timers"]').html('');
 }
 
 //  [/GENERIC STUFF]
@@ -150,7 +157,7 @@ var dataString = "action=getRunningSessions";
 	dataString,
 	function(data){
 		$('#home #runningsessions').append('<li><span class="menutitle">SESSIONS</span></li>');
-		if ( data.broadcast[0].session ) {
+		if ( data.broadcast.length > 1 ) {
 			$.each(data.broadcast, function(i,broadcast){
 			session = broadcast.session;
 			name = broadcast.name;
