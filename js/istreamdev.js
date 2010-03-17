@@ -68,6 +68,7 @@ $.getJSON("bin/backend.php",
 //Goto home
 $('#home_but').tap(function(event) {
 	event.preventDefault();
+	getRunningSessions();
 	jQT.goTo('#home','flip');
 });
 
@@ -128,6 +129,35 @@ $('#audio_but').tap(function(event) {
 	gen_browser(audio_path,browser,"Audio","aud");
 	return false;
 });
+// show active sessions
+$(document).ready(function(e){ 
+getRunningSessions();
+});
+
+function getRunningSessions() {
+var dataString = "action=getRunningSessions";
+	$('#home #runningsessions').html('');
+	//Json call to get category array
+	$.getJSON("bin/backend.php",
+	dataString,
+	function(data){
+		$('#home #runningsessions').append('<li><span class="menutitle">SESSIONS</span></li>');
+		if ( data.broadcast[0].session ) {
+			$.each(data.broadcast, function(i,broadcast){
+			session = broadcast.session;
+			name = broadcast.name;
+			type = broadcast.type;
+			if (type == 'tv') { var pic='tv.png'; }
+			else if (type == 'rec') { var pic='record.png'; }
+			else if (type == 'vid') { var pic='video.png'; }
+			$('#home #runningsessions').append('<li class="arrow"><a rel="session" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">*Live: ' + name + '</span></a></li>');
+			});
+		}
+		else {
+		$('#home #runningsessions').append('<li class="arrow"><span class="menuname">No running session</span></li>');
+		}
+	});
+}
 //	[/HOME SECTION]
 
 //	[TV SECTION]

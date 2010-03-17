@@ -20,7 +20,10 @@ switch ($action)
 			$tree = getGlobals();
 			print $tree;
 			break;
-
+		case ("getRunningSessions"):
+			$tree = file_get_contents('textfiles/getRunningSessions.txt');
+			print $tree;
+			break;
 		case ("getTvCat"):
 			$tree = getTvCat();
         	        print $tree;
