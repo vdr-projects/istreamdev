@@ -68,7 +68,7 @@ function startBroadcast($type, $url, $mode)
 {
 	$ret = array();
 
-	$ret['session'] = sessioncreate($type, $url, $mode);
+	$ret['session'] = substr(sessioncreate($type, $url, $mode), strlen("session"));
 
 	return json_encode($ret); 
 }
@@ -77,7 +77,7 @@ function stopBroadcast($session)
 {
 	$ret = array();
 
-	$ret = sessiondelete($session);
+	$ret = sessiondelete("session" .$session);
 
         return json_encode($ret);
 }
@@ -86,14 +86,16 @@ function getStreamInfo($session)
 {
 	$ret = array();
 
-	$ret['stream'] = sessiongetinfo($session);
+	$info = sessiongetinfo("session" .$session);
+	$info['session'] = substr($info['session'], strlen("session"));
+	$ret['stream'] = $info;
 
 	return json_encode($ret);
 }
 
 function getStreamStatus($session)
 {
-	$ret = sessiongetstatus($session);
+	$ret = sessiongetstatus("session" .$session);
 
 	return json_encode($ret);
 }
