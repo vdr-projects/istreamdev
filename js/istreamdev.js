@@ -68,8 +68,6 @@ $.getJSON("bin/backend.php",
 //Goto home
 $('#home_but').tap(function(event) {
 	event.preventDefault();
-	getRunningSessions();
-	reinitDivs();
 	jQT.goTo('#home','flip');
 });
 
@@ -147,6 +145,15 @@ $('#runningsessions li a').tap(function(event) {
 // show active sessions
 $(document).ready(function(e){ 
 getRunningSessions();
+});
+
+//reinit RunningSessions when going to Home:
+$(document).ready(function(e){ 
+$('#home').bind('pageAnimationStart', function(event, info){ 
+	if (info.direction == 'in') {
+		getRunningSessions()
+		}  
+	})
 });
 
 function getRunningSessions() {
