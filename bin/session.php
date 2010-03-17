@@ -78,6 +78,8 @@ function sessioncreate($type, $url, $mode)
 
 function sessiondelete($session)
 {
+	$ret = array();
+
 	if ($session == 'all')
 	{
 		$dir_handle = @opendir('../ram/');
@@ -100,8 +102,43 @@ function sessiondelete($session)
 		}
 	}
 	else
-		return sessiondeletesingle($session);
+		sessiondeletesingle($session);
+
+	$ret['status'] = "ok";
+	$ret['message'] = "Successfully stopped broadcast";
+
+	return $ret;
+
 }
+
+function sessiongetinfo($session)
+{
+	$info = array();
+
+	// Get some info
+	list($type, $mode, $url, $channame) = readinfostream($session);
+	
+	// Fill common info
+	$info['session'] = $session;
+	$info['type'] = $type;
+	$info['mode'] = $mode;
+
+	// Type info
+	switch ($type)
+	{
+		case 'tv':
+			$info['channel'] = $channame;
+			break;
+		case 'rec':
+			$info['channel'] = $channame;
+			break;
+		case 'vid':
+			break;
+	}
+
+	return $info;
+}
+
 
 function sessiondeletesingle($session)
 {
@@ -114,5 +151,59 @@ function sessiondeletesingle($session)
 	$cmd .= "rm -rf " .$ram;
 	exec ($cmd);
 }
+
+function sessiongetstatus($session)
+{
+	global $maxencodingprocesses, $httppath;
+
+	$status = array();
+
+	$path = '../ram/' .$session;
+
+	// Check that session exists
+	if (($session == "") || !count(glob($path)))
+	{
+		$status['status'] = "error";
+
+	        $nbencprocess = exec("find ../ram/ -name segmenter.pid | wc | awk '{ print $1 }'");
+	        if ($nbencprocess >= $maxencodingprocesses)
+			$status['message'] = "Error: maximun number of sessions reached";
+	        else
+			$status['message'] = "Error: cannot create session";
+	}
+	else
+	{
+		// Get stream info
+		list($type, $mode, $url, $channame) = readinfostream($session);
+
+		if (count(glob($path . '/*.ts')) < 2)
+		{
+			$status['status'] = "wait";
+			switch ($type)
+			{
+				case 'tv':
+					$status['message'] = "Requesting live channel " .$channame;
+					break;
+				case 'rec':
+					$status['message'] = "Requesting recording channel " .$channame;
+					break;
+				case 'vid':
+					$status['message'] = "Requesting video file " .$url;
+					break;
+			}
+		}
+		else
+		{
+			$status['status'] = "ready";
+			$status['message'] = $mode ." Broadcast ready";
+
+			$status['url'] = $httppath ."ram/" .$session ."/stream.m3u8";
+
+		}
+	}
+
+	return $status;
+}
+
 
 ?>

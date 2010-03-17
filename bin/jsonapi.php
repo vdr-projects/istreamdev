@@ -73,5 +73,29 @@ function startBroadcast($type, $url, $mode)
 	return json_encode($ret); 
 }
 
+function stopBroadcast($session)
+{
+	$ret = array();
+
+	$ret = sessiondelete($session);
+
+        return json_encode($ret);
+}
+
+function getStreamInfo($session)
+{
+	$ret = array();
+
+	$ret['stream'] = sessiongetinfo($session);
+
+	return json_encode($ret);
+}
+
+function getStreamStatus($session)
+{
+	$ret = sessiongetstatus($session);
+
+	return json_encode($ret);
+}
 
 ?>

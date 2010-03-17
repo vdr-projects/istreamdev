@@ -52,10 +52,9 @@ switch ($action)
 		break;
 		
 		case ("getStreamInfo"):
-		$session = $_REQUEST['session'];
-		$tree = file_get_contents("textfiles/getStreamInfo-" . $session . ".txt");	
-                print $tree;
-		break;
+			$tree = getStreamInfo($_REQUEST['session']);
+			print $tree;
+			break;
 		
 		case ("startBroadcast"):
 			$tree = startBroadcast($_REQUEST['type'], $_REQUEST['url'], $_REQUEST['mode']);
@@ -63,32 +62,29 @@ switch ($action)
 			break;
 		
 		case ("stopBroadcast"):
-		$tree = file_get_contents("textfiles/stopBroadcast.txt");
-                print $tree;
-		break;
+			$tree = stopBroadcast($_REQUEST['session']);
+			print $tree;
+			break;
 		
 		case ("getStreamStatus"):
-		$time = time();
-		$session = $_REQUEST['session'];
-		$prevmsg = $_REQUEST['msg'];
-		while((time() - $time) < 29)
-		{
-			$tree = file_get_contents("textfiles/getStreamStatus.txt");
-                	$data = json_decode($tree);
-			$message = $data->message;
-			$status = $data->status;
-			if ($prevmsg != $message) {
-				print $tree;
-				break;
-			}
-			else if ($status == "ready")
+			$time = time();
+			$session = $_REQUEST['session'];
+			$prevmsg = $_REQUEST['msg'];
+			while((time() - $time) < 29)
 			{
-				print $tree;
-				break;
+				// Get current status
+				$status = getStreamStatus($session);
+	
+				$statusdec = json_decode($status);
+				if (($statusdec->message != prevmsg) || ($statusdec->status == "ready"))
+				{
+					print $status;
+					break;
+				}
+
+				usleep(1000);
 			}
-		usleep(1000);
-		}
-		break;
+			break;
 		
 		case ("getTimers"):
 		$tree = file_get_contents("textfiles/getTimers.txt");
