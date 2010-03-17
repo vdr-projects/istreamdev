@@ -371,26 +371,53 @@ function vdrdeltimer($timer)
 {
 	$ret = array();
 
-	$ret['status'] = "ok";
-	$ret['message'] = vdrsendcommand("DELT " .$timer);
+	$message = vdrsendcommand("DELT " .$timer);
+
+	if ($message == 'Timer "' .$timer .'" deleted')
+	{
+		$ret['status'] = "Ok";
+		$ret['message'] = "Timer successfully deleted";
+	}
+	else
+	{
+		$ret['status'] = "Error";
+		$ret['message'] = $message;
+	}
 
 	return $ret;
 }
 
-function vdrsettimer($prevtimer, $channame, $date, $stime, $etime, $desc, $active)
+function vdrsettimer($prevtimer, $channum, $date, $stime, $etime, $desc, $active)
 {
-	$channum = vdrgetchannum($channame);
-	if ($active)	
+	$ret = array();
+
+	if ($active == 'on')	
 		$type = "1";
 	else
 		$type = "0";
 
-	if ($prevtimer == -1)
+	if ($prevtimer == "")
 		$command = "NEWT " .$type .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
 	else
 		$command = "MODT " .$prevtimer ." " .$type .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
 
-	return vdrsendcommand($command);
+	$message = vdrsendcommand($command);
+
+	if (is_numeric(substr($message, 0, 1)))
+	{
+		$ret['status'] = "Ok";
+		if ($prevtimer == "")
+			$ret['message'] = "Timer created successfully";
+		else
+			$ret['message'] = "Timer edited successfully";
+	}
+	else
+	{
+		$ret['status'] = "Error";
+		$ret['message'] = $message;
+	}
+
+	return $ret;
 }
 
 ?>

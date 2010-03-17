@@ -96,11 +96,7 @@ switch ($action)
 			break;
 		
 		case ("editTimer"):
-			$id = $_REQUEST['id'];
-			if (id)
-				$tree = file_get_contents("textfiles/editTimer.txt");
-			else
-				$tree = file_get_contents("textfiles/addTimer.txt");
+			$tree = editTimer($_REQUEST['id'], $_REQUEST['name'], $_REQUEST['active'], $_REQUEST['channumber'], $_REQUEST['date'], $_REQUEST['starttime'], $_REQUEST['endtime']);
 			print $tree;
 			break;
 		

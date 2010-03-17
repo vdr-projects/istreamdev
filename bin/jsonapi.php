@@ -142,7 +142,12 @@ function delTimer($id)
         return json_encode($ret);
 }
 
+function editTimer($id, $name, $active, $channumber, $date, $starttime, $endtime)
+{
+	$ret = vdrsettimer($id, $channumber, $date, $starttime, $endtime, $name, $active);
 
+	return json_encode($ret);
+}
 
 function getRunningSessions()
 {
