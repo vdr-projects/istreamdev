@@ -21,7 +21,7 @@ switch ($action)
 			print $tree;
 			break;
 		case ("getRunningSessions"):
-			$tree = file_get_contents('textfiles/getRunningSessions.txt');
+			$tree = getRunningSessions();
 			print $tree;
 			break;
 		case ("getTvCat"):

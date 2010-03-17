@@ -100,4 +100,15 @@ function getStreamStatus($session)
 	return json_encode($ret);
 }
 
+function getRunningSessions()
+{
+	$ret = array();
+
+	$ret['broadcast'] = sessiongetlist();
+
+        return json_encode($ret);
+
+}
+
+
 ?>

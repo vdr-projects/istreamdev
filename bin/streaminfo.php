@@ -2,7 +2,7 @@
 
 /*
   Types:
-	0 : Not running
+	none : Not running
 	tv : VDR live
 	rec : VDR recording
 	vid : Media
@@ -28,11 +28,11 @@ function readinfostream($session)
 	$ram = "../ram/" .$session ."/";
 
 	if (!file_exists($ram ."streaminfo"))
-		return array(0);
+		return array("none");
 
 	$infofile = fopen($ram ."streaminfo", 'r');	
 	if (!$infofile)
-		return array(0);
+		return array("none");
 
 	while ($line = fgets($infofile, 1024))
         {

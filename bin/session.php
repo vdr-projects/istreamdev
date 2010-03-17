@@ -95,7 +95,7 @@ function sessiondelete($session)
 				// Get info
 				list($type, $mode, $url, $channame) = readinfostream($session);
 
-				if ($type)
+				if ($type != "none")
 					sessiondeletesingle($session);
 			}
 		}
@@ -213,5 +213,45 @@ function sessiongetstatus($session)
 	return $status;
 }
 
+function sessiongetlist()
+{
+	$sessions = array();
+
+	$dir_handle = @opendir('../ram/');
+	if ($dir_handle)
+	{
+		while ($session = readdir($dir_handle))
+		{
+			if($session == "." || $session == ".." || $session == 'lost+found')
+				continue;
+
+			if (!is_dir('../ram/' .$session))
+				continue;
+
+			// Get info
+			list($type, $mode, $url, $channame) = readinfostream($session);
+			if ($type == "none")
+				continue;
+
+			$newsession = array();
+			$newsession['session'] = substr($session, strlen("session"));
+			$newsession['type'] = $type;
+			if ($type == "vid")
+				$newsession['name'] = basename($url);
+			else
+				$newsession['name'] = $channame;
+
+			// Check if encoding
+			if (file_exists('../ram/' .$session .'/segmenter.pid'))
+				$newsession['encoding'] = 1;
+			else
+				$newsession['encoding'] = 0;
+
+			$sessions[] = $newsession;
+		}
+	}
+
+	return $sessions;
+}
 
 ?>
