@@ -1,73 +1,6 @@
 <?php
 include ('./svdrp_old.php');
 
-function getGlobals()
-{
-	global $vdrstreamdev, $vdrrecpath, $mediasource;
-
-	$ret = array();
-	$ret['streamdev_server'] = $vdrstreamdev;
-	$ret['rec_path'] = $vdrrecpath;
-	$ret['video_path'] = "/mnt/media/Video/";
-	$ret['audio_path'] = "/mnt/media/Music/";
-
-	return json_encode($ret);
-}
-
-function getTvCat()
-{
-	$ret = array();
-	$ret['categories'] = vdrgetcategories();
-	
-	return json_encode($ret);
-}
-
-function getFullChanList()
-{
-	$catlist = array();
-
-	// Get all categories
-	$categories = vdrgetcategories();
-
-	// For all categories
-	$count = count($categories);
-	for ($i = 0; $i < $count; $i++)
-	{
-		$tmpcat = array();
-
-		$tmpcat['name'] = $categories[$i]['name'];
-		$tmpcat['channel'] = vdrgetchannels($tmpcat['name'], 0);
-
-		$catlist[] = $tmpcat;
-	}
-
-	$ret = array();
-	$ret['category'] = $catlist;
-
-	return json_encode($ret);
-}
-
-function getTvChan($cat)
-{
-	$ret = array();
-	$ret['channel'] = vdrgetchannels($cat, 1);
-
-	return json_encode($ret);
-}
-
-function getChanInfo($channum)
-{
-	$ret = array();
-	
-	$info = array();
-	$ret['program'] = vdrgetchaninfo($channum);
-
-	return json_encode($ret);
-}
-
-
-/********************* LOCAL ************************/
-
 function vdrsendcommand($cmd)
 {
         global $svdrpip, $svdrpport;
@@ -325,7 +258,51 @@ function vdrgetchanepg($channum, $now)
 	return array($time, $title, $desc);
 }
 
+function vdrgetrecinfo($rec)
+{
+	$infofile = $rec ."/info"; 
+	if (file_exists($infofile))
+		$info= file_get_contents($infofile);
+	else
+	{
+		$infofile = $rec ."/info.vdr";
+		if (file_exists($infofile))
+			$info= file_get_contents($infofile);
+		else
+			$info="";
+	}
 
+	$allepg = explode("\n", $info);
+
+	$epgtitle="";
+	$epgdesc="";
+	
+	// For all epg
+	$count = count($allepg);
+	for ($i = 0; $i < $count; $i++)
+	{
+		// Now find T or C
+		if(ereg("^C", $allepg[$i]))
+		{
+			$channame = substr($allepg[$i], 2);
+			$channames = explode(" ", $channame);
+			$channame = substr($channame, strlen($channames[0])+1);
+		}
+		else if(ereg("^T", $allepg[$i]))
+			$epgtitle=substr($allepg[$i], 2);
+		else if(ereg("^D", $allepg[$i]))
+			$epgdesc=substr($allepg[$i], 2);
+	}
+	
+	// Convert if needed
+	if (!is_utf8($epgtitle))
+		$epgtitle = utf8_encode($epgtitle);
+	if (!is_utf8($epgdesc))
+		$epgdesc = utf8_encode($epgdesc);
+
+
+	return array($channame, epgtitle, $epgdesc);
+}
 
 
 

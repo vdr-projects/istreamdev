@@ -7,39 +7,43 @@ if (file_exists('../config.php'))
 else
 	include ('../config_default.php');
 include ('./utils.php');
+include ('./files.php');
+include ('./streaminfo.php');
 include ('./vdr.php');
+include ('./session.php');
+include ('./jsonapi.php');
 
 $action=$_REQUEST['action'];
 switch ($action)
         {
 	        case ("getGlobals"):
-		$tree = getGlobals();
-		print $tree;
-		break;
+			$tree = getGlobals();
+			print $tree;
+			break;
 
 		case ("getTvCat"):
-		$tree = getTvCat();
-                print $tree;
-		break;
+			$tree = getTvCat();
+        	        print $tree;
+			break;
 		
 		case ("getFullChanList"):
-		$tree = getFullChanList();
-		print $tree;
-		break;
+			$tree = getFullChanList();
+			print $tree;
+			break;
 		
 		case ("getTvChan"):
-		$tree = GetTvChan($_REQUEST['cat']);
-                print $tree;
-		break;
+			$tree = GetTvChan($_REQUEST['cat']);
+        	        print $tree;
+			break;
 		
 		case ("getChanInfo"):
-		$tree = getChanInfo($_REQUEST['chan']);
-                print $tree;
-		break;
+			$tree = getChanInfo($_REQUEST['chan']);
+        	        print $tree;
+			break;
 		
 		case ("getRecInfo"):
 		$tree = file_get_contents("textfiles/getRecInfo.txt");
-                print $tree;
+       	        print $tree;
 		break;
 		
 		case ("getVidInfo"):
@@ -54,11 +58,9 @@ switch ($action)
 		break;
 		
 		case ("startBroadcast"):
-		$type = $_REQUEST['type'];
-		$url = $_REQUEST['url'];
-		$tree = file_get_contents("textfiles/startBroadcast-" . $type . ".txt");
-                print $tree;
-		break;
+			$tree = startBroadcast($_REQUEST['type'], $_REQUEST['url'], $_REQUEST['mode']);
+			print $tree;
+			break;
 		
 		case ("stopBroadcast"):
 		$tree = file_get_contents("textfiles/stopBroadcast.txt");
