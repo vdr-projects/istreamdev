@@ -1,7 +1,5 @@
 <?php
 
-$audiotypes='mp3 aac wav ';
-
 function mediagetinfostream($stream)
 {
         // Get info
@@ -83,7 +81,7 @@ function mediagetwidth($file)
 	return $fileinfo['video']['resolution_x'];
 }
 
-function mediagettype($file)
+function filegettype($file)
 {
 	global $videotypes, $audiotypes;
 
@@ -92,30 +90,20 @@ function mediagettype($file)
 	$file = str_replace("\\'", "'", $file);
 
 	if (is_dir($file))
-		return 3;
-	else if (preg_match("$/$", $fileext))
-		return 0;
-	else if (preg_match("/" .$fileext ." /", $videotypes))
-		return 'tv';
-	else if (preg_match("/" .$fileext ." /", $audiotypes))
-		return 'rec';
-	else
-		return 'vid';
-}
-
-function mediadirhasaudio($dir)
-{
-	global $audiotypes;
-
-	$audioextarray = explode(' ', $audiotypes);
-
-	foreach ($audioextarray as $num => $audioext)
 	{
-        	if (glob($dir .'*.' .$audioext))
-			return 1;
+		if ($fileext == "rec")
+			return "rec";
+		else
+			return 'folder';
 	}
-
-	return 0;
+	else if (preg_match("$/$", $fileext))
+		return 'none';
+	else if (preg_match("/" .$fileext ." /", $videotypes))
+		return 'video';
+	else if (preg_match("/" .$fileext ." /", $audiotypes))
+		return 'audio';
+	else
+		return 'unknown';
 }
 
 function mediagetmusicinfo($file ="")
@@ -167,6 +155,58 @@ function generatelogo($type, $name, $dest)
                         mediagentb($name, $dest);
                         break;
         }
+}
+
+function filesgetlisting($dir)
+{
+	$listing = array();
+
+	$dir_handle = @opendir($dir);
+	if (!$dir_handle)
+		return $listing;
+
+	while ($medianame = readdir($dir_handle))
+	{
+		if($medianame == "." || $medianame == ".." || $medianame == 'lost+found')
+			continue;
+
+		$medianame_array[] = $medianame;
+	}
+
+	if ($medianame_array[0] == NULL)
+		return $listing;
+
+	// Alphabetical sorting
+	sort($medianame_array);
+	
+	foreach($medianame_array as $value)
+	{	
+		$newentry = array();
+
+		$newentry['name'] = $value;
+		$newentry['path'] = $dir ."/" .$value;
+
+		$type = filegettype($dir ."/" .$value);
+
+		switch ($type)
+		{
+			case 'audio':
+				// More info
+			case 'video':
+			case 'rec':
+			case 'folder':
+				$newentry['type'] = $type;
+				break;
+			default:
+				continue;
+
+		}
+
+		// Add new entry
+		$listing[] = $newentry;
+	}
+
+	return $listing;
 }
 
 ?>

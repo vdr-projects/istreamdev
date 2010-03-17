@@ -61,6 +61,7 @@ function vdrgetcategories()
 
 			if (!is_utf8($curcat))
 				$curcat = utf8_encode($curcat);
+//			$curcat = rawurlencode($curcat);
                 }
 		else if ($line[0] != "")
 			$curcatchancount++;
@@ -178,6 +179,8 @@ function vdrgetchannels($category, $now)
 
 			if (!is_utf8($tmpchan['name']))
 				$tmpchan['name'] = utf8_encode($tmpchan['name']);
+//			$tmpchan['name'] = rawurlencode($tmpchan['name']);
+			
 
 			$chanlist[] = $tmpchan;
 		}

@@ -7,8 +7,8 @@ function getGlobals()
 	$ret = array();
 	$ret['streamdev_server'] = $vdrstreamdev;
 	$ret['rec_path'] = $vdrrecpath;
-	$ret['video_path'] = "/mnt/media/Video/";
-	$ret['audio_path'] = "/mnt/media/Music/";
+	$ret['video_path'] = "/home/storage/Foot/";
+	$ret['audio_path'] = "/home/www/mp3/";
 
 	return json_encode($ret);
 }
@@ -113,5 +113,12 @@ function getRunningSessions()
 
 }
 
+function browseFolder($path)
+{
+	$ret = array();
 
+	$ret['list'] = filesgetlisting($path);
+	
+	return json_encode($ret);
+}
 ?>
