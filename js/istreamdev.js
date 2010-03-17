@@ -176,7 +176,7 @@ var dataString = "action=getRunningSessions";
 			});
 		}
 		else {
-		$('#home #runningsessions').append('<li class="arrow"><span class="menuname">No running session</span></li>');
+		$('#home #runningsessions').append('<li><span class="menuname">No running session</span></li>');
 		}
 	});
 }
