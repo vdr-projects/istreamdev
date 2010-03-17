@@ -20,11 +20,11 @@
 	$mediasources[]=array ( 1,              'Video',        '/mnt/media/movies');
 	$mediasources[]=array ( 2,              'Audio',        '/mnt/media/music');
 
-	// Encoding
+	// Encoding (The name cannot be changed)
 	//			Name		Video	Audio	Audio channels	Resolution
-	$quality=array (	'Edge'	=>	'128k	64k	1		240x160',
+	$quality=array (	'edge'	=>	'128k	64k	1		240x160',
 				'3g'	=>	'350k	64k	1		408x272',
-				'Wifi'	=>	'512k	128k	2		480x320');
+				'wifi'	=>	'512k	128k	2		480x320');
 	$maxencodingprocesses=10;                               // Max simultaneous encoding processes
 
 	// Misc
