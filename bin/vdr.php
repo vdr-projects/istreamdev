@@ -316,8 +316,7 @@ function vdrgetrecinfo($rec)
 	if (!is_utf8($epgdesc))
 		$epgdesc = utf8_encode($epgdesc);
 
-
-	return array($channame, epgtitle, $epgdesc);
+	return array($channame, $epgtitle, $epgdesc);
 }
 
 

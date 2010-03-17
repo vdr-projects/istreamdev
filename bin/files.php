@@ -191,7 +191,6 @@ function filesgetlisting($dir)
 		switch ($type)
 		{
 			case 'audio':
-				// More info
 			case 'video':
 			case 'rec':
 			case 'folder':
