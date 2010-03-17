@@ -77,7 +77,10 @@ function stopBroadcast($session)
 {
 	$ret = array();
 
-	$ret = sessiondelete("session" .$session);
+	if ($session == "all")
+		$ret = sessiondelete($session);	
+	else
+		$ret = sessiondelete("session" .$session);
 
         return json_encode($ret);
 }
