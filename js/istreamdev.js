@@ -129,6 +129,14 @@ $('#audio_but').tap(function(event) {
 	gen_browser(audio_path,browser,"Audio","aud");
 	return false;
 });
+
+$('#runningsessions li a').tap(function(event) {
+	event.preventDefault();
+	var session = $(this).attr('rel');
+	json_start(this);
+	gen_streaming(session);
+	return false;
+});
 // show active sessions
 $(document).ready(function(e){ 
 getRunningSessions();
@@ -150,7 +158,7 @@ var dataString = "action=getRunningSessions";
 			if (type == 'tv') { var pic='tv.png'; }
 			else if (type == 'rec') { var pic='record.png'; }
 			else if (type == 'vid') { var pic='video.png'; }
-			$('#home #runningsessions').append('<li class="arrow"><a rel="session" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">*Live: ' + name + '</span></a></li>');
+			$('#home #runningsessions').append('<li class="arrow"><a rel="' + session + '" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">*Live: ' + name + '</span></a></li>');
 			});
 		}
 		else {
