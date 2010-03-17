@@ -1,4 +1,4 @@
-//INIT
+﻿//INIT
 jQT = new $.jQTouch({
 	icon: 'img/istreamdev.png',
 	addGlossToIcon: true,
@@ -137,11 +137,24 @@ $('#audio_but').tap(function(event) {
 
 $('#runningsessions li a').tap(function(event) {
 	event.preventDefault();
-	var session = $(this).attr('rel');
 	json_start(this);
+	var session = $(this).attr('rel');
+	if (session=="killsessions") {
+		var dataString = 'action=stopBroadcast&session=all';
+		$.getJSON("bin/backend.php",
+		dataString,
+		function(data) {
+				var status = data.status;
+				var message = data.message;
+				hide_loader();
+				getRunningSessions();
+				});
+	} else {
 	gen_streaming(session);
+	}
 	return false;
 });
+
 // show active sessions
 $(document).ready(function(e){ 
 getRunningSessions();
@@ -174,6 +187,7 @@ var dataString = "action=getRunningSessions";
 			else if (type == 'vid') { var pic='video.png'; }
 			$('#home #runningsessions').append('<li class="arrow"><a rel="' + session + '" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">*Live: ' + name + '</span></a></li>');
 			});
+			$('#home #runningsessions').append('<li><a rel="killsessions" href="#"><span class="menuname">Stop all sessions</span></a></li>');
 		}
 		else {
 		$('#home #runningsessions').append('<li><span class="menuname">No running session</span></li>');
