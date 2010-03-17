@@ -1,4 +1,4 @@
-//INIT
+﻿//INIT
 jQT = new $.jQTouch({
 	icon: 'img/istreamdev.png',
 	addGlossToIcon: true,
