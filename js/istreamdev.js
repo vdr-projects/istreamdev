@@ -256,8 +256,8 @@ function gen_channels(category) {
 $('#streamchannel span.streamButton a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-	var type = $("#streamchannel").find('span[rel="type"]').html();
-    var url = $("#streamchannel").find('span[rel="url"]').html();
+	var type = $("#streamchannel").find('span[rel="type"]').text();
+    var url = $("#streamchannel").find('span[rel="url"]').text();
     var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
@@ -265,8 +265,8 @@ $('#streamchannel span.streamButton a').tap(function(event) {
 $('#streamrec span.streamButton a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-	var type = $("#streamrec").find('span[rel="type"]').html();
-    var url = $("#streamrec").find('span[rel="url"]').html();
+	var type = $("#streamrec").find('span[rel="type"]').text();
+    var url = $("#streamrec").find('span[rel="url"]').text();
     var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
@@ -274,8 +274,8 @@ $('#streamrec span.streamButton a').tap(function(event) {
 $('#streamvid span.streamButton a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-	var type = $("#streamvid").find('span[rel="type"]').html();
-    var url = $("#streamvid").find('span[rel="url"]').html();
+	var type = $("#streamvid").find('span[rel="type"]').text();
+    var url = $("#streamvid").find('span[rel="url"]').text();
     var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
@@ -283,7 +283,7 @@ $('#streamvid span.streamButton a').tap(function(event) {
 $('#streaming span.streamButton a[rel="stopbroadcast"]').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-	var session = $("#streaming").find('span[rel="session"]').html();
+	var session = $("#streaming").find('span[rel="session"]').text();
     stop_broadcast(session);
 	return false;
 });
@@ -564,7 +564,7 @@ function gen_browser(path,browser,name,foldertype) {
 		}
 		$('#browser' + browser + ' div[class="toolbar"]').html(toolbar);
 	}
-	var dataString = 'action=browseFolder&path='+encodeURIComponent(path);
+	var dataString = 'action=browseFolder&path='+encodeURIComponent(path)+'/';
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data) {
