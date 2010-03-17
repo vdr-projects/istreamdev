@@ -35,18 +35,12 @@ vertical-align: middle;
 margin: 0 0 0 10px;
 }
 
-.cat_but {
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
-}
-
 li.forward > a > span, span.substring {
 vertical-align: middle;
 }
 li.channellist {
 height: 55px;
-background-image: url(../img/chevron.png), -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4c4d4e), to(#404142));
+background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4c4d4e), to(#404142));
 background-position: right center;
 background-repeat: no-repeat;
 }
@@ -73,7 +67,7 @@ font-size: 17px;
 line-height: normal;
 position: absolute;
 font-weight: bold;
-width: 40%;
+width: 50%;
 
 }
 li.channellist span.comment {
@@ -89,14 +83,17 @@ font-weight: normal;
 overflow: hidden;
 text-overflow: ellipsis;
 white-space: nowrap;
-width: 40%;
+width: 50%;
 
+}
+li.channellist small {
+margin-right: 0px;
 }
 
 li.channellist small.counter {
-    margin-right: 15px;
+    margin-right: 0px;
 	position: relative;
-	top: 36px;
+	top: 40px;
 	font-size: 17px;
     line-height: 13px;
     font-weight: bold;
