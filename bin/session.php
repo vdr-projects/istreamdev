@@ -56,7 +56,7 @@ function sessioncreate($type, $url, $mode)
 			$channame = vdrgetchanname($channum);
 			break;
 		case 'rec':
-			list($channame, $title, $desc) = vdrgetrecinfo($url);
+			list($channame, $title, $desc, $recorded) = vdrgetrecinfo($url);
 			break;
 		default:
 			$channame = "";
@@ -132,13 +132,12 @@ function sessiongetinfo($session)
 			$channum = vdrgetchannum($channame);
 			list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetchanepg($channum, 1);
 			list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetchanepg($channum, 0);
-
 			break;
 		case 'rec':
 			$info['channel'] = $channame;
 			$info['thumbwidth'] = 80;
 			$info['thumbheight'] = 80;
-			list($channame, $info['name'], $info['desc']) = vdrgetrecinfo($url);
+			list($channame, $info['name'], $info['desc'], $info['recorded']) = vdrgetrecinfo($url);
 			break;
 		case 'vid':
 			break;

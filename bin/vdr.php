@@ -61,7 +61,6 @@ function vdrgetcategories()
 
 			if (!is_utf8($curcat))
 				$curcat = utf8_encode($curcat);
-//			$curcat = rawurlencode($curcat);
                 }
 		else if ($line[0] != "")
 			$curcatchancount++;
@@ -179,8 +178,6 @@ function vdrgetchannels($category, $now)
 
 			if (!is_utf8($tmpchan['name']))
 				$tmpchan['name'] = utf8_encode($tmpchan['name']);
-//			$tmpchan['name'] = rawurlencode($tmpchan['name']);
-			
 
 			$chanlist[] = $tmpchan;
 		}
@@ -308,6 +305,14 @@ function vdrgetrecinfo($rec)
 			$epgtitle=substr($allepg[$i], 2);
 		else if(ereg("^D", $allepg[$i]))
 			$epgdesc=substr($allepg[$i], 2);
+		else if(ereg("^E ", $allepg[$i]))
+		{
+			$time = substr($allepg[$i], 2);
+			$timearray = explode(" ", $time);
+
+			$recorded = date('Y\/m\/d \a\t H\hi', $timearray[1]);
+                }
+
 	}
 	
 	// Convert if needed
@@ -316,7 +321,7 @@ function vdrgetrecinfo($rec)
 	if (!is_utf8($epgdesc))
 		$epgdesc = utf8_encode($epgdesc);
 
-	return array($channame, $epgtitle, $epgdesc);
+	return array($channame, $epgtitle, $epgdesc, $recorded);
 }
 
 

@@ -309,7 +309,7 @@ function gen_streamchannel(channame,channumber) {
 }
 
 function gen_streamrec(folder,path) {
-	var dataString = "action=getRecInfo&rec=" + encodeURIComponent(path) + encodeURIComponent(folder);
+	var dataString = "action=getRecInfo&rec=" + encodeURIComponent(path) + "/" + encodeURIComponent(folder);
 	//Json call to get rec info
 	$.getJSON("bin/backend.php",
 			dataString,
@@ -327,7 +327,7 @@ function gen_streamrec(folder,path) {
 }
 
 function gen_streamvid(filename,path) {
-	var dataString = "action=getVidInfo&file=" + encodeURIComponent(path) + encodeURIComponent(filename);
+	var dataString = "action=getVidInfo&file=" + encodeURIComponent(path) + "/" + encodeURIComponent(filename);
 	//Json call to get rec info
 	$.getJSON("bin/backend.php",
 			dataString,
@@ -484,7 +484,7 @@ $('ul[rel="filelist"] li[class="arrow"] a').tap(function(event) {
 	browser++;
 	if ( type == "folder" ) 
 		{
-		newpath=path+name;
+		newpath=path+"/"+name;
 		gen_browser(newpath,browser,name,foldertype);
 		}
 	else if ( type == "rec" )

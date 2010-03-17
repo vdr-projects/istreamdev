@@ -68,7 +68,7 @@ function getRecInfo($rec)
 	$ret = array();
 
 	$info = array();
-	list($info['channel'], $info['name'], $info['desc']) = vdrgetrecinfo($rec);
+	list($info['channel'], $info['name'], $info['desc'], $info['recorded']) = vdrgetrecinfo($rec);
 
 	$ret['program'] = $info;
 
