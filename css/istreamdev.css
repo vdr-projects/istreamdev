@@ -35,6 +35,12 @@ vertical-align: middle;
 margin: 0 0 0 10px;
 }
 
+.cat_but {
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
 li.forward > a > span, span.substring {
 vertical-align: middle;
 }
@@ -59,12 +65,15 @@ margin: 10px 0 0 0px;
 left: 90px;
 text-overflow: ellipsis;
 overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
 max-width: 80%!important;
 white-space: nowrap;
 font-size: 17px;
 line-height: normal;
 position: absolute;
 font-weight: bold;
+width: 40%;
 
 }
 li.channellist span.comment {
@@ -77,6 +86,11 @@ position: absolute;
 top: 15 px;
 font-style: italic;
 font-weight: normal;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+width: 40%;
+
 }
 
 li.channellist small.counter {
