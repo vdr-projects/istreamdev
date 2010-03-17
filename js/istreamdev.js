@@ -188,7 +188,7 @@ $('#streamchannel span.streamButton a').tap(function(event) {
 	json_start(this);
 	var type = $("#streamchannel").find('span[rel="type"]').html();
     var url = $("#streamchannel").find('span[rel="url"]').html();
-    var mode = $(this).attr('rel');
+    var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
 });
@@ -197,7 +197,7 @@ $('#streamrec span.streamButton a').tap(function(event) {
 	json_start(this);
 	var type = $("#streamrec").find('span[rel="type"]').html();
     var url = $("#streamrec").find('span[rel="url"]').html();
-    var mode = $(this).attr('rel');
+    var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
 });
@@ -206,7 +206,7 @@ $('#streamvid span.streamButton a').tap(function(event) {
 	json_start(this);
 	var type = $("#streamvid").find('span[rel="type"]').html();
     var url = $("#streamvid").find('span[rel="url"]').html();
-    var mode = $(this).attr('rel');
+    var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
 });
