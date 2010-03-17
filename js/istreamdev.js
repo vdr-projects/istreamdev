@@ -212,8 +212,9 @@ function gen_channels(category) {
 		function(data){
 			$.each(data.channel,function(i,channel){
 				$("#chan_menu").append('<li class="channellist"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png"/><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
+				
 				});
-			json_complete('#channels','cube');
+				json_complete('#channels','cube');
 		})
 }
 
