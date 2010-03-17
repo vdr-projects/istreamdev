@@ -45,9 +45,9 @@ switch ($action)
 			break;
 		
 		case ("getRecInfo"):
-		$tree = file_get_contents("textfiles/getRecInfo.txt");
-       	        print $tree;
-		break;
+			$tree = getRecInfo($_REQUEST['rec']);
+	       	        print $tree;
+			break;
 		
 		case ("getVidInfo"):
 		$tree = file_get_contents("textfiles/getVidInfo.txt");

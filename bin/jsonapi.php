@@ -58,8 +58,19 @@ function getChanInfo($channum)
 {
 	$ret = array();
 	
-	$info = array();
 	$ret['program'] = vdrgetchaninfo($channum);
+
+	return json_encode($ret);
+}
+
+function getRecInfo($rec)
+{
+	$ret = array();
+
+	$info = array();
+	list($info['channel'], $info['name'], $info['desc']) = vdrgetrecinfo($rec);
+
+	$ret['program'] = $info;
 
 	return json_encode($ret);
 }
