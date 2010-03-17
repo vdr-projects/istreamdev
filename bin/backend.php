@@ -76,7 +76,7 @@ switch ($action)
 				$status = getStreamStatus($session);
 	
 				$statusdec = json_decode($status);
-				if (($statusdec->message != prevmsg) || ($statusdec->status == "ready"))
+				if (($statusdec->message != $prevmsg) || ($statusdec->status == "ready"))
 				{
 					print $status;
 					break;
