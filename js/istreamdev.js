@@ -320,7 +320,7 @@ function gen_streamrec(folder,path) {
 			$("#streamrec").find('span[class="name_now"]').html( program.name );
 			$("#streamrec").find('span[class="epgtime_now"]').html( 'Recorded: ' + program.recorded );
 			$("#streamrec").find('span[class="desc_now"]').html( program.desc );
-			$("#streamrec").find('span[rel="url"]').html( path + folder );
+			$("#streamrec").find('span[rel="url"]').html( path + "/" + folder );
             $("#streamrec").find('span[rel="type"]').html('rec');
 			json_complete('#streamrec','cube');
 		});
