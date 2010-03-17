@@ -93,6 +93,8 @@ function reinitDivs() {
 	$('#timers ul[rel="timers"]').html('');
 }
 
+
+
 //  [/GENERIC STUFF]
 
 //	[HOME SECTION]
@@ -201,7 +203,7 @@ var dataString = "action=getRunningSessions";
 $('#categories ul#cat_menu a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-	var category = $(this).html();
+	var category = $(this).text();
 	gen_channels(category);
 	return false;
 });
@@ -233,6 +235,7 @@ function gen_categories() {
 //Gen Channels
 function gen_channels(category) {
 		$("#chan_menu").html('');
+		alert(category);
 		var dataString = "action=getTvChan&cat=" + encodeURIComponent(category);
 		//Json call to get category array
 		$.getJSON("bin/backend.php",
@@ -561,7 +564,7 @@ function gen_browser(path,browser,name,foldertype) {
 		}
 		$('#browser' + browser + ' div[class="toolbar"]').html(toolbar);
 	}
-	var dataString = 'action=browseFolder&path='+encodeURIComponent(path)+'&browser=' + browser;
+	var dataString = 'action=browseFolder&path='+encodeURIComponent(path);
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data) {
