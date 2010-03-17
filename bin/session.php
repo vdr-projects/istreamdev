@@ -45,7 +45,6 @@ function sessioncreate($type, $url, $mode)
 	}
 	
 	$cmd = str_replace('%', '%%', $cmd);
-	exec ('echo "' .$cmd .'" > /tmp/a');
 	exec ($cmd);
 	
 	// Extract $channame if needed
