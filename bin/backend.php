@@ -111,22 +111,10 @@ switch ($action)
 		break;
 		
 		case ("browseFolder"):
-		$path = $_REQUEST['path'];
-		if ( $path == "/video/" ) {
-		$tree = file_get_contents("textfiles/browseFolder-rec.txt");
-                }
-		else if ( $path == "/mnt/media/Videos/" ) {
-		$tree = file_get_contents("textfiles/browseFolder-vid.txt");
-		}
-		else if ( $path == "/mnt/media/Music/" ) {
-		$tree = file_get_contents("textfiles/browseFolder-aud.txt");
-		}
-		else
-		{
-		$tree = file_get_contents("textfiles/browseFolder-rec.txt");
-		}
-		print $tree;
-		break;
+			$path = $_REQUEST['path'];
+			$tree = browseFolder($_REQUEST['path']);
+			print $tree;
+			break;
 		
 		case ("browseRec"):
 		$tree = file_get_contents("textfiles/browseRec.txt");
