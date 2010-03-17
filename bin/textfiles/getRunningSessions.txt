@@ -1,0 +1,20 @@
+{
+	"broadcast":
+	[
+		{
+		"session": "1",
+		"name": "TF1",
+		"type": "tv", 
+		}, 
+		{
+                "session": "2",
+                "name": "Turbo",
+                "type": "rec",
+                },
+		{
+                "session": "3",
+                "name": "Movie.avi",
+                "type": "vid",
+                }	
+	]
+}
