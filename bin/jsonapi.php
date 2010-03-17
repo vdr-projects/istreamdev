@@ -126,6 +126,24 @@ function getStreamStatus($session)
 	return json_encode($ret);
 }
 
+function getTimers()
+{
+	$ret = array();
+
+	$ret['timer'] = vdrlisttimers();
+
+	return json_encode($ret);
+}
+
+function delTimer($id)
+{
+	$ret = vdrdeltimer($id);
+
+        return json_encode($ret);
+}
+
+
+
 function getRunningSessions()
 {
 	$ret = array();

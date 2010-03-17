@@ -91,25 +91,23 @@ switch ($action)
 			break;
 		
 		case ("getTimers"):
-		$tree = file_get_contents("textfiles/getTimers.txt");
-                print $tree;
-		break;
+			$tree = getTimers();
+                	print $tree;
+			break;
 		
 		case ("editTimer"):
-		$id = $_REQUEST['id'];
-		if (id) {
-		$tree = file_get_contents("textfiles/editTimer.txt");
-                }
-		else {
-		$tree = file_get_contents("textfiles/addTimer.txt");
-		}
-		print $tree;
-		break;
+			$id = $_REQUEST['id'];
+			if (id)
+				$tree = file_get_contents("textfiles/editTimer.txt");
+			else
+				$tree = file_get_contents("textfiles/addTimer.txt");
+			print $tree;
+			break;
 		
-		case ("deltimer"):
-		$tree = file_get_contents("textfiles/delTimer.txt");
-                print $tree;
-		break;
+		case ("delTimer"):
+			$tree = delTimer($_REQUEST['id']);
+	                print $tree;
+			break;
 		
 		case ("browseFolder"):
 			$path = $_REQUEST['path'];
