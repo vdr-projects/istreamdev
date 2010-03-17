@@ -157,7 +157,7 @@ var dataString = "action=getRunningSessions";
 	dataString,
 	function(data){
 		$('#home #runningsessions').append('<li><span class="menutitle">SESSIONS</span></li>');
-		if ( data.broadcast.length > 1 ) {
+		if ( data.broadcast.length >= 1 ) {
 			$.each(data.broadcast, function(i,broadcast){
 			session = broadcast.session;
 			name = broadcast.name;
