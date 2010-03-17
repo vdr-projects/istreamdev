@@ -69,9 +69,9 @@ function sessioncreate($type, $url, $mode)
 
 	// Create logo
 	if ($type == 'vid')
-		generatelogo($type, $url, '../ram/' .$session .'/logo.png');
+		generatelogo($type, $url, '../ram/' .$session .'/thumb.png');
 	else
-		generatelogo($type, $channame, '../ram/' .$session .'/logo.png');
+		generatelogo($type, $channame, '../ram/' .$session .'/thumb.png');
 
 	return $session;
 }

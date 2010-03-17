@@ -150,16 +150,16 @@ function generatelogo($type, $name, $dest)
         {
                 case 'tv':
                         $channoslash = preg_replace("$/$", " ", $name);
-                        $logopath = "logos/" .$channoslash .".png";
+                        $logopath = "../logos/" .$channoslash .".png";
                         if (!file_exists($logopath))
-                                $logopath = "logos/nologoTV.png";
+                                $logopath = "../logos/nologoTV.png";
                         exec("cp \"" .$logopath ."\" " .$dest);
                         break;
                 case 'rec':
                         $channoslash = preg_replace("$/$", " ", $name);
-                        $logopath = "logos/" .$channoslash .".png";
+                        $logopath = "../logos/" .$channoslash .".png";
                         if (!file_exists($logopath))
-                                $logopath = "logos/nologoREC.png";
+                                $logopath = "../logos/nologoREC.png";
                         exec("cp \"" .$logopath ."\" " .$dest);
                         break;
                 case 'vid':
