@@ -1,534 +1,446 @@
 <?php
-/**
- * This file contain everything needed to communicate with a VDR instance
- * This is merely a rewrite of the original class which was written in
- * PHP4 and published some years ago.
- * I wasn't able to find the original author name in order to give him
- * credits. 
- *
- * PHP version 5.1+
- *
- * @author  Philippe Gaultier <pgaultier[at]gmail.com>
- * @license BSD License http://fr.wikipedia.org/wiki/Licence_BSD
- * @link    http://www.linuxtv.org/vdrwiki/index.php/Svdrp
- */
-require_once ('firephp.php');
-$a = new SVDRP ( null, null, null, false );
-$a->connect ();
-$a->listChannels ();
-/**
- * SVDRP class
- *
- * This class provide access to VDR SVDRP service
- *
- * @package   utilities
- * @author    Philippe Gaultier <pgaultier[at]gmail.com>
- * @since     1.0
- */
-class SVDRP {
-	private $_server = "localhost";
-	private $_port = 2001;
-	private $_timeOut = 30;
+ 
+// SVDRP is a class do communicate with a vdr via svdrp
+class SVDRP
+{
+	var $cfgServer;
+	var $cfgPort; 
+	var $cfgTimeOut;
+
+	var $handle;
+	var $debug;
 	
-	private $_handle = false;
-	private $_debug = false;
-	
-	private $_firePhp = null;
-	
-	/**
-	 * Class constructor
-	 * 
-	 * @param string  $server  the server to connect to (IP or name)
-	 * @param integer $port    the port number
-	 * @param integer $timeOut timeout before closing the connection
-	 * @param boolean $debug   de/activate debug functions
-	 * 
-	 * @return SVDRP
-	 */
-	public function __construct($server = null, $port = null, $timeOut = null, $debug = null) {
-		if ($server !== null) {
-			$this->_server = $server;
-		}
-		if ($port !== null) {
-			$this->_port = $port;
-		}
-		if ($timeOut !== null) {
-			$this->_timeOut = $timeOut;
-		}
-		if ($debug !== null) {
-			$this->_debug = $debug;
-		}
-		if (class_exists ( 'FirePHP' )) {
-			$this->_firePhp = FirePHP::getInstance ( true );
-			$this->_firePhp->setEnabled ( $this->_debug );
-			$this->group ( 'new ' . __CLASS__ . '($server, $port, $timeOut, $debug)' );
-			$this->info ( $this->_server, '$server' );
-			$this->info ( $this->_port, '$port' );
-			$this->info ( $this->_timeOut, '$timeOut' );
-			$this->info ( $this->_debug, '$debug' );
-			$this->trace ( 'Object created' );
-			$this->groupEnd ();
-		} else {
-			$this->_debug = false;
-		}
+	function SVDRP($server = "localhost", $port=2001, $timeout = 30, $debug = 0)
+	{	
+		$this->cfgServer = $server;
+		$this->cfgPort = $port;
+		$this->cfgTimeOut = $timeout;	
+		$this->debug = $debug;
+		$this->handle = 0;
+	} 	
+
+	function DebugMessage($msg)
+	{
+		if($this->debug) echo ($msg);
 	}
-	private function group($title) {
-		if ($this->_debug === true) {
-			$this->_firePhp->group ( $title );
-		}
-	}
-	private function groupEnd() {
-		if ($this->_debug === true) {
-			$this->_firePhp->groupEnd ();
-		}
-	}
-	private function trace($message) {
-		if ($this->_debug === true) {
-			$this->_firePhp->trace ( 'Class ' . __CLASS__ . ' Trace : ' . $message );
-		}
-	}
-	private function dump($name, $var) {
-		if ($this->_debug === true) {
-			$this->_firePhp->dump ( $name, $var );
-		}
-	}
-	private function log($message, $label = null) {
-		if ($this->_debug === true) {
-			$this->_firePhp->log ( $message, $label );
-		}
-	}
-	private function info($message, $label = null) {
-		if ($this->_debug === true) {
-			$this->_firePhp->info ( $message, $label );
-		}
-	}
-	private function warn($message, $label = null) {
-		if ($this->_debug === true) {
-			$this->_firePhp->warn ( $message, $label );
-		}
-	}
-	private function error($message, $label = null) {
-		if ($this->_debug === true) {
-			$this->_firePhp->error ( $message, $label );
-		}
-	}
-	public function debugMessage($msg) {
-		if ($this->_debug === true) {
-			//TODO: do a better debug (use firePHP or something else)
-		// echo ($msg);
-		}
-	}
-	
-	public function connect() {
-		$result = false;
-		if ($this->_handle !== false) {
-			$this->disconnect ();
-		}
+
+	function Connect()
+	{
+		if($this->handle) Disconnect();
 		$errno = 0;
 		$errstr = "";
-		// we use @ in order to avoid warning if server does not answer / allow the connection
-		$this->_handle = @fsockopen ( $this->_server, $this->_port, &$errno, &$errstr, $this->_timeOut );
-		$this->group ( __METHOD__ . '()' );
-		if ($this->_handle !== false) {
-			$this->info ( 'Handle created', 'SVDRP' );
-			$input = fgets ( $this->_handle, 128 );
-			
-			if ((preg_match ( "/^220 /", $input ) === true) && ($input != "")) {
-				$this->info ( 'Answer OK : ' . $input, 'SVDRP' );
-				$result = true;
-			} else {
-				$this->warn ( 'Answer KO : ' . $input, 'SVDRP' );
-				$this->disconnect ();
-			}
-		} else {
-			$this->error ( 'fsockopen error ' . $errno . ' (' . $errstr . ')', 'SVDRP' );
-		}
-		$this->groupEnd ();
-		return $result;
-	}
-	
-	public function sendCommand($cmd) {
-		$result = false;
-		if ($this->_handle !== false) {
-			$result = array ();
-			$this->group ( __METHOD__ . '($cmd)' );
-			$this->info ( $cmd, '$cmd' );
-			fputs ( $this->_handle, $cmd . "\n" );
-			$answer = "";
-			$nbLines = 0;
-			while ( $answer .= fgets ( $this->_handle, 2048 ) ) {
-				$nbLines ++;
-				$this->info ( $answer );
-				$data = null;
-				if (preg_match ( "/^(\\d{3})([ -])(.*)$/", $answer, $data ) === false) {
-					continue;
-				}
-				$number = $data [1];
-				$result [] = trim ( $data [3] );
-				/**
-			 	if(($data[2] !== "-") && ($nbLines === 1)) {
-			 		$result =  trim($data[3]) ;
-			 	}
-				 **/
-				if ($data [2] != "-") {
-					break;
-				}
-				$answer = "";
-			}
-			$this->trace ( 'Command sent, answer received' );
-			$this->groupEnd ();
-		}
-		return $result;
-	}
-	
-	public function listChannels($channelNumberOrName = "") {
-		$lines = $this->sendCommand ( 'LSTC ' . $channelNumberOrName );
-		if ($lines !== false) {
-			$channels = array ();
-			foreach ( $lines as $l ) {
-				list ( $fullName, $frequency, $parameters, $source, $symbolRate, $videoPid, $audioPid, $teletextPid, $conditionalAccess, $serviceId, $networkId, $transportId, $radioId ) = split ( ":", $l );
-				list ( $shortName, $provider ) = split ( ";", $fullName );
-				$channels [] = array ('shortName' => $shortName, 'provider' => $provider, 'frequency' => $frequency, 'parameters' => $parameters, 'source' => $source, 'symbolRate' => $symbolRate, 'videoPid' => $videoPid, 'audioPid' => $audioPid, 'teletextPid' => $teletextPid, 'conditionalAccess' => $conditionalAccess, 'serviceId' => $serviceId, 'networkId' => $networkId, 'transportId' => $transportId, 'radioId' => $radioId, 'group' => $provider, //XXX: Compatibility
-'name' => $shortName );//XXX: Compatibility
+		$this->handle = fsockopen($this->cfgServer, $this->cfgPort, &$errno, &$errstr, $this->cfgTimeOut);
 
-			}
-			$lines = $channels;
+		if(!$this->handle)
+		{
+			$this->DebugMessage("error $errno: $errstr");
+			return false;
 		}
-		return $lines;
+		
+		$this->DebugMessage("handle: $this->handle<br>\n");
+
+		
+		$input = fgets($this->handle,128);
+		
+		if(!preg_match("/^220 /", $input) || $input == "")
+		{
+			$this->DebugMessage("wrong welcome message: '$input'<br>\n");
+			$this->Disconnect();
+			return false;
+		}
+		
+		
+		$this->DebugMessage("Welcome message: $input<br><br>\n");
+		
+		return true;
+	}
+
+	function Command($cmd)
+	{
+		if(!$this->handle) return false;
+		
+		$ret = array();
+		
+		$this->DebugMessage("Kommando $cmd<br><pr"."e>");
+		fputs($this->handle, $cmd . "\n");
+		$s = "";
+		$nline = 0;
+		while($s .= fgets($this->handle,4096))
+		{
+			$nline++;
+			 
+                         $this->DebugMessage($s);
+			 if(!preg_match("/^(\\d{3})([ -])(.*)$/", $s, $data))
+			 {
+			 	continue;
+			 }
+			 
+			 
+			 	
+			 
+			 $number = $data[1];
+			 // TODO: Fehlernummer bearbeiten
+			 $ret[] = $data[3];
+			 if($data[2] != "-" && $nline == 1) $ret =  $data[3] ;
+ 			 if($data[2] != "-") break; 
+			 $s = "";
+			 
+		}
+		
+		$this->DebugMessage("</pr"."e>");
+		return $ret;
+	}
+
+	function ListChannels($numberorname="")
+	{
+		if(!$this->handle) return false;
+		$channels = array();	
+		$lines = $this->Command("LSTC$numberorname");
+		if(!$lines) return false;
+		foreach($lines as $a => $l)
+		{
+			$a = split(":", $l);
+			$name = $a[0];
+			$freq = $a[1];
+			$b = split(";", $name);
+			$name = $b[0];
+			if(!isset($b[1])) $b[1] = $name;
+			$group = $b[1];
+
+			
+			$c["name"] = $name;
+			$c["group"] = $group;
+			$c["frequency"] = $freq;
+	
+			$channels[] = $c;
+		
+			
+		}
+		return $channels;
 	}
 	
-	public function help() {
-		return $this->sendCommand ( 'HELP' );
+	function Help()
+	{
+		return $this->Command("HELP");
 	}
-	public function disconnect() {
-		if ($this->_handle !== false) {
-			$this->sendCommand ( 'QUIT' );
-			fclose ( $this->_handle );
-			$this->_handle = false;
-			$this->debugMessage ( "disconnected" );
-		}
+	function Disconnect()
+	{
+		if(!$this->handle) return;
+		$this->Command("QUIT");
+		
+		fclose($this->handle);
+		$this->handle = 0;
+		$this->DebugMessage("disconnected");
 	}
-	public function clearEpg() {
-		$result = $this->sendCommand ( 'CLRE' );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
+	function ClearEpg()
+	{
+		if(!$this->handle) return false;
+		$this->Command("CLRE");
+		return true;
 	}
-	public function switchUp() {
-		return $this->switchChannel ( '+' );
+	function SwitchUp()
+	{
+		if(!$this->handle) return false;
+		$this->Command("CHAN +");
+		return true;
 	}
-	public function switchDown() {
-		return $this->switchChannel ( '-' );
+	function SwitchDown()
+	{
+		if(!$this->handle) return false;
+		$this->Command("CHAN -");
+		return true;
 	}
-	public function switchChannel($channel) {
-		$result = $this->sendCommand ( 'CHAN ' . $channel );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
+	function SwitchChannel($channel)
+	{
+		if(!$this->handle) return false;
+		$this->Command("CHAN $channel");
+		return true;
 	}
-	public function deleteChannel($channelId) {
-		$result = $this->sendCommand ( 'DELC ' . $channelId );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
+	function DeleteChannel($id)
+	{
+		if(!$this->handle) return false;
+		$this->Command("DELC $id");
+		return true;
 	}
-	public function deleteRecord($recordId) {
-		$result = $this->sendCommand ( 'DELR ' . $recordId );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
-	}
-	
-	public function grabImage($fileName, $type = 'jpeg', $quality = '', $width = '', $height) {
-		$result = $this->sendCommand ( 'GRAB ' . $fileName . ' ' . $type . ' ' . $quality . ' ' . $width . ' ' . $height );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
-	}
-	public function hitKey($key) {
-		$result = $this->sendCommand ( 'HITK ' . $key );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
-	}
-	public function powerOff() {
-		return $this->hitKey ( 'HITK Power' );
-	}
-	public function getKeys() {
-		$lines = $this->sendCommand ( 'HITK' );
-		if ($lines !== false) {
-			$keys = array ();
-			foreach ( $lines as $l ) {
-				if (preg_match ( "/^ {4}(.*)$/", $l, $m ) === false) {
-					continue;
-				}
-				$keys [] = $m [1];
-			}
-			$lines = $keys;
-		}
-		return $lines;
-	}
-	public function listEPG($pStrChannel = "", $pStrTime = "") {
-		$lines = $this->sendCommand ( "LSTE" );
-		if ($lines !== false) {
-			$epg = array ();
-			$channel = array ();
-			$event = array ();
-			$channelname = "";
-			foreach ( $lines as $line ) {
-				if (preg_match ( "/^(.)\\s*(.*)$/", $line, $matches ) === true) {
-					$type = $matches [1];
-					$text = $matches [2];
-					switch ($type) {
-						case 'C' : // Channel
-							list ( $channeldata, $channelname ) = explode ( ' ', $text, 2 );
-							break;
-						case 'E' : // new Event
-							sscanf ( $text, "%u %ld %d %X", $event ["EventID"], $event ["StartTime"], $event ["Duration"], $event ["TableID"] );
-							break;
-						case 'T' : // Title
-							$event ["Title"] = $text;
-							break;
-						case 'S' : // Short text
-							$event ["Shottext"] = $text;
-							break;
-						case 'D' : // Description
-							$event ["Desc"] = $text;
-							break;
-						case 'V' : // VPS
-							$event ["VPS"] = $text;
-							break;
-						case 'e' : // Event end
-							if ((trim ( $pStrTime ) != '') && (($event ['StartTime'] > $pStrTime) || ($event ['StartTime'] + $event ["Duration"] < $pStrTime))) {
-								continue;
-							}
-							$channel [] = $event;
-							$event = array ();
-							break;
-						case 'c' : // Channel end
-							if ((trim ( $pStrChannel ) != '') && ($channelname != $pStrChannel)) {
-								continue;
-							}
-							$epg [$channelname] = $channel;
-							$channel = array ();
-							break;
-					}
-				}
-			}
-			if ((trim ( $pStrTime ) == '') || (($event ['StartTime'] < $pStrTime) && ($event ['StartTime'] + $event ["Duration"] > $pStrTime))) {
-				$channel [] = $event;
-			}
-			if ((trim ( $pStrChannel ) != '') || ($channelname == $pStrChannel)) {
-				$epg [$channelname] = $channel;
-			}
-			$lines = $epg;
-		}
-		return $lines;
+	function DeleteRecord($id)
+	{
+		if(!$this->handle) return false;
+		$this->Command("DELR $id");
+		return true;
 	}
 	
-	public function sendMessage($message) {
-		$result = $this->sendCommand ( 'MESG ' . $message );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
+	function GrabImage($filename, $type="jpeg", $quality="", $width="", $height)
+	{
+		if(!$this->handle) return false;
+		$this->Command("GRAB $filename $type $quality $width $height");
+		return true;
 	}
-	/**
-	 * Toggle volume
-	 * 
-	 * @return boolean
-	 */
-	public function toggleMute() {
-		return $this->setVolume ( 'mute' );
+	function HitKey($key)
+	{
+		if(!$this->handle) return false;
+		$this->Command("HITK $key");
+		return true;
 	}
-	/**
-	 * Raise sound volume
-	 * 
-	 * @return boolean
-	 */
-	public function setVolumeUp() {
-		return $this->setVolume ( '+' );
-	}
-	/**
-	 * lower sound volume
-	 * 
-	 * @return boolean
-	 */
-	public function setVolumeDown() {
-		return $this->setVolume ( '-' );
-	}
-	/**
-	 * Set volume to a specific value
-	 * 
-	 * @param integer $volume new sound volume value
-	 * 
-	 * @return boolean
-	 */
-	public function setVolume($volume) {
-		$result = $this->sendCommand ( 'VOLU ' . $volume );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
-	}
-	/**
-	 * Get current volume value
-	 * 
-	 * @return boolean|integer
-	 */
-	public function getVolume() {
-		$result = $this->sendCommand ( 'VOLU' );
-		if ($result !== false) {
-			$volumeData = array_shift ( $result );
-			if ($volumeData == "Audio is mute") {
-				$result = 0;
-			} elseif (preg_match ( "/Audio volume is (.*)/", $volumeData, $matches ) === true) {
-				$result = $matches [1];
-			} else {
-				$result = false;
-			}
-		}
-		return $result;
-	}
-	/**
-	 * Get current disk information
-	 * 
-	 * @return boolean|array
-	 */
-	public function getDiskInfo() {
-		$res = $this->sendCommand ( 'STAT DISK' );
-		$result = $this->sendCommand ( 'STAT DISK' );
-		if ($result !== false) {
-			$result = array_shift ( $result );
-			sscanf ( $result, "%dMB %dMB %d%%", $data ['overall'], $data ['free'], $data ['percent'] );
-			$data ['used'] = $data ['overall'] - $data ['free'];
-			$result = $data;
-		}
-		return $result;
-	}
-	/**
-	 * Force a new scan
-	 * 
-	 * @return boolean
-	 */
-	public function startScan() {
-		$result = $this->sendCommand ( 'SCAN' );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
-	}
-	public function moveChannel($channelNumber, $target) {
-		$result = $this->sendCommand ( 'MOVC ' . $channelNumber . ' ' . $target );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
-	}
+	function PowerOff()
+	{	
+		if(!$this->handle) return false;
+		$this->Command("HITK Power");
+		return true;
 	
-	public function deleteTimer($timerId) {
-		$result = $this->sendCommand ( 'DELT ' . $timerId );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
 	}
-	
-	public function moveTimer($timerNumber, $target) {
-		$result = $this->sendCommand ( 'MOVT ' . $timerNumber . ' ' . $target );
-		if ($result !== false) {
-			$result = true;
+	function GetKeys()
+	{
+		if(!$this->handle) return false;
+
+		$lines = $this->Command("HITK");
+		$keys = array();
+		foreach($lines as $l)
+		{
+			if(!preg_match("/^ {4}(.*)$/", $l, $m)) continue;
+			$keys[] = $m[1];
 		}
-		return $result;
+		
+		return $keys;
 	}
-	/**
-	 * Change the status of a specific timer
-	 * 
-	 * @param string  $timerId timer id
-	 * @param boolean $state   status to set (true : on / false : off)
-	 * 
-	 * @return boolean
-	 */
-	public function toggleTimer($timerId, $state = true) {
-		switch ($state) {
-			case false :
-			case 'off' :
-			case 0 :
-				$state = 'off';
+	function ListEPG($pStrChannel="", $pStrTime="")
+	{
+		if(!$this->handle) return false;
+		$lines = $this->Command("LSTE");
+
+		$epg = array ();
+		$channel = array();
+		$event = array();
+
+		$channelname = "";
+		foreach($lines as $l)
+		{
+			preg_match("/^(.)\\s*(.*)$/", $l, $m);
+			$type = $m[1];
+			$text = $m[2];
+			switch($type)
+			{
+			case 'C': // Channel
+				list( $channeldata, $channelname ) = explode( ' ', $text, 2 );
+				
 				break;
-			default :
-				$state = 'on';
+			case 'E': // new Event
+				sscanf($text, "%u %ld %d %X", $event["EventID"], $event["StartTime"], $event["Duration"], $event["TableID"]);
+								
 				break;
-		}
-		$result = $this->sendCommand ( 'MODT ' . $timerId . ' ' . $state );
-		if ($result !== false) {
-			$result = true;
-		}
-		return $result;
-	}
-	
-	/**
-	 * List all timers
-	 * 
-	 * @return void
-	 */
-	public function listTimers() {
-		//TODO: implement timer listing
-	}
-	
-	/**
-	 * List all recordings with specific data
-	 * 
-	 * @return array
-	 */
-	public function listRecords() {
-		$lines = $this->sendCommand ( 'LSTR' );
-		if ($lines !== false) {
-			$records = array ();
-			foreach ( $lines as $line ) {
-				if (preg_match ( '/^(\\d)\s(\\d*)\\.(\\d*)\\.(\\d*) (\\d*)\\:(\\d*).\s(.*)$/', $line, $matches ) == false) {
+			case 'T': // Title
+				$event["Title"] = $text;
+				break;
+			case 'S': // Short text
+				$event["Shottext"] = $text;
+				break;
+			case 'D': // Description
+				$event["Desc"] = $text;
+				break;
+			case 'V': // VPS
+				$event["VPS"] = $text;
+				break;
+			case 'e': // Event end
+				if ((trim($pStrTime) != '') && (( $event['StartTime'] > $pStrTime ) || ($event['StartTime'] + $event["Duration"] < $pStrTime)))
 					continue;
-				}
-				$records [$matches [1]] = array ('id' => $matches [1], 'day' => $matches [2], 'month' => $matches [3], 'year' => $matches [4], 'hour' => $matches [5], 'minute' => $matches [6], 'desc' => $matches [7] );
+
+				$channel[] = $event;
+				$event = array();
+				 
+				break;
+			case 'c': // Channel end
+				if ((trim($pStrChannel) != '') && ($channelname != $pStrChannel))
+					continue;
+
+				$epg[$channelname] = $channel;
+				$channel = array();
+				
+				break;
 			}
-			$lines = $records;
+
 		}
-		return $lines;
+		if ((trim($pStrTime) == '') || (( $event['StartTime'] < $pStrTime ) && ($event['StartTime'] + $event["Duration"] > $pStrTime)))
+			$channel[] = $event;
+		 
+		if ((trim($pStrChannel) != '') || ($channelname == $pStrChannel))
+			$epg[$channelname] = $channel;
+
+		return $epg;
+	}
+
+	function Message($msg)
+	{
+		if(!$this->handle) return false;
+		$this->Command("MESG $msg");
+		return true;
+	}
+
+	
+	// Volume commands
+	function ToggleMute()
+	{
+		if(!$this->handle) return false;
+		$this->Command("VOLU mute");
+		return true;
+	}
+	function VolumeUp()
+	{
+		if(!$this->handle) return false;
+		$this->Command("VOLU +");
+		return true;
+	}
+	function VolumeDown()
+	{
+		if(!$this->handle) return false;
+		$this->Command("VOLU -");
+		return true;
+	}
+	function SetVolume($v)
+	{
+		if(!$this->handle) return false;
+		$this->Command("VOLU $v");
+		return true;
+	}
+	function GetVolume()
+	{
+		if(!$this->handle) return false;
+		$v = $this->Command("VOLU");
+		if($v == "Audio is mute") return 0;
+		if(!preg_match("/Audio volume is (.*)/", $v, $m)) return false;
+		
+		return $m[1];
+	}
+	function GetDiskStat()
+	{
+		if(!$this->handle) return false;
+		$stat = $this->Command("STAT DISK");
+		sscanf($stat, "%dMB %dMB %d%%", $FreeMUsedMB, $FreeMB, $Percent); 
+		$ret["FreeMB + UsedMB"] = $FreeMUsedMB;
+		$ret["FreeMB"] = $FreeMB;
+		$ret["UsedMB"] = $FreeMUsedMB - $FreeMB;
+		$ret["Percent"] = $Percent;
+		return $ret;
+	}
+	function StartScan()
+	{
+		if(!$this->handle) return false;
+		$this->Command("SCAN");
+		return true;
+	}
+	function MoveChannel($number, $to)
+	{
+		if(!$this->handle) return false;
+		$this->Command("MOVC $number $to");
+		return true;
+		
 	}
 	
-	/**
-	 * List recording by Id
-	 * 
-	 * @param string $recordId
-	 * 
-	 * @return string
-	 */
-	public function listRecord($recordId) {
-		//TODO: perhaps better implementation and check if we do not need array_shift
-		$lines = $this->sendCommand ( 'LSTR ' . $recordId );
-		if ($lines !== false) {
-			$lines = array_shift ( $lines );
-			$lines = $lines [0];
-		}
-		return $lines;
+	function DeleteTimer($id)
+	{
+		if(!$this->handle) return false;
+		$this->Command("DELT $id");
+		return true;
 	}
 	
-//TODO: Implement following commands:
-/**
-		LSTT
-		MODT
-		NEWT
-		UPDT   
-		MODC
-		NEWC
-		NEXT
-		PUTE 
- **/
+	function MoveTimer($number, $to)
+	{
+		if(!$this->handle) return false;
+		$this->Command("MOVT $number $to");
+		return true;
+	}
+	
+	function TimerOnOff($n, $state = "on")
+	{
+		if(!$this->handle) return false;
+		//if($state == "1") $state = "on";
+		//if($state == "0") $state = "off";
+		//if($state == false) $state = "off";
+		// if($state == true) $state = "on";
+		switch($state)
+		{
+		case false:
+		case "off":
+		case "0":
+		$state = "off";
+		break;
+		default:
+		$state = "on";
+		break;
+		}
+		
+		return $this->Command("MODT $n $state");
+	}	
+	
+	function ListTimers()
+	{
+		
+	}
+	
+	function ShowMessage($msg = "")
+	{
+		if(!$this->handle) return false;
+		return $this->Command("MESG $msg");
+	}	
+	
+	function ListRecords()
+	{
+		if(!$this->handle) return false;
+		
+		$lines = $this->Command("LSTR");
+		$records = array();
+		foreach($lines as $l)
+		{
+		
+			if(!preg_match("/^(\\d)\s(\\d*)\\.(\\d*)\\.(\\d*) (\\d*)\\:(\\d*).\s(.*)$/", $l, $m)) continue;
+			$id = $m[1];
+			$m["id"] 		= $m[1];
+			$m["day"] 		= $m[2];
+			$m["month"] 	= $m[3];
+			$m["year"] 		= $m[4];
+			$m["hour"] 		= $m[5];
+			$m["minute"] 	= $m[6];
+			$m["desc"] 		= $m[7];
+			
+			$records[$id] = $m;
+		}
+		
+		return $records;
+
+	}
+	
+	// TODO: perhaps better implementation
+	function ListRecord($n)
+	{
+		if(!$this->handle) return false;
+		$m = $this->Command("LSTR $n");
+		return $m[0];
+	}	
+	
+	
+	
+	//TODO: Implement following commands:
+	/*
+	
+	  
+	LSTT    MODT 	NEWT UPDT   
+	MODC  NEWC
+	    NEXT
+	PUTE 
+ 
+	*/
 }
+
+// Small Example
+/*
+echo "<pr"."e>";
+$a = new SVDRP();
+$a->Connect();
+print_r($a->Help());
+print_r($a->ListChannels());
+$a->GetKeys();
+print_r($a->GetVolume());
+print_r($a->GetDiskStat());
+$a->Disconnect();
+*/
+?>
+
 

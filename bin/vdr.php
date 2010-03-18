@@ -1,5 +1,5 @@
 <?php
-include ('./svdrp_old.php');
+include ('./svdrp.php');
 
 function vdrsendcommand($cmd)
 {
