@@ -595,9 +595,7 @@ function addplayer(button) {
 	json_start(button);
 	var name = $(button).find('span[class="tracktitle"]').text();
 	var browser = $(button).parents('div').find('span[rel="currentbrowser"]').html();
-	alert(browser);
 	var path = $('#browser'+browser+' div[rel="dataholder"] span[rel="path"]').text();
-	alert(path);
 	browser = parseInt(browser);
 	$('#browser'+browser+' #div_player').remove();
 	$('#browser'+browser).append('<div style="position:absolute; left:0; top:0" name="div_player" id="div_player"></div>');
