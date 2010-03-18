@@ -6,9 +6,9 @@ function vdrsendcommand($cmd)
         global $svdrpip, $svdrpport;
 
         $svdrp = new SVDRP($svdrpip, $svdrpport);
-        $svdrp->connect();
-        $ret = $svdrp->sendCommand($cmd);
-        $svdrp->disconnect();
+        $svdrp->Connect();
+        $ret = $svdrp->Command($cmd);
+        $svdrp->Disconnect();
 
         return $ret;
 }
