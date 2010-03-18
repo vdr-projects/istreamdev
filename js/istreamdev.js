@@ -187,7 +187,7 @@ var dataString = "action=getRunningSessions";
 			if (type == 'tv') { var pic='tv.png'; }
 			else if (type == 'rec') { var pic='record.png'; }
 			else if (type == 'vid') { var pic='video.png'; }
-			$('#home #runningsessions').append('<li class="arrow"><a rel="' + session + '" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">*Live: ' + name + '</span></a></li>');
+			$('#home #runningsessions').append('<li class="arrow"><a rel="' + session + '" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">' + name + '</span></a></li>');
 			});
 			$('#home #runningsessions').append('<li><a rel="killsessions" href="#"><span class="menuname">Stop all sessions</span></a></li>');
 		}
