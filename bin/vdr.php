@@ -1,14 +1,14 @@
 <?php
-include ('./svdrp_old.php');
+include ('./svdrp.php');
 
 function vdrsendcommand($cmd)
 {
         global $svdrpip, $svdrpport;
 
         $svdrp = new SVDRP($svdrpip, $svdrpport);
-        $svdrp->Connect();
-        $ret = $svdrp->Command($cmd);
-        $svdrp->Disconnect();
+        $svdrp->connect();
+        $ret = $svdrp->sendCommand($cmd);
+        $svdrp->disconnect();
 
         return $ret;
 }
