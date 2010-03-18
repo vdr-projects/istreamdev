@@ -70,7 +70,7 @@ $('#home_but').tap(function(event) {
 function json_start(button) {
 		$(button).addClass('active');
 		$('#loader').addClass("loader");
-
+		$('#loader').css("top", window.pageYOffset);
 }
 function json_complete(destination,effect) {
 		$('#loader').removeClass("loader");
