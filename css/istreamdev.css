@@ -52,7 +52,7 @@ vertical-align: middle;
 position: relative;
 -webkit-mask-box-image: url(../img/mask.png) 80 stretch;
 top: 0px;
-background-image: url('../img/nologoTV.png') ;
+background-image: url('../img/nologoTV-mini.png') ;
 background-size: 55px;
 }
 
