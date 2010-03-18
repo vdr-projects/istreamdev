@@ -587,7 +587,7 @@ function gen_browser(path,browser,name,foldertype) {
 					name = list.trackname;
 					} else {
 					name = list.name; }
-				$("#browser" + browser).find('ul').append('<li class="track"><a href="javascript:document.player.Play();" onclick="addplayer(this);" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle">' + name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
+				$("#browser" + browser).find('ul').append('<li class="track"><a href="javascript:document.player.Play();" onclick="addplayer(this);" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle" rel="'+ list.name + '">' + name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
 				}
 			});
 			json_complete('#browser' + browser,'cube');
@@ -597,7 +597,7 @@ function gen_browser(path,browser,name,foldertype) {
 //Add audio player code when needed
 function addplayer(button) {
 	json_start(button);
-	var name = $(button).find('span[class="tracktitle"]').text();
+	var name = $(button).find('span[class="tracktitle"]').attr('rel');
 	var browser = $(button).parents('div').find('span[rel="currentbrowser"]').html();
 	var path = $('#browser'+browser+' div[rel="dataholder"] span[rel="path"]').text();
 	browser = parseInt(browser);
