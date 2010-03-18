@@ -235,7 +235,6 @@ function gen_categories() {
 //Gen Channels
 function gen_channels(category) {
 		$("#chan_menu").html('');
-		alert(category);
 		var dataString = "action=getTvChan&cat=" + encodeURIComponent(category);
 		//Json call to get category array
 		$.getJSON("bin/backend.php",
@@ -703,10 +702,15 @@ function gen_edittimer(id,name,active,channumber,channame,date,starttime,endtime
 	$('ul[ref="submitbut"]').remove();
 	if (id) {
 		$('#edittimer h1').html('<img class="menuicon" src="img/timers.png" / > EDIT TIMER');
-		if (active = 1) 
+		if (active == 1) 
 		{
-				$('#timer_active').attr("checked", "checked");
+				$('#timer_active').attr('checked', true);
+
 		}
+		else {
+		$('#timer_active').attr('checked', false);
+		}
+		
 		$('#timer_id').val(id);
 		$('#timer_name').val(name);
 		$('#timer_chan option[value="' + channumber + '"]').attr("selected", "selected");
@@ -844,7 +848,6 @@ function gen_epgchanlist() {
 // check if chan is slected
 function epg_selectchan() {
 	selectedchan = $('#epg_chan').val();
-	alert(selectedchan);
 }
 
 //   [/EPG SECTION]
