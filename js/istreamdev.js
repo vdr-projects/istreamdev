@@ -340,8 +340,10 @@ function gen_streamvid(filename,path) {
 			dataString,
 			function(data){
 			var program = data.program;
+			var time = new Date();
+
 			$('#streamvid').find('h1').html('<img class="menuicon" src="img/video.png" /> ' + program.name);
-			$('#streamvid').find('#thumbnail').attr('src','ram/temp-logo.png');
+			$('#streamvid').find('#thumbnail').attr('src','ram/temp-logo.png?'+time);
 			$("#streamvid").find('span[class="name_now"]').html( program.name );
 			$("#streamvid").find('span[class="epgtime_now"]').html( 'Duration: ' + program.duration );
 			desc='<b>format: </b>' + program.format + '<br><b>video: </b>' + program.video + '<br><b>audio: </b>' + program.audio + '<br><b>resolution: </b>' + program.resolution;
