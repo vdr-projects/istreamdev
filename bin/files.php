@@ -199,13 +199,12 @@ function filesgetlisting($dir)
 			case 'rec':
 			case 'folder':
 				$newentry['type'] = $type;
+				if ($type == 'folder')
+					$newentry['path'] = $newentry['path'] .'/';
 				$listing[] = $newentry;
 				break;
 			default:
 		}
-
-		if ($type == 'folder')
-			$newentry['path'] = $newentry['path'] .'/';
 	}
 
 	return $listing;
