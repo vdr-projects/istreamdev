@@ -52,7 +52,8 @@ vertical-align: middle;
 position: relative;
 -webkit-mask-box-image: url(../img/mask.png) 80 stretch;
 top: 0px;
-background-image: url('../img/nologoTV.png') 
+background-image: url('../img/nologoTV.png') ;
+background-size: 55px;
 }
 
 li.channellist span.name {
@@ -60,7 +61,6 @@ margin: 10px 0 0 0px;
 left: 90px;
 text-overflow: ellipsis;
 overflow: hidden;
-text-overflow: ellipsis;
 white-space: nowrap;
 max-width: 80%!important;
 white-space: nowrap;
@@ -306,6 +306,9 @@ position: relative;
 left: 32px;
 padding-left: 4px;
 top: -3px;
+text-overflow: ellipsis;
+overflow: hidden;
+width: 60%;
 }
 li.track a div.timebox {
 position: relative;

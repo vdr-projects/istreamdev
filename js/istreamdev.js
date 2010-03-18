@@ -208,8 +208,8 @@ $('#categories ul#cat_menu a').tap(function(event) {
 $('#channels ul#chan_menu .chan_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-	var channame = $(this).find('span[class="name"]').html();
-	var channumber = $(this).find('small[class="counter"]').html();
+	var channame = $(this).find('span[class="name"]').text();
+	var channumber = $(this).find('small[class="counter"]').text();
 	gen_streamchannel(channame,channumber);
 	return false;
 });
@@ -430,14 +430,14 @@ function stop_broadcast(session) {
 $(document).ready(function(e){ 
 $('#streaming').bind('pageAnimationEnd', function(event, info){ 
 	if (info.direction == 'in') {
-		var session = $("#streaming").find('span[rel="session"]').html();
-		var name = $("#streaming").find('span[rel="name"]').html();
+		var session = $("#streaming").find('span[rel="session"]').text();
+		var name = $("#streaming").find('span[rel="name"]').text();
 		playvideo(session,name);
 		} 
 })
 
 $('#streaming').bind('pageAnimationStart', function(event, info){ 
-	var session = $("#streaming").find('span[rel="session"]').html();
+	var session = $("#streaming").find('span[rel="session"]').text();
 	if (info.direction == 'out') {
 		$('#player').html('<img class="thumbnail" id="thumbnail" src="ram/session' + session + '/thumb.png"></img>');
 		}  
@@ -451,8 +451,8 @@ function playvideo(session,name) {
 		var status = data.status;
 		var message = data.message;
 		var url = data.url;
-		var thumbwidth = $('#streaming span[rel="thumbwidth"]').html();
-		var thumbheight = $('#streaming span[rel="thumbheight"]').html();
+		var thumbwidth = $('#streaming span[rel="thumbwidth"]').text();
+		var thumbheight = $('#streaming span[rel="thumbheight"]').text();
 		$('#streaming ul[class="streamstatus"]').find('span[class="mode"]').html(message);
 		if ( status == "ready" ) {
 			$('#player').html('<video id="videofeed" width="' + thumbwidth + '" height="' + thumbheight + '" poster="ram/session' + session + '/thumb.png" src="' + url + '" ></video><span rel="ready"></span>');
@@ -481,19 +481,19 @@ $('ul[rel="filelist"] li[class="arrow"] a').tap(function(event) {
 	json_start(this);
 	var type = $(this).attr('rel');
 	if ( type == 'audio' ) {
-	var name = $(this).find('span[class="tracktitle"]').html();
+	var name = $(this).find('span[class="tracktitle"]').text();
 	}
 	else {
-	var name = $(this).find('span[class="menuname"]').html();
+	var name = $(this).find('span[class="menuname"]').text();
 	}
-	var path = $(this).parents('div').find('span[rel="path"]').html();
 	var browser = $(this).parents('div').find('span[rel="currentbrowser"]').html();
-	var foldertype = $(this).parents('div').find('span[rel="foldertype"]').html();
+	var foldertype = $('#browser'+browser+' span[rel="foldertype"]').html();
+	var path = $('#browser'+browser+' span[rel="path"]').text();
 	browser = parseInt(browser);
 	browser++;
 	if ( type == "folder" ) 
 		{
-		newpath=path+"/"+name;
+		newpath=path+name+'/';
 		gen_browser(newpath,browser,name,foldertype);
 		}
 	else if ( type == "rec" )
@@ -510,7 +510,7 @@ $('ul[rel="filelist"] li[class="arrow"] a').tap(function(event) {
 		}
 	else if ( type == "audio" )
 		{
-		var track = $(this).find('span[class="number"]').html();
+		var track = $(this).find('span[class="number"]').text();
 		addplayer(path,name,track,(browser-1));
 		}
 	return false;
@@ -573,7 +573,7 @@ function gen_browser(path,browser,name,foldertype) {
 		}
 		$('#browser' + browser + ' div[class="toolbar"]').html(toolbar);
 	}
-	var dataString = 'action=browseFolder&path='+encodeURIComponent(path)+'/';
+	var dataString = 'action=browseFolder&path='+encodeURIComponent(path);
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data) {
@@ -601,9 +601,9 @@ function gen_browser(path,browser,name,foldertype) {
 //Add audio player code when needed
 function addplayer(button) {
 	json_start(button);
-	var name = $(button).find('span[class="tracktitle"]').html();
-	var path = $(button).parents('div').find('span[rel="path"]').html();
-	var browser = $(button).parents('div').find('span[rel="currentbrowser"]').html();
+	var name = $(button).find('span[class="tracktitle"]').text();
+	var path = $(button).parents('div').find('span[rel="path"]').text();
+	var browser = $(button).parents('div').find('span[rel="currentbrowser"]').text();
 	browser = parseInt(browser);
 	$('#browser'+browser+' #div_player').remove();
 	$('#browser'+browser).append('<div style="position:absolute; left:0; top:0" name="div_player" id="div_player"></div>');
