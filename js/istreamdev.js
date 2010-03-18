@@ -583,7 +583,7 @@ function gen_browser(path,browser,name,foldertype) {
 				$("#browser" + browser).find('ul').append('<li class="arrow"><a href="#" rel="video"><img class="menuicon" src="img/video.png" /><span class="menuname">' + list.name + '</span></a></li>');	
 				}
 				else if ( list.type == "audio" ) {
-				$("#browser" + browser).find('ul').append('<li class="track"><a href="javascript:document.player.Play();" onclick="addplayer(this);" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle">' + list.name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
+				$("#browser" + browser).find('ul').append('<li class="track"><a href="javascript:document.player.Play();" onclick="addplayer(this);" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle">' + list.trackname + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
 				}
 			});
 			json_complete('#browser' + browser,'cube');
