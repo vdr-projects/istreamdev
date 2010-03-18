@@ -41,7 +41,8 @@ jQT = new $.jQTouch({
 	'img/sw-button-cancel.png',
 	'img/sw-button-done.png',
 	'img/sw-header.png',
-	'img/sw-slot-border.png'
+	'img/sw-slot-border.png',
+	'img/nologoTV-mini.jpg'
 	]
 });
 
