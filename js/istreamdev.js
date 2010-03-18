@@ -650,6 +650,22 @@ $('#timers li[class="arrow"] a').tap(function(event) {
 	}
 });	
 
+$('#edittimer a[rel="deletetimer"]').tap(function(event) {
+	event.preventDefault();
+	json_start(this);
+	var timer_id = $("input#timer_id").val();
+	dataString = 'action=delTimer&id=' + timer_id;
+	$.getJSON("bin/backend.php",
+	dataString,
+	function(data) {
+		message = data.status + ": " + data.message;
+		gen_timers("true");
+		showStatus( 0,message );
+		return false;
+	});
+});
+	
+
 // gen Timers
 function gen_timers(edit) {
 	$('#timers ul[rel="timers"]').html('');
@@ -712,7 +728,7 @@ function gen_edittimer(id,name,active,channumber,channame,date,starttime,endtime
 		$('#a_endtime').attr('href', "javascript:openSelectTime('layer_endtime','" + wheelend_h + "','" + wheelend_m + "')");
 		submitbuttons = '<ul ref="submitbut" class="individual">';
 		submitbuttons += '<li><a class="submit_form" href="#">Edit</a></li>';
-		submitbuttons += '<li><a class="abutton" href="javascript:deletetimer(\'id\');">Delete</a></li></ul>';
+		submitbuttons += '<li><a class="abutton" rel="deletetimer" href="#">Delete</a></li></ul>';
 		$('#timer').append(submitbuttons);
 	}
 	else {
