@@ -2,13 +2,13 @@
 
 function getGlobals()
 {
-	global $vdrstreamdev, $vdrrecpath, $mediasource;
+	global $vdrstreamdev, $vdrrecpath, $mediasource, $videosource, $audiosource;
 
 	$ret = array();
 	$ret['streamdev_server'] = $vdrstreamdev;
 	$ret['rec_path'] = $vdrrecpath;
-	$ret['video_path'] = "/home/storage/Foot/";
-	$ret['audio_path'] = "/home/www/mp3/";
+	$ret['video_path'] = $videosource;
+	$ret['audio_path'] = $audiosource;
 
 	return json_encode($ret);
 }
@@ -167,4 +167,15 @@ function browseFolder($path)
 	
 	return json_encode($ret);
 }
+
+function streamAudio($path, $file)
+{
+	$ret = array();
+
+	$ret['track'] = streammusic($path, $file);
+
+	return json_encode($ret);
+
+}
+
 ?>

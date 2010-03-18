@@ -19,8 +19,12 @@
 
         //                      1:vid 2:aud     Source name     Source path
 	$mediasource=array();
-	$mediasources[]=array ( 1,              'Video',        '/mnt/media/movies');
-	$mediasources[]=array ( 2,              'Audio',        '/mnt/media/music');
+	$mediasources[]=array ( 1,              'Video',        '/mnt/media/movies/');
+	$mediasources[]=array ( 2,              'Audio',        '/mnt/media/music/');
+
+	// TEMPORARY
+	$videosource = '/mnt/media/movies/';
+	$audiosource = '/mnt/media/music/';
 
 	// Encoding (The name cannot be changed)
 	//			Name		Video	Audio	Audio channels	Resolution

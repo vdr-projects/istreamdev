@@ -111,19 +111,9 @@ switch ($action)
 			print $tree;
 			break;
 		
-		case ("browseRec"):
-		$tree = file_get_contents("textfiles/browseRec.txt");
-                print $tree;
-		break;
-		
-		case ("browseAudio"):
-		$tree = file_get_contents("textfiles/browseAudio.txt");
-                print $tree;
-		break;
-		
 		case ("streamAudio"):
-		$tree = file_get_contents("textfiles/streamAudio.txt");
-                print $tree;
-		break;
+			$tree = streamAudio($_REQUEST['path'], $_REQUEST['file']);
+			print $tree;
+			break;
 	}
 ?>

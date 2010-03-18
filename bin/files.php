@@ -80,15 +80,6 @@ function mediagentb($stream, $dest)
 		exec('cp ../logos/nologoMEDIA.png ' .$dest);
 }
 
-function mediagetwidth($file)
-{
-
-	$getid3 = new getID3;
-	$fileinfo = $getid3->analyze($file);
-
-	return $fileinfo['video']['resolution_x'];
-}
-
 function filegettype($file)
 {
 	global $videotypes, $audiotypes;
@@ -114,7 +105,7 @@ function filegettype($file)
 		return 'unknown';
 }
 
-function mediagetmusicinfo($file ="")
+function mediagetmusicinfo($file)
 {
 	// Get info
 	$getid3 = new getID3;
@@ -187,6 +178,8 @@ function filesgetlisting($dir)
 	// Alphabetical sorting
 	sort($medianame_array);
 	
+	$number = 1;
+
 	foreach($medianame_array as $value)
 	{	
 		$newentry = array();
@@ -199,18 +192,17 @@ function filesgetlisting($dir)
 		switch ($type)
 		{
 			case 'audio':
+				list($newentry['trackname'], $newentry['length']) = mediagetmusicinfo($dir ."/" .$value);
+				$newentry['number'] = $number;
+				$number++;
 			case 'video':
 			case 'rec':
 			case 'folder':
 				$newentry['type'] = $type;
+				$listing[] = $newentry;
 				break;
 			default:
-				continue;
-
 		}
-
-		// Add new entry
-		$listing[] = $newentry;
 	}
 
 	return $listing;

@@ -262,4 +262,41 @@ function sessiongetlist()
 	return $sessions;
 }
 
+function streammusic($path, $file)
+{
+	global $httppath;
+
+	$files = array();
+
+	// Create all symlinks
+	exec('mkdir ../playlist');
+        exec('rm ../playlist/*');
+        exec('ln -s ' .addcslashes(quotemeta($path), " &'") .'/* ../playlist');
+
+	// Generate files
+
+	// Get listing
+	$filelisting = filesgetlisting($path);
+	
+	$addfiles = 0;
+	
+	foreach ($filelisting as $f)
+	{
+		if ($f['type'] != 'audio')
+			continue;
+
+		if ($f['name'] == $file)
+			$addfiles = 1;
+
+		if ($addfiles)
+		{
+			$newfile = array();
+			$newfile['file'] = $httppath ."playlist/" . $f['name'];
+			$files[] = $newfile;
+		}
+	}
+
+	return $files;
+}
+
 ?>
