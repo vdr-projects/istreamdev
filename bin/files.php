@@ -158,11 +158,12 @@ function generatelogo($type, $name, $dest)
 
 function filesgetlisting($dir)
 {
-	$listing = array();
+	$filelisting = array();
+	$folderlisting = array();
 
 	$dir_handle = @opendir($dir);
 	if (!$dir_handle)
-		return $listing;
+		return array();
 
 	while ($medianame = readdir($dir_handle))
 	{
@@ -173,37 +174,18 @@ function filesgetlisting($dir)
 	}
 
 	if ($medianame_array[0] == NULL)
-		return $listing;
+		return array();
 
 	// Alphabetical sorting
 	sort($medianame_array);
 	
-	// List folders
-	foreach($medianame_array as $value)
-	{	
-		$type = filegettype($dir ."/" .$value);
-
-		if ($type != 'folder')
-			continue;
-
-		$newentry = array();
-		$newentry['name'] = $value;
-		$newentry['path'] = $dir ."/" .$value .'/';
-		$newentry['type'] = 'folder';
-
-		$listing[] = $newentry;
-	}
-
 	$number = 1;
 	
-	// List files
+	// List files and folders
 	foreach($medianame_array as $value)
 	{
 
 		$type = filegettype($dir ."/" .$value);
-
-		if ($type == 'folder')
-			continue;
 
 		$newentry = array();
 		$newentry['name'] = $value;
@@ -217,14 +199,21 @@ function filesgetlisting($dir)
 				$newentry['number'] = $number;
 				$number++;
 			case 'video':
+			case 'folder':
 			case 'rec':
-				$listing[] = $newentry;
+				if ($type == 'folder')
+				{
+					$newentry['path'] = $newentry['path'] .'/';
+					$folderlisting[] = $newentry;
+				}
+				else
+					$filelisting[] = $newentry;
 				break;
 			default:
 		}
 	}
 
-	return $listing;
+	return array_merge($folderlisting, $filelisting);
 }
 
 ?>
