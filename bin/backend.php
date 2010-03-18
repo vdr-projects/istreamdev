@@ -106,7 +106,6 @@ switch ($action)
 			break;
 		
 		case ("browseFolder"):
-			$path = $_REQUEST['path'];
 			$tree = browseFolder($_REQUEST['path']);
 			print $tree;
 			break;
