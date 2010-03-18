@@ -787,7 +787,7 @@ $('.submit_form').tap(function(event) {
 		}
 		var timer_id = $("input#timer_id").val();
 		var timer_chan = $("select#timer_chan").val();
-		var timer_active = $("input#timer_active").val();
+		var timer_active = $("input#timer_active").attr('checked')?1:0;
 		var dataString = 'action=editTimer&id=' + timer_id + '&active=' + timer_active + '&name=' + encodeURIComponent(timer_name) + '&channumber=' + timer_chan + '&date=' + timer_date + '&starttime=' + timer_starttime + '&endtime=' + timer_endtime; 
 		$.getJSON("bin/backend.php",
 		dataString,
