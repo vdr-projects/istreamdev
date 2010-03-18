@@ -58,12 +58,6 @@ $.getJSON("bin/backend.php",
 			audio_path = data.audio_path;
 			}
 		);
-//streamdev_server = "http://127.0.0.1:3000/TS/";
-//rec_path = "/video/";
-//video_path = "/mnt/media/Video/";
-//audio_path = "/mnt/media/Music/";
-
-
 
 //Goto home
 $('#home_but').tap(function(event) {
@@ -211,7 +205,7 @@ $('#categories ul#cat_menu a').tap(function(event) {
 	return false;
 });
 
-$('#channels ul#chan_menu a').tap(function(event) {
+$('#channels ul#chan_menu .chan_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	var channame = $(this).find('span[class="name"]').html();
@@ -220,6 +214,11 @@ $('#channels ul#chan_menu a').tap(function(event) {
 	return false;
 });
 
+$('#channels ul#chan_menu .toggleLink').tap(function(event) {
+	event.preventDefault();
+	$('#channels ul#chan_menu li[rel="toggle"]').show();
+	$('#channels ul#chan_menu li[rel="showbut"]').remove();
+});
 //Gen Categories
 function gen_categories() {
 	$("#cat_menu").html('');
@@ -244,9 +243,15 @@ function gen_channels(category) {
 		dataString,
 		function(data){
 			$.each(data.channel,function(i,channel){
-				$("#chan_menu").append('<li class="channellist"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png"/><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
-				
+				if ( i <= 10 ) {
+					$("#chan_menu").append('<li class="channellist"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png"/><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
+					}
+				else {
+					$("#chan_menu").append('<li class="channellist" rel="toggle"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png"/><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
+					}
 				});
+				$('li[rel="toggle"]').hide();
+				$("#chan_menu").append('<li rel="showbut"><a href="#" class="toggleLink">Show all</a></li>');
 				json_complete('#channels','cube');
 		})
 }
