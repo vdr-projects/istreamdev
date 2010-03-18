@@ -143,6 +143,7 @@ function sessiongetinfo($session)
 			break;
 		case 'vid':
 			$infovid = mediagetinfostream($url);
+			$info['name'] = basename($url);
 			$info['desc'] = $infovid['desc'];
 			$info['duration'] = $infovid['duration'];
 			$info['format'] = $infovid['format'];
