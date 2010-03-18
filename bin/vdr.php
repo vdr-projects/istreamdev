@@ -353,13 +353,13 @@ function vdrlisttimers()
 
                 $typearray = explode(" ", $timerarray[0]);
 		$newtimer['name'] = $timerarray[7];
-		$newtimer['active'] = (($typearray[1] & 0x1) != 0);
+		$newtimer['active'] = ($typearray[1] & 0x1)?"1":0;
 		$newtimer['channumber'] = $timerarray[1];
 		$newtimer['channame'] = vdrgetchanname($timerarray[1]);
 		$newtimer['date'] = $timerarray[2];
 		$newtimer['starttime'] = $timerarray[3];
 		$newtimer['endtime'] = $timerarray[4];
-		$newtimer['running'] = (($typearray[1] & 0x8) != 0);
+		$newtimer['running'] = ($typearray[1] & 0x8)?1:0;
 
 		$timerslist[] = $newtimer;
 	}
@@ -391,15 +391,10 @@ function vdrsettimer($prevtimer, $channum, $date, $stime, $etime, $desc, $active
 {
 	$ret = array();
 
-	if ($active == 'on')	
-		$type = "1";
-	else
-		$type = "0";
-
 	if ($prevtimer == "")
-		$command = "NEWT " .$type .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
+		$command = "NEWT " .$active .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
 	else
-		$command = "MODT " .$prevtimer ." " .$type .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
+		$command = "MODT " .$prevtimer ." " .$active .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
 
 	$message = vdrsendcommand($command);
 
