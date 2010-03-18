@@ -251,7 +251,9 @@ function gen_channels(category) {
 					}
 				});
 				$('li[rel="toggle"]').hide();
+				if ( data.channel.length > 10 ) {
 				$("#chan_menu").append('<li rel="showbut"><a href="#" class="toggleLink">Show all</a></li>');
+				}
 				json_complete('#channels','cube');
 		})
 }
@@ -529,7 +531,6 @@ $('div[rel="browser"] #home_but').tap(function(event) {
 	$('#home').bind('pageAnimationEnd', function(event, info){ 
 			$('#jqt div[rel="browser"]').remove();
 			$('#home').unbind('pageAnimationEnd');
-			
 		});
 });
 
