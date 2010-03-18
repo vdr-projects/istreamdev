@@ -373,7 +373,7 @@ function vdrdeltimer($timer)
 
 	$message = vdrsendcommand("DELT " .$timer);
 
-	if ($message == 'Timer "' .$timer .'" deleted')
+	if (preg_match("/deleted/", $message))
 	{
 		$ret['status'] = "Ok";
 		$ret['message'] = "Timer successfully deleted";
