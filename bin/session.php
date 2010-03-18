@@ -212,7 +212,7 @@ function sessiongetstatus($session)
 		else
 		{
 			$status['status'] = "ready";
-			$status['message'] = $mode ." Broadcast ready";
+			$status['message'] = "Broadcast ready (" .$mode .")";
 
 			$status['url'] = $httppath ."ram/" .$session ."/stream.m3u8";
 
