@@ -89,6 +89,45 @@ function reinitDivs() {
 }
 
 
+// Binds
+$(document).ready(function(e){ 
+$('div').bind('pageAnimationEnd', function(event, info){ 
+	if (info.direction == 'in') {
+		$('li[rel="toggle"]').show();
+		}
+	})
+});
+
+// show active sessions
+$(document).ready(function(e){ 
+getRunningSessions();
+});
+
+//reinit RunningSessions when going to Home:
+$(document).ready(function(e){ 
+$('#home').bind('pageAnimationStart', function(event, info){ 
+	if (info.direction == 'in') {
+		getRunningSessions()
+		}  
+	})
+});
+
+//trick to prevent animation bug with object.
+$(document).ready(function(e){ 
+$('#streaming').bind('pageAnimationEnd', function(event, info){ 
+	if (info.direction == 'in') {
+		var session = $("#streaming").find('span[rel="session"]').text();
+		var name = $("#streaming").find('span[rel="name"]').text();
+		playvideo(session,name);
+		} 
+})
+$('#streaming').bind('pageAnimationStart', function(event, info){ 
+	var session = $("#streaming").find('span[rel="session"]').text();
+	if (info.direction == 'out') {
+		$('#player').html('<img class="thumbnail" id="thumbnail" src="ram/session' + session + '/thumb.png"></img>');
+		}  
+	})
+});
 
 //  [/GENERIC STUFF]
 
@@ -152,20 +191,8 @@ $('#runningsessions li a').tap(function(event) {
 	return false;
 });
 
-// show active sessions
-$(document).ready(function(e){ 
-getRunningSessions();
-});
 
-//reinit RunningSessions when going to Home:
-$(document).ready(function(e){ 
-$('#home').bind('pageAnimationStart', function(event, info){ 
-	if (info.direction == 'in') {
-		getRunningSessions()
-		}  
-	})
-});
-
+// Get Active broadcast & encoding sessions
 function getRunningSessions() {
 var dataString = "action=getRunningSessions";
 	$('#home #runningsessions').html('');
@@ -229,7 +256,13 @@ function gen_categories() {
 		dataString,
 		function(data){
 			$.each(data.categories, function(i,categories){
-			$("#cat_menu").append('<li class="arrow"><a class="cat_but" href="#">' + categories.name  + '</a><small class="counter">' + categories.channels + '</small></li>');
+			if ( i > 10 )	{
+			togglestatus = "toggle";
+			}
+		else {
+			togglestatus = "";
+			}
+			$("#cat_menu").append('<li class="arrow" rel="' + togglestatus + '"><a class="cat_but" href="#">' + categories.name  + '</a><small class="counter">' + categories.channels + '</small></li>');
 			});
 		json_complete('#categories','cube');
 		})
@@ -244,6 +277,7 @@ function gen_channels(category) {
 		dataString,
 		function(data){
 			$.each(data.channel,function(i,channel){
+				//trick to lower cpu while animating. When the page have too much elements, it flickers.
 				if ( i <= 10 ) {
 					$("#chan_menu").append('<li class="channellist"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png" onerror="this.src=\'img/nologoTV-mini.jpg\'" /><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
 					}
@@ -252,9 +286,6 @@ function gen_channels(category) {
 					}
 				});
 				$('li[rel="toggle"]').hide();
-				if ( data.channel.length > 10 ) {
-				$("#chan_menu").append('<li rel="showbut"><a href="#" class="toggleLink">Show all</a></li>');
-				}
 				json_complete('#channels','cube');
 		})
 }
@@ -429,23 +460,6 @@ function stop_broadcast(session) {
     });
 }
 
-//trick to prevent animation bug with object.
-$(document).ready(function(e){ 
-$('#streaming').bind('pageAnimationEnd', function(event, info){ 
-	if (info.direction == 'in') {
-		var session = $("#streaming").find('span[rel="session"]').text();
-		var name = $("#streaming").find('span[rel="name"]').text();
-		playvideo(session,name);
-		} 
-})
-
-$('#streaming').bind('pageAnimationStart', function(event, info){ 
-	var session = $("#streaming").find('span[rel="session"]').text();
-	if (info.direction == 'out') {
-		$('#player').html('<img class="thumbnail" id="thumbnail" src="ram/session' + session + '/thumb.png"></img>');
-		}  
-	})
-});
 
 //Get server status & Play video
 function playvideo(session,name) {
@@ -574,21 +588,28 @@ function gen_browser(path,browser,name,foldertype) {
 			$("#browser" + browser).find('span[rel="path"]').html(path);
 			$("#browser" + browser).find('span[rel="currentbrowser"]').html(browser);
 			$.each(data.list, function(i,list){
+				if ( i > 10 ) {
+				hidetoggle = 'toggle';
+				}
+				else
+				{
+				hidetoggle = '';
+				}
 				if (list.type == "folder") {
-				$("#browser" + browser).find('ul').append('<li class="arrow"><a href="#" rel="folder"><span class="menuname">' + list.name + '</span></a></li>');			
+				$("#browser" + browser).find('ul').append('<li class="arrow" rel="' + hidetoggle + '"><a href="#" rel="folder"><span class="menuname">' + list.name + '</span></a></li>');			
 				}
 				else if (list.type == "rec") {
-				$("#browser" + browser).find('ul').append('<li class="arrow"><a href="#" rel="rec"><img class="menuicon" src="img/record.png" /><span class="menuname">' + list.name + '</span></a></li>');	
+				$("#browser" + browser).find('ul').append('<li class="arrow" rel="' + hidetoggle + '"><a href="#" rel="rec"><img class="menuicon" src="img/record.png" /><span class="menuname">' + list.name + '</span></a></li>');	
 				}
 				else if ( list.type == "video" ) {
-				$("#browser" + browser).find('ul').append('<li class="arrow"><a href="#" rel="video"><img class="menuicon" src="img/video.png" /><span class="menuname">' + list.name + '</span></a></li>');	
+				$("#browser" + browser).find('ul').append('<li class="arrow" rel="' + hidetoggle + '"><a href="#" rel="video"><img class="menuicon" src="img/video.png" /><span class="menuname">' + list.name + '</span></a></li>');	
 				}
 				else if ( list.type == "audio" ) {
 					if ( list.trackname != "" ) {
 					name = list.trackname;
 					} else {
 					name = list.name; }
-				$("#browser" + browser).find('ul').append('<li class="track"><a href="javascript:document.player.Play();" onclick="addplayer(this);" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle" rel="'+ list.name + '">' + name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
+				$("#browser" + browser).find('ul').append('<li class="track" rel="' + hidetoggle + '"><a href="javascript:document.player.Play();" onclick="addplayer(this);" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle" rel="'+ list.name + '">' + name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
 				}
 			});
 			json_complete('#browser' + browser,'cube');
@@ -681,15 +702,21 @@ function gen_timers(edit) {
 	function(data) {
 		$('#timers ul[rel="timers"]').append('<li><span class="menutitle">Current timers</span></li>');
 		$.each(data.timer, function(i,timer){
+		if ( i > 10 )	{
+			togglestatus = "toggle";
+			}
+		else {
+			togglestatus = "";
+			}
 		if ( timer.running == "1" ) {
-			timerli = '<li class="arrow"><a rel="' + timer.id + '" href="#"><img class="menuicon" src="img/timerrec.png" /><span class="menuname">' + timer.date + ' ' + timer.name + '</span></a></li>';
+			timerli = '<li class="arrow" rel="' + togglestatus + '"><a rel="' + timer.id + '" href="#"><img class="menuicon" src="img/timerrec.png" /><span class="menuname">' + timer.date + ' ' + timer.name + '</span></a></li>';
 			}
 			else
 			{
 				if ( timer.active == "1" ) {
-					timerli = '<li class="arrow"><a rel="' + timer.id + '" href="#"><img class="menuicon" src="img/timeron.png" /><span class="menuname">' + timer.date + ' ' + timer.name + '</span></a></li>';
+					timerli = '<li class="arrow" rel="' + togglestatus + '"><a rel="' + timer.id + '" href="#"><img class="menuicon" src="img/timeron.png" /><span class="menuname">' + timer.date + ' ' + timer.name + '</span></a></li>';
 				} else {
-					timerli = '<li class="arrow"><a rel="' + timer.id + '" href="#"><img class="menuicon" src="img/timeroff.png" /><span class="menuname">' + timer.date + ' ' + timer.name + '</span></a></li>';
+					timerli = '<li class="arrow" rel="' + togglestatus + '"><a rel="' + timer.id + '" href="#"><img class="menuicon" src="img/timeroff.png" /><span class="menuname">' + timer.date + ' ' + timer.name + '</span></a></li>';
 				}
 			}
 		$('#timers ul[rel="timers"]').append(timerli);
