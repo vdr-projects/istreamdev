@@ -106,7 +106,7 @@ switch ($action)
 			break;
 		
 		case ("browseFolder"):
-			$tree = browseFolder($_REQUEST['path']);
+			$tree = browseFolder(stripslashes($_REQUEST['path']));
 			print $tree;
 			break;
 		
@@ -115,4 +115,5 @@ switch ($action)
 			print $tree;
 			break;
 	}
+
 ?>
