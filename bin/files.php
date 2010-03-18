@@ -178,16 +178,37 @@ function filesgetlisting($dir)
 	// Alphabetical sorting
 	sort($medianame_array);
 	
-	$number = 1;
-
+	// List folders
 	foreach($medianame_array as $value)
 	{	
-		$newentry = array();
+		$type = filegettype($dir ."/" .$value);
 
+		if ($type != 'folder')
+			continue;
+
+		$newentry = array();
 		$newentry['name'] = $value;
-		$newentry['path'] = $dir ."/" .$value;
+		$newentry['path'] = $dir ."/" .$value .'/';
+		$newentry['type'] = 'folder';
+
+		$listing[] = $newentry;
+	}
+
+	$number = 1;
+	
+	// List files
+	foreach($medianame_array as $value)
+	{
 
 		$type = filegettype($dir ."/" .$value);
+
+		if ($type == 'folder')
+			continue;
+
+		$newentry = array();
+		$newentry['name'] = $value;
+		$newentry['path'] = $dir ."/" .$value;
+		$newentry['type'] = $type;
 
 		switch ($type)
 		{
@@ -197,10 +218,6 @@ function filesgetlisting($dir)
 				$number++;
 			case 'video':
 			case 'rec':
-			case 'folder':
-				$newentry['type'] = $type;
-				if ($type == 'folder')
-					$newentry['path'] = $newentry['path'] .'/';
 				$listing[] = $newentry;
 				break;
 			default:
