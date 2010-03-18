@@ -184,10 +184,13 @@ var dataString = "action=getRunningSessions";
 			session = broadcast.session;
 			name = broadcast.name;
 			type = broadcast.type;
-			if (type == 'tv') { var pic='tv.png';var typerunning = 'Tv: ' }
-			else if (type == 'rec') { var pic='record.png'; var typerunning = 'Rec: ' }
-			else if (type == 'vid') { var pic='video.png'; var typerunning = 'Vid: ' }
-			$('#home #runningsessions').append('<li class="arrow"><a rel="' + session + '" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">' + typerunning + name + '</span></a></li>');
+			encoding = broadcast.encoding;
+			if (encoding == 1) { encstatus = '*'; }
+			else { encstatus = ''; }
+			if (type == 'tv') { var pic='tv.png'; }
+			else if (type == 'rec') { var pic='record.png'; }
+			else if (type == 'vid') { var pic='video.png'; }
+			$('#home #runningsessions').append('<li class="arrow"><a rel="' + session + '" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">' + encstatus + name + '</span></a></li>');
 			});
 			$('#home #runningsessions').append('<li><a rel="killsessions" href="#"><span class="menuname">Stop all sessions</span></a></li>');
 		}
