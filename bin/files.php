@@ -204,7 +204,9 @@ function filesgetlisting($dir)
 				if ($type == 'folder')
 				{
 					$newentry['path'] = $newentry['path'] .'/';
-					$folderlisting[] = $newentry;
+
+					if (glob(quotemeta($newentry['path']) .'*'))
+						$folderlisting[] = $newentry;
 				}
 				else
 					$filelisting[] = $newentry;
