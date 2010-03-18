@@ -203,6 +203,9 @@ function filesgetlisting($dir)
 				break;
 			default:
 		}
+
+		if ($type == 'folder')
+			$newentry['path'] = $newentry['path'] .'/';
 	}
 
 	return $listing;
