@@ -250,7 +250,7 @@ int main(int argc, char **argv)
         goto error;
     }
 
-    ofmt = guess_format("mpegts", NULL, NULL);
+    ofmt = av_guess_format("mpegts", NULL, NULL);
     if (!ofmt) {
         fprintf(stderr, "Could not find MPEG-TS muxer\n");
         goto error;
