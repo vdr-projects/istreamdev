@@ -478,7 +478,7 @@ function playvideo(session,name) {
 		var thumbwidth = $('#streaming span[rel="thumbwidth"]').text();
 		var thumbheight = $('#streaming span[rel="thumbheight"]').text();
 		$('#streaming ul[class="streamstatus"]').find('span[class="mode"]').html(message);
-		if ( status == "ready" ) {
+		if ( status == "ready" || status == "error" ) {
 			$('#player').html('<video id="videofeed" width="' + thumbwidth + '" height="' + thumbheight + '" poster="ram/session' + session + '/thumb.png" src="' + url + '" ></video><span rel="ready"></span>');
 			return false;
 			}
