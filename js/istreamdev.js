@@ -264,6 +264,7 @@ function gen_categories() {
 			}
 			$("#cat_menu").append('<li class="arrow" rel="' + togglestatus + '"><a class="cat_but" href="#">' + categories.name  + '</a><small class="counter">' + categories.channels + '</small></li>');
 			});
+		$('li[rel="toggle"]').hide();
 		json_complete('#categories','cube');
 		})
 }
@@ -612,6 +613,7 @@ function gen_browser(path,browser,name,foldertype) {
 				$("#browser" + browser).find('ul').append('<li class="track" rel="' + hidetoggle + '"><a href="javascript:document.player.Play();" onclick="addplayer(this);" rel="audio"><div class="numberbox"><span class="number">' + list.number + '</span></div><span class="tracktitle" rel="'+ list.name + '">' + name + '</span><div class="timebox"><span class="time">' + list.length +'</span></div></a></li>');
 				}
 			});
+			$('li[rel="toggle"]').hide();
 			json_complete('#browser' + browser,'cube');
     });
 }
