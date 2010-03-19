@@ -95,6 +95,12 @@ $('div').bind('pageAnimationEnd', function(event, info){
 	if (info.direction == 'in') {
 		$('li[rel="toggle"]').show();
 		}
+		
+	})
+$('div').bind('pageAnimationStart', function(event, info){ 
+	if (info.direction == 'in') {
+		$('li[rel="toggle"]').hide();
+		}
 	})
 });
 
