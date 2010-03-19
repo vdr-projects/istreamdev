@@ -279,7 +279,7 @@ function sessiongetstatus($session, $prevmsg)
 		if ($checkstart && ((time() - $time) >= 10))
 		{
 			$status['status'] = "error";
-			$status['message'] = "Session could not start";
+			$status['message'] = "Error: session could not start";
 			return $status;
 		}
 
