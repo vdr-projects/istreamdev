@@ -2,7 +2,7 @@
 jQT = new $.jQTouch({
 	icon: 'img/istreamdev.png',
 	addGlossToIcon: true,
-	useFastTouch: true,
+	useFastTouch: false,
 	startupScreen: 'img/startup.png',
 	statusBar: 'black',
 	iconIsGlossy: true,
