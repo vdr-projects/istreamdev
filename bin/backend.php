@@ -71,23 +71,8 @@ switch ($action)
 			break;
 		
 		case ("getStreamStatus"):
-			$time = time();
-			$session = $_REQUEST['session'];
-			$prevmsg = $_REQUEST['msg'];
-			while((time() - $time) < 29)
-			{
-				// Get current status
-				$status = getStreamStatus($session);
-	
-				$statusdec = json_decode($status);
-				if (($statusdec->message != $prevmsg) || ($statusdec->status == "ready"))
-				{
-					print $status;
-					break;
-				}
-
-				usleep(1000);
-			}
+			$tree= getStreamStatus($_REQUEST['session'], $_REQUEST['msg']);
+			print $tree;
 			break;
 		
 		case ("getTimers"):

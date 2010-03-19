@@ -119,9 +119,9 @@ function getStreamInfo($session)
 	return json_encode($ret);
 }
 
-function getStreamStatus($session)
+function getStreamStatus($session, $prevmsg)
 {
-	$ret = sessiongetstatus("session" .$session);
+	$ret = sessiongetstatus("session" .$session, $prevmsg);
 
 	return json_encode($ret);
 }

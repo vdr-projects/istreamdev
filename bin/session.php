@@ -2,7 +2,12 @@
 
 function sessioncreate($type, $url, $mode)
 {
-	global $httppath, $ffmpegpath, $segmenterpath, $quality;
+	global $httppath, $ffmpegpath, $segmenterpath, $quality, $maxencodingprocesses;
+
+	// Check that the max number of session is not reached yet
+	$nbencprocess = exec("find ../ram/ -name segmenter.pid | wc | awk '{ print $1 }'");
+	if ($nbencprocess >= $maxencodingprocesses)
+		return "";
 
 	// Get a free session
 	$i=0;
@@ -169,7 +174,7 @@ function sessiondeletesingle($session)
 	exec ($cmd);
 }
 
-function sessiongetstatus($session)
+function getstreamingstatus($session)
 {
 	global $maxencodingprocesses, $httppath;
 
@@ -178,15 +183,15 @@ function sessiongetstatus($session)
 	$path = '../ram/' .$session;
 
 	// Check that session exists
-	if (($session == "") || !count(glob($path)))
+	if (!count(glob($path)))
 	{
 		$status['status'] = "error";
 
 	        $nbencprocess = exec("find ../ram/ -name segmenter.pid | wc | awk '{ print $1 }'");
 	        if ($nbencprocess >= $maxencodingprocesses)
-			$status['message'] = "Error: maximun number of sessions reached";
+			$status['message'] = "<b>Error: too much sessions</b>";
 	        else
-			$status['message'] = "Error: cannot create session";
+			$status['message'] = "<b>Error: could not create session folder</b>";
 	}
 	else
 	{
@@ -195,30 +200,95 @@ function sessiongetstatus($session)
 
 		if (count(glob($path . '/*.ts')) < 2)
 		{
-			$status['status'] = "wait";
-			switch ($type)
+			if (!file_exists($path .'/segmenter.pid'))
 			{
-				case 'tv':
-					$status['message'] = "Requesting live channel " .$channame;
-					break;
-				case 'rec':
-					$status['message'] = "Requesting recording channel " .$channame;
-					break;
-				case 'vid':
-					$status['message'] = "Requesting video file " .$url;
-					break;
+				$status['status'] = "error";
+				$status['message'] = "<b>Error: segmenter did not start correclty</b>";
+			}
+			else
+			{
+				$status['status'] = "wait";
+				switch ($type)
+				{
+					case 'tv':
+						$status['message'] = "<b>Live: requesting " .$channame ."</b>";
+						break;
+					case 'rec':
+						$status['message'] = "<b>Rec: requesting " .$channame ."</b>";
+						break;
+					case 'vid':
+						$status['message'] = "<b>Vid: requesting " .$url ."</b>";
+						break;
+				}
+
+				$status['message'] .= "<br>";
+
+				$status['message'] .= "<br>  * Segmenter: ";
+				if (file_exists($path .'/segmenter.pid'))
+					$status['message'] .= "<i>running</i>";
+				else
+					$status['message'] .= "<i>stopped</i>";
+				$status['message'] .= "<br>  * Segments: <i>";
+				$status['message'] .= count(glob($path . '/*.ts')) ."/2</i>";
+				
 			}
 		}
 		else
 		{
 			$status['status'] = "ready";
-			$status['message'] = "Broadcast ready (" .$mode .")";
+
+			$status['message'] = "<b>Broadcast ready</b><br>";
+
+			$status['message'] .= "<br>  * Quality: <i>" .$mode ."</i>";
+			$status['message'] .= "<br>  * Status: ";
+			if (file_exists($path .'/segmenter.pid'))
+				$status['message'] .= "<i>encoding...</i>";
+			else
+				$status['message'] .= "<i>fully encoded</i>";
 
 			$status['url'] = $httppath ."ram/" .$session ."/stream.m3u8";
 
 		}
 	}
 
+	return $status;
+}
+
+function sessiongetstatus($session, $prevmsg)
+{
+	$time = time();
+
+	// Check if we need to timeout on the sesssion creation */
+	$checkstart = preg_match("/requesting/", $prevmsg);
+	
+	while((time() - $time) < 29)
+	{
+
+		// Get current status
+		$status = getstreamingstatus($session);
+	
+		// Alway return ready
+		if ($status['status'] == "ready")
+			return $status;
+
+		// Status change
+		if ($status['message'] != $prevmsg)
+			return $status;
+
+		// Check session creation timeout
+		if ($checkstart && ((time() - $time) >= 10))
+		{
+			$status['status'] = "error";
+			$status['message'] = "Session could not start";
+			return $status;
+		}
+
+		usleep(10000);
+	}
+
+	/* Time out */
+	$status['status'] = "wait";
+	$status['message'] = $prevmsg;
 	return $status;
 }
 
