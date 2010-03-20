@@ -700,7 +700,6 @@ $('#edittimer a[rel="deletetimer"]').tap(function(event) {
 	});
 });
 	
-
 // gen Timers
 function gen_timers(edit) {
 	$('#timers ul[rel="timers"]').html('');
@@ -821,8 +820,12 @@ function gen_formchanlist() {
 // TIMER FORM VALIDATION & SUBMIT
 $('.submit_form').tap(function(event) {  
 		event.preventDefault();
-		$('.formerror').hide();  
+		checktimerform();
 		$(this).removeClass('active');
+		});
+
+function checktimerform() {
+		$('.formerror').hide();  
 		var timer_name = $("input#timer_name").val();   
 		if (timer_name == "") {   
 			$("li#timer_name_error").show();   
@@ -861,7 +864,7 @@ $('.submit_form').tap(function(event) {
 				return false;
 				});
 		return false;
-}); 
+}; 
 
 function showStatus( timeout, message ) { 
     if( timeout == 0 ) { 
