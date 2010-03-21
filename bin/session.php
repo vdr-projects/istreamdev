@@ -33,6 +33,21 @@ function sessioncreate($type, $url, $mode)
 
 	// Create session
 	exec('mkdir ../ram/' .$session);
+	// Extract $channame if needed
+        switch ($type)
+        {
+                case 'tv':
+                        $urlarray = explode("/", $url);
+                        $channum = $urlarray[count($urlarray)-1];
+                        $channame = vdrgetchanname($channum);
+                        break;
+                case 'rec':
+                        list($channame, $title, $desc, $recorded) = vdrgetrecinfo($url);
+                        break;
+                default:
+                        $channame = "";
+                        break;
+        }
 	// Create logo
         if ($type == 'vid')
                 generatelogo($type, $url, '../ram/' .$session .'/thumb.png');
@@ -57,22 +72,6 @@ function sessioncreate($type, $url, $mode)
 	
 	$cmd = str_replace('%', '%%', $cmd);
 	exec ($cmd);
-	
-	// Extract $channame if needed
-	switch ($type)
-	{
-		case 'tv':
-			$urlarray = explode("/", $url);
-			$channum = $urlarray[count($urlarray)-1];
-			$channame = vdrgetchanname($channum);
-			break;
-		case 'rec':
-			list($channame, $title, $desc, $recorded) = vdrgetrecinfo($url);
-			break;
-		default:
-			$channame = "";
-			break;
-	}
 
 	// Write streaminfo
 	writeinfostream($session, $type, $mode, $url, $channame);

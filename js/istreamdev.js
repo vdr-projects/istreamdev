@@ -48,6 +48,7 @@ jQT = new $.jQTouch({
 
 // [GENERIC STUFF]
 // Global variable
+//window.applicationCache;
 
 dataString = "action=getGlobals";
 $.getJSON("bin/backend.php",
@@ -63,6 +64,7 @@ $.getJSON("bin/backend.php",
 //Goto home
 $('#home_but').tap(function(event) {
 	event.preventDefault();
+	$(this).parents('div').find('a').unbind("tap");
 	jQT.goTo('#home','flip');
 });
 
@@ -90,6 +92,7 @@ function reinitDivs() {
 
 
 // Binds
+//hide "toggle" elements to lighten animation
 $(document).ready(function(e){ 
 $('div').bind('pageAnimationEnd', function(event, info){ 
 	if (info.direction == 'in') {
@@ -103,7 +106,7 @@ $('div').bind('pageAnimationStart', function(event, info){
 		}
 	})
 });
-
+//disable links of page while animation
 $('a[class="back"]').tap(function(event) {
 	event.preventDefault();
 	$(this).parents('div').find('a').unbind("tap");
@@ -540,7 +543,6 @@ $('ul[rel="filelist"] li[class="arrow"] a').tap(function(event) {
 
 $('div[rel="browser"] a[class="back"]').tap(function(event) {
 	event.preventDefault();
-	$(this).parents('div[rel="browser"]').find('ul[rel="filelist"] li[class="arrow"] a').unbind("tap");
 	$(this).parents('div[rel="browser"]').remove();
 });
 
