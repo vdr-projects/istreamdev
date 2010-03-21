@@ -4,7 +4,6 @@ css/istreamdev.css
 jqtouch/jquery.1.3.2.min.js
 jqtouch/jqtouch.js
 jqtouch/jqtouch.transitions.js
-extensions/jqt.offline.js
 js/istreamdev.js
 js/functions.js
 js/spinningwheel-min.js
