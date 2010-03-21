@@ -104,6 +104,10 @@ $('div').bind('pageAnimationStart', function(event, info){
 	})
 });
 
+$('a[class="back"]').tap(function(event) {
+	event.preventDefault();
+	$(this).parents('div').find('a').unbind("tap");
+});
 // show active sessions
 $(document).ready(function(e){ 
 getRunningSessions();
@@ -536,11 +540,13 @@ $('ul[rel="filelist"] li[class="arrow"] a').tap(function(event) {
 
 $('div[rel="browser"] a[class="back"]').tap(function(event) {
 	event.preventDefault();
+	$(this).parents('div[rel="browser"]').find('ul[rel="filelist"] li[class="arrow"] a').unbind("tap");
 	$(this).parents('div[rel="browser"]').remove();
 });
 
 $('div[rel="browser"] #home_but').tap(function(event) {
 	event.preventDefault();
+	$(this).parents('div[rel="browser"]').find('ul[rel="filelist"] li[class="arrow"] a').unbind("tap");
 	$('#home').bind('pageAnimationEnd', function(event, info){ 
 			$('#jqt div[rel="browser"]').remove();
 			$('#home').unbind('pageAnimationEnd');

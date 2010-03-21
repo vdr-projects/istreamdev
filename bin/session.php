@@ -33,6 +33,12 @@ function sessioncreate($type, $url, $mode)
 
 	// Create session
 	exec('mkdir ../ram/' .$session);
+	// Create logo
+        if ($type == 'vid')
+                generatelogo($type, $url, '../ram/' .$session .'/thumb.png');
+        else
+                generatelogo($type, $channame, '../ram/' .$session .'/thumb.png');
+	// Start encoding
 	$url = str_replace("\\'", "'", $url);
 	switch ($type)
 	{
@@ -70,12 +76,6 @@ function sessioncreate($type, $url, $mode)
 
 	// Write streaminfo
 	writeinfostream($session, $type, $mode, $url, $channame);
-
-	// Create logo
-	if ($type == 'vid')
-		generatelogo($type, $url, '../ram/' .$session .'/thumb.png');
-	else
-		generatelogo($type, $channame, '../ram/' .$session .'/thumb.png');
 
 	return $session;
 }
