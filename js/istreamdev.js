@@ -48,8 +48,6 @@ jQT = new $.jQTouch({
 
 // [GENERIC STUFF]
 // Global variable
-//window.applicationCache;
-
 dataString = "action=getGlobals";
 $.getJSON("bin/backend.php",
 			dataString,
