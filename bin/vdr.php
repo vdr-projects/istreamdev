@@ -105,10 +105,16 @@ function vdrgetchannels($category, $now)
 	if ($now)
 		$epgnow = vdrsendcommand("LSTE NOW");
 
+	$channum = 1;
+
 	while ($line = fgets($fp, 1024))
 	{
 		if (!$cat_found)
 		{
+			// 2 case where we dont increment channum
+			if (! (($line[0] == "") || (($line[0] == ":") && ($line[1] != "@"))) )
+				$channum++;
+
 			if ($line[0] != ":")
 				continue;
 
@@ -118,6 +124,8 @@ function vdrgetchannels($category, $now)
 			{
 				$catarray = explode(' ', $cat);
 				$cat = substr($cat, strlen($catarray[0])+1);
+
+				$channum = substr($catarray[0], 1);
 			}
 
 			 if (!is_utf8($cat))
@@ -137,7 +145,7 @@ function vdrgetchannels($category, $now)
 
 			$tmpchan = array();
 			$tmpchan['name'] = $channame;
-			$tmpchan['number'] = vdrgetchannum($channame);
+			$tmpchan['number'] = $channum;
 			if ($now)
 			{
 				// Extract now
@@ -180,6 +188,8 @@ function vdrgetchannels($category, $now)
 				$tmpchan['name'] = utf8_encode($tmpchan['name']);
 
 			$chanlist[] = $tmpchan;
+
+			$channum++;
 		}
 	}
 
