@@ -32,7 +32,7 @@ $min_errorLogger = false;
  * Allow use of the Minify URI Builder app. If you no longer need 
  * this, set to false.
  **/
-$min_enableBuilder = true;
+$min_enableBuilder = false;
 
 
 /**
@@ -40,7 +40,7 @@ $min_enableBuilder = true;
  * will have to load extra code to guess. Some examples below:
  */
 //$min_cachePath = 'c:\\WINDOWS\\Temp';
-$min_cachePath = '/tmp';
+//$min_cachePath = '/tmp';
 //$min_cachePath = preg_replace('/^\\d+;/', '', session_save_path());
 
 
@@ -55,9 +55,9 @@ $min_cachePath = '/tmp';
  * second line. The third line might work on some Apache servers.
  */
 //$min_documentRoot = '';
-$min_documentRoot = substr(__FILE__, 0, strlen(__FILE__) - 15);
+//$min_documentRoot = substr(__FILE__, 0, strlen(__FILE__) - 15);
 //$min_documentRoot = $_SERVER['SUBDOMAIN_DOCUMENT_ROOT'];
-
+$min_documentRoot = substr(getcwd(),0, -4);
 
 /**
  * Cache file locking. Set to false if filesystem is NFS. On at least one 
