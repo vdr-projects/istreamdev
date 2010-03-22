@@ -8,15 +8,15 @@ jQT = new $.jQTouch({
 	iconIsGlossy: true,
 	fullscreen: true,
 	preloadImages: [
-	'themes/jqt/img/chevron.png',
-	'themes/jqt/img/back_button.png',
-	'themes/jqt/img/back_button_clicked.png',
-	'themes/jqt/img/button_clicked.png',
-	'themes/jqt/img/button.png',
-	'themes/jqt/img/button_clicked.png',
-	'themes/jqt/img/loading.gif',
-	'themes/jqt/img/toolbar.png',
-	'themes/jqt/img/on_off.png',
+	'img/chevron.png',
+	'img/back_button.png',
+	'img/back_button_clicked.png',
+	'img/button_clicked.png',
+	'img/button.png',
+	'img/button_clicked.png',
+	'img/loading.gif',
+	'img/toolbar.png',
+	'img/on_off.png',
 	'img/loading.gif',
 	'img/audio.png',
 	'img/epg.png',
@@ -112,6 +112,7 @@ $('a[class="back"]').tap(function(event) {
 // show active sessions
 $(document).ready(function(e){ 
 getRunningSessions();
+//preloadLogos();
 });
 
 //reinit RunningSessions when going to Home:
@@ -139,6 +140,16 @@ $('#streaming').bind('pageAnimationStart', function(event, info){
 		}  
 	})
 });
+//preload logos
+function preloadLogos() {
+	$.getJSON("bin/genlogolist.php",
+	dataString,
+	function(data){
+    for (var i = data.length - 1; i >= 0; i--) {
+		(new Image()).src = data[i];
+		};
+	});
+}
 
 //  [/GENERIC STUFF]
 
