@@ -161,6 +161,14 @@ function filesgetlisting($dir)
 	$filelisting = array();
 	$folderlisting = array();
 
+	// Check dir
+	if (!isurlvalid($dir, "media") && !isurlvalid($dir, "rec"))
+		return array();
+
+	// Dont allow ..
+	if (preg_match("$\.\.$", $dir))
+		return array();
+
 	$dir_handle = @opendir($dir);
 	if (!$dir_handle)
 		return array();

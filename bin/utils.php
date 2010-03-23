@@ -92,4 +92,49 @@ function sec2hms ($sec, $padHours = false)
     return $hms;
     
 }
+
+function isurlvalid($url, $type)
+{
+	global $vdrstreamdev, $vdrrecpath, $videosource, $audiosource;
+
+	switch ($type)
+	{
+		case 'tv':
+
+			// Check that this is a correct URL
+			if (strncmp($vdrstreamdev, $url, strlen($vdrstreamdev)))
+				return 0;
+
+			break;
+
+		case 'rec':
+			if (strncmp($vdrrecpath, $url, strlen($vdrrecpath)))
+				return 0;
+
+			// Dont allow ..
+			if (preg_match("$\.\.$", $url))
+				return 0;
+
+			break;
+                
+		case 'media';
+		case 'vid':
+
+			if (strncmp($videosource, $url, strlen($videosource)) && strncmp($audiosource, $url, strlen($audiosource)))
+				return 0;
+	
+			// Dont allow ..
+			if (preg_match("$\.\.$", $url))
+				return 0;
+
+			break;
+
+		default:
+			return 0;
+        }
+
+	return 1;
+}
+
+
 ?>
