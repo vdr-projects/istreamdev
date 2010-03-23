@@ -1,11 +1,15 @@
 <?php
+	// Enable/disable features
+	$enablevdr=1;			// VDR feature
+	$enablemediavideo=1;		// Video streaming
+	$enablemediaaudio=1;		// Audio streaming
+
 	// Http configuration
 	$user = 'istreamdev';		// Login
 	$pass = 'iguest';		// Password
-	$httppath = '/istreamdev/';	// Absolute path to the index.php file. 					//Don't put http://yourdomain !!
+	$httppath = '/istreamdev/';	// Absolute path to the index.php file. Don't put http://yourdomain !!
 
 	// VDR configuration
-	$vdrenabled=1;						// Enable/disable VDR feature
 	$vdrchannels='/etc/vdr/channels.conf';			// VDR channel list
 	$svdrpport=2001;					// SVDRP port
 	$svdrpip='127.0.0.1';					// SVDRP ip
@@ -13,7 +17,6 @@
 	$vdrrecpath='/video/';					//VDR recording directory
 
 	// Media configuration
-	$mediaenabled=1;						//Enable/disable media streaming feature
 	$videotypes='avi mkv ts mov mp4 wmv flv mpg mpeg mpeg2 mpv ';	// Supported video extensions (must finish with a space)
 	$audiotypes='mp3 aac wav ';					// Supported audio extensions
 	$videosource = '/mnt/media/movies/';				// Video files directory
