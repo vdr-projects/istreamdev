@@ -12,7 +12,7 @@
  * To allow debugging, set this option to true and add "&debug=1" to 
  * a URI. E.g. /min/?f=script1.js,script2.js&debug=1
  */
-$min_allowDebugFlag = true;
+$min_allowDebugFlag = false;
 
 
 /**
@@ -25,7 +25,7 @@ $min_allowDebugFlag = true;
  *
  * @todo cache system does not have error logging yet.
  */
-$min_errorLogger = true;
+$min_errorLogger = false;
 
 
 /**
