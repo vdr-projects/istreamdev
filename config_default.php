@@ -5,11 +5,10 @@
 	$httppath = '/istreamdev/';	// Absolute path to the index.php file. 					//Don't put http://yourdomain !!
 
 	// VDR configuration
-	$vdrenabled=1;						// enable/disable VDR features
 	$vdrchannels='/etc/vdr/channels.conf';			// VDR channel list
 	$svdrpport=2001;					// SVDRP port
 	$svdrpip='127.0.0.1';					// SVDRP ip
-	$vdrstreamdev='http://127.0.0.1:3000/TS/';		// VDR streamdev URL
+	$vdrstreamdev='http://127.0.0.1:3000/TS/';		// VDR streamdev URL (set to "" to disable the VDR feature)
 	$vdrrecpath='/video/';					//VDR recording directory
 
 	// Media configuration
