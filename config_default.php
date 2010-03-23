@@ -24,12 +24,12 @@
 	$quality=array (	'edge'	=>	'128k	64k	1		240x160',
 				'3g'	=>	'350k	64k	1		408x272',
 				'wifi'	=>	'512k	128k	2		480x320');
-	$maxencodingprocesses=10;		// Max simultaneous encoding processes
+	$maxencodingprocesses=3;		// Max simultaneous encoding processes
 
 	// Misc
 	$ffmpegpath = '/usr/bin/ffmpeg';	//path to ffmpeg binary
 	$segmenterpath = '/usr/bin/segmenter';	//path to segmenter binary
 
 	// Version
-	$isdversion = "0.3.7";
+	$isdversion = "1.0-alpha1";
 ?>
