@@ -2,13 +2,24 @@
 
 function getGlobals()
 {
-	global $vdrstreamdev, $vdrrecpath, $mediasource, $videosource, $audiosource;
+	global $vdrstreamdev, $vdrrecpath, $mediasource, $videosource, $audiosource, $vdrenable, $mediaenable;
 
 	$ret = array();
-	$ret['streamdev_server'] = $vdrstreamdev;
+	if ($vdrenable)
+		$ret['streamdev_server'] = $vdrstreamdev;
+	else
+		$ret['streamdev_server'] = "";
 	$ret['rec_path'] = $vdrrecpath;
-	$ret['video_path'] = $videosource;
-	$ret['audio_path'] = $audiosource;
+	if ($mediaenable)
+	{
+		$ret['video_path'] = $videosource;
+		$ret['audio_path'] = $audiosource;
+	}
+	else
+	{
+		$ret['video_path'] = "";
+		$ret['audio_path'] = "";
+	}
 
 	return json_encode($ret);
 }
