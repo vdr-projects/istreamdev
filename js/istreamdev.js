@@ -230,6 +230,11 @@ $('#runningsessions li a').tap(function(event) {
 	json_start(this);
 	var session = $(this).attr('rel');
 	if (session=="killsessions") {
+		var confirmation = confirm("Delete all active session?");
+		if ( confirmation == false ) {
+		hide_loader();
+		return false;
+		}
 		var dataString = 'action=stopBroadcast&session=all';
 		$.getJSON("bin/backend.php",
 		dataString,
