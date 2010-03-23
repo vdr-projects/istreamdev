@@ -56,8 +56,40 @@ $.getJSON("bin/backend.php",
 			rec_path = data.rec_path;
 			video_path = data.video_path;
 			audio_path = data.audio_path;
+			if (streamdev_server != "") {
+			addVdr();
 			}
-		);
+			if ( video_path != "" ) {
+			addVideofiles();
+			}
+			if ( audio_path != "" ) {
+			addAudiofiles();
+			}
+});
+
+function addVdr() {
+	vdrmenu = '	<ul class="rounded">\n<li><span class="menutitle">VDR</span></li>\n';
+	vdrmenu += '	<li class="arrow"><a id="categories_but" href="#"><img class="menuicon" src="img/tv.png" /><span class="menuname">Watch TV</span></a></li>';
+	vdrmenu += '	<li class="arrow"><a id="recording_but" href="#"><img class="menuicon" src="img/record.png" /><span class="menuname">Recordings</span></a></li>';
+	vdrmenu += '	<li class="arrow"><a id="timers_but" href="#"><img class="menuicon" src="img/timers.png" /><span class="menuname">Timers</span></a></li>'; 
+	vdrmenu += '	<li class="arrow"><a id="epg_but" href="#epg"><img class="menuicon" src="img/epg.png" /><span class="menuname">Program Guide</span></a></li>\n</ul>';
+	$('#home #runningsessions').after(vdrmenu);
+}
+function addVideofiles() {
+	videomenu = '<li class="arrow"><a id="video_but" href="#"><img class="menuicon" src="img/video.png" /><span class="menuname">Video</span></a></li>';
+	if ( $('#home #filemenu').length == 0 ) {
+		$('#home').append('<ul class="rounded" id="filemenu"><li><span class="menutitle">FILES</span></li></ul>');
+	}
+	$('#home #filemenu').append(videomenu);
+}
+
+function addAudiofiles() {
+	audiomenu = '<li class="arrow"><a id="audio_but" href="#"><img class="menuicon" src="img/audio.png" /><span class="menuname">Audio</span></a></li>';
+	if ( $('#home #filemenu').length == 0 ) {
+		$('#home').append('<ul class="rounded" id="filemenu"><li><span class="menutitle">FILES</span></li></ul>');
+	}
+	$('#home #filemenu').append(audiomenu);
+}
 
 //Goto home
 $('#home_but').tap(function(event) {
@@ -217,12 +249,12 @@ $('#runningsessions li a').tap(function(event) {
 // Get Active broadcast & encoding sessions
 function getRunningSessions() {
 var dataString = "action=getRunningSessions";
-	$('#home #runningsessions').html('');
+	$('#home #runningsessions').html('<li><span class="menutitle">SESSIONS</span></li>\n<li>Checking running session</li>');
 	//Json call to get category array
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data){
-		$('#home #runningsessions').append('<li><span class="menutitle">SESSIONS</span></li>');
+		$('#home #runningsessions').html('<li><span class="menutitle">SESSIONS</span></li>');
 		if ( data.broadcast.length >= 1 ) {
 			$.each(data.broadcast, function(i,broadcast){
 			session = broadcast.session;
