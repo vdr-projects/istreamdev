@@ -4,6 +4,10 @@ function sessioncreate($type, $url, $mode)
 {
 	global $httppath, $ffmpegpath, $segmenterpath, $quality, $maxencodingprocesses;
 
+	// Check url
+	if (!isurlvalid($url, $type))
+		return "";
+
 	// Check that the max number of session is not reached yet
 	$nbencprocess = exec("find ../ram/ -name segmenter.pid | wc | awk '{ print $1 }'");
 	if ($nbencprocess >= $maxencodingprocesses)
@@ -335,6 +339,9 @@ function sessiongetlist()
 function streammusic($path, $file)
 {
 	global $httppath;
+
+	if (!isurlvalid($path, "media"))
+		return array();
 
 	$files = array();
 
