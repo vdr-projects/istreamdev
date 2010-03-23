@@ -56,13 +56,13 @@ $.getJSON("bin/backend.php",
 			rec_path = data.rec_path;
 			video_path = data.video_path;
 			audio_path = data.audio_path;
-			if (streamdev_server != "") {
+			if (streamdev_server != "" && streamdev_server != "null") {
 			addVdr();
 			}
-			if ( video_path != "" ) {
+			if ( video_path != "" && video_path != "null") {
 			addVideofiles();
 			}
-			if ( audio_path != "" ) {
+			if ( audio_path != "" && audio_path != "null" ) {
 			addAudiofiles();
 			}
 });
@@ -363,6 +363,28 @@ $('#streamchannel span.streamButton a').tap(function(event) {
     start_broadcast(type,url,mode);
 	return false;
 });
+$('#streamchannel span.recButton a').tap(function(event) {
+	event.preventDefault();
+	json_start(this);
+	var id = "new";
+	var active= 1;
+	var name = $("#streamchannel").find('span[class="name_now"]').text();
+	name = name.substr(4,name.length);
+	var channumber = $("#streamchannel").find('span[rel="number"]').text();
+	var channame = $("#streamchannel").find('span[rel="channame"]').text();
+	date = new Date();
+	var rec_year = date.getFullYear();
+	var rec_month = date.getMonth()+1;
+	rec_month = str_pad(rec_month,2,'0','STR_PAD_LEFT');
+	var rec_day = date.getDate();
+	rec_day = str_pad(rec_day,2,'0','STR_PAD_LEFT');
+	var rec_date = rec_year + "-" + rec_month + "-" + rec_day;
+	var epgtime = $("#streamchannel").find('span[class="epgtime_now"]').text();
+	var starttime = epgtime.substr(0,2) + epgtime.substr(3,2);
+	var endtime  = epgtime.substr(6,2) + epgtime.substr(9,2);
+    gen_edittimer(id,name,active,channumber,channame,rec_date,starttime,endtime);
+	return false;
+});
 $('#streamrec span.streamButton a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
@@ -405,6 +427,8 @@ function gen_streamchannel(channame,channumber) {
 			$("#streamchannel").find('span[class="epgtime_next"]').html( program.next_time );
 			$("#streamchannel").find('span[rel="url"]').html(streamdev_server + channumber);
             $("#streamchannel").find('span[rel="type"]').html('tv');
+			$("#streamchannel").find('span[rel="number"]').html(channumber);
+			$("#streamchannel").find('span[rel="channame"]').html(channame);
 			json_complete('#streamchannel','cube');
 		});
 }
@@ -796,7 +820,21 @@ function gen_timers(edit) {
 function gen_edittimer(id,name,active,channumber,channame,date,starttime,endtime) {
 	$('ul[ref="submitbut"]').remove();
 	if (id) {
+		if (id=="new") {
+		$('#edittimer h1').html('<img class="menuicon" src="img/timers.png" / > NEW TIMER');
+		id="";
+		submitbutton = '<ul ref="submitbut" class="rounded">';
+		submitbutton +=	'<li><center><a class="submit_form" href="#">Create</a></center></li></ul>';
+		$('#timer').append(submitbutton);
+		}
+		else 
+		{
 		$('#edittimer h1').html('<img class="menuicon" src="img/timers.png" / > EDIT TIMER');
+		submitbuttons = '<ul ref="submitbut" class="individual">';
+		submitbuttons += '<li><a class="submit_form" href="#">Edit</a></li>';
+		submitbuttons += '<li><a class="abutton" rel="deletetimer" href="#">Delete</a></li></ul>';
+		$('#timer').append(submitbuttons);
+		}
 		if (active == 1) 
 		{
 				$('#timer_active').attr('checked', true);
@@ -825,10 +863,7 @@ function gen_edittimer(id,name,active,channumber,channame,date,starttime,endtime
 		wheelend_m = endtime.substring(2,4);
 		$('#layer_endtime').html(wheelend_h + 'h' + wheelend_m);
 		$('#a_endtime').attr('href', "javascript:openSelectTime('layer_endtime','" + wheelend_h + "','" + wheelend_m + "')");
-		submitbuttons = '<ul ref="submitbut" class="individual">';
-		submitbuttons += '<li><a class="submit_form" href="#">Edit</a></li>';
-		submitbuttons += '<li><a class="abutton" rel="deletetimer" href="#">Delete</a></li></ul>';
-		$('#timer').append(submitbuttons);
+		
 	}
 	else {
 	$('#edittimer h1').html('<img class="menuicon" src="img/timers.png" / > NEW TIMER');
@@ -922,11 +957,11 @@ function checktimerform() {
 
 function showStatus( timeout, message ) { 
     if( timeout == 0 ) { 
-		$('#timer_status').html(message);
-		$('#timer_status').show();
-        setTimeout( function() { showStatus( 1, message ); }, 4000 ); 
+		$('#status_box').html(message);
+		$('#status_box').show();
+        setTimeout( function() { showStatus( 1, message ); }, 5000 ); 
     } else if( timeout == 1 ) { 
-	$('#timer_status').hide();
+	$('#status_box').hide();
     } 
 }
 //  [/TIMER SECTION]

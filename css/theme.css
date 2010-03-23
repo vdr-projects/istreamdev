@@ -23,6 +23,7 @@ body > *, div#jqt > * {
 #jqt .black-translucent .toolbar {
 	margin-top: 20px;
 }
+
 div#jqt .toolbar > h1 {
     position: absolute;
     overflow: hidden;

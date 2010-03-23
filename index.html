@@ -3,11 +3,12 @@
     <head>
         <meta charset="UTF-8" />
         <title>iStreamdev</title>
-        <style type="text/css" media="screen">@import "min/?b=./css&f=jqtouch.css,theme.css,istreamdev.css,spinningwheel.css";</style>
-        <script src="min/?b=./js&f=jquery-1.4.2.min.js,jqtouch.js,jqtouch.transitions.js,istreamdev.js,functions.js,spinningwheel.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" href="min/?b=css&f=jqtouch.css,theme.css,istreamdev.css,spinningwheel.css" type="text/css" media="screen" />
+        <script src="min/?b=js&f=jquery-1.4.2.min.js,jqtouch.js,jqtouch.transitions.js,istreamdev.js,functions.js,spinningwheel.js" type="text/javascript" charset="utf-8"></script>
     </head>
     <body>
 	<div id="loader"></div>
+	<div id="status_box"></div>
 	<div id="jqt">
 	<!---------------------------------- HOME SCREEN (always present) ---------------------------------->
         	
@@ -67,6 +68,8 @@
 			<div rel="dataholder" style="visibility:hidden">
                 <span rel="type"></span>
                 <span rel="url"></span>
+				<span rel="number"></span>
+				<span rel="channame"></span>
             </div>			
 		</div>
 		
@@ -151,7 +154,7 @@
 			<a href="#" class="back">Home</a>
 				<h1><img class="menuicon" src="img/timers.png" /> TIMERS</h1>
 			</div>
-			<div class="info" id="timer_status"></div>
+			
 			<ul class="rounded" rel="timers">
 			</ul>
 			<ul class="rounded">

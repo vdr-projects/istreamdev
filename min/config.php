@@ -13,7 +13,7 @@
  * a URI. E.g. /min/?f=script1.js,script2.js&debug=1
  */
 $min_allowDebugFlag = false;
-
+$rewriteCssUris = false;
 
 /**
  * Set to true to log messages to FirePHP (Firefox Firebug addon).
@@ -123,7 +123,7 @@ $min_serveOptions['minApp']['maxFiles'] = 10;
  * array('//static' => 'D:\\staticStorage')  // Windows
  * </code>
  */
-$min_symlinks = array();
+//$min_symlinks = array();
 
 
 /**
