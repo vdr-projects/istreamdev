@@ -4,9 +4,9 @@ global $user, $pass;
 
 session_start();
 
-if (isset($_COOKIE['istream']))
+if (isset($_COOKIE['istreamdev']))
 {
-       if(sha1($pass) == $_COOKIE['istream'] ) {
+       if(sha1($pass) == $_COOKIE['istreamdev'] ) {
  		setcookie ("istream", sha1($pass), time()+60*60*24*30);
 		$authorized = true;
 	} else {
@@ -19,7 +19,7 @@ if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']))
 {
     if (($user == $_SERVER['PHP_AUTH_USER']) && ($pass == ($_SERVER['PHP_AUTH_PW'])) )
     {
-    setcookie ("istream", sha1($pass), time()+60*60*24*30);
+    setcookie ("istreamdev", sha1($pass), time()+60*60*24*30);
     $authorized = true;
     }
 }
