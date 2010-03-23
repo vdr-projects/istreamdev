@@ -5,12 +5,12 @@ function getGlobals()
 	global $vdrstreamdev, $vdrrecpath, $mediasource, $videosource, $audiosource, $vdrenable, $mediaenable;
 
 	$ret = array();
-	if ($vdrenable)
+	if ($vdrenabled)
 		$ret['streamdev_server'] = $vdrstreamdev;
 	else
 		$ret['streamdev_server'] = "";
 	$ret['rec_path'] = $vdrrecpath;
-	if ($mediaenable)
+	if ($mediaenabled)
 	{
 		$ret['video_path'] = $videosource;
 		$ret['audio_path'] = $audiosource;
