@@ -1,8 +1,8 @@
 <?php
 	// Enable/disable features
-	$enablevdr=1;			// VDR feature
-	$enablemediavideo=1;		// Video streaming
-	$enablemediaaudio=1;		// Audio streaming
+	$enablevdr=1;			// VDR features
+	$enablemediavideo=1;		// Video files streaming
+	$enablemediaaudio=1;		// Audio files streaming
 
 	// Http configuration
 	$user = 'istreamdev';		// Login
