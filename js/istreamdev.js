@@ -95,6 +95,12 @@ function addAudiofiles() {
 $('#home_but').tap(function(event) {
 	event.preventDefault();
 	$(this).parents('div').find('a').unbind("tap");
+	$('#home').bind('pageAnimationEnd', function(event, info){ 
+	if (info.direction == 'in') {
+		$('#jqt div[rel="browser"]').remove();
+		$('#home').unbind('pageAnimationEnd');
+		}
+	});
 	jQT.goTo('#home','flip');
 });
 
@@ -385,6 +391,7 @@ $('#streamchannel span.recButton a').tap(function(event) {
     gen_edittimer(id,name,active,channumber,channame,rec_date,starttime,endtime);
 	return false;
 });
+
 $('#streamrec span.streamButton a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
@@ -615,17 +622,6 @@ $('div[rel="browser"] a[class="back"]').tap(function(event) {
 	event.preventDefault();
 	$(this).parents('div[rel="browser"]').remove();
 });
-
-$('div[rel="browser"] #home_but').tap(function(event) {
-	event.preventDefault();
-	$(this).parents('div[rel="browser"]').find('ul[rel="filelist"] li[class="arrow"] a').unbind("tap");
-	$('#home').bind('pageAnimationEnd', function(event, info){ 
-			$('#jqt div[rel="browser"]').remove();
-			$('#home').unbind('pageAnimationEnd');
-		});
-});
-
-
 
 //Generate browser div according to type
 function gen_browser(path,browser,name,foldertype) {

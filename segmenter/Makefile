@@ -5,7 +5,7 @@ clean:
 	rm segmenter
 
 install: segmenter
-	cp segmenter /usr/local/bin/
+	cp segmenter /usr/bin/
 
 uninstall:
-	rm /usr/local/bin/segmenter
+	rm /usr/bin/segmenter
