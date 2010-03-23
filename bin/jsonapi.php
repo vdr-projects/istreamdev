@@ -2,7 +2,7 @@
 
 function getGlobals()
 {
-	global $vdrstreamdev, $vdrrecpath, $mediasource, $videosource, $audiosource, $vdrenable, $mediaenable;
+	global $vdrstreamdev, $vdrrecpath, $mediasource, $videosource, $audiosource, $vdrenabled, $mediaenabled;
 
 	$ret = array();
 	if ($vdrenabled)
