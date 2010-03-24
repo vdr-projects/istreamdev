@@ -335,4 +335,23 @@ top: 12px;
 left: 5px;
 font-size: 14px;
 }
-
+ul.edgetoedge span.epgname {
+padding-top: 0px;
+padding-right: 10px;
+padding-left: 10px;
+font-size: 17px;
+font-weight: bold;
+display: block;
+color: white;
+text-shadow: rgba(0,0,0,.8) 0 1px 0;
+}
+ul.edgetoedge span.epgtime {
+padding-top: 0px;
+padding-right: 10px;
+padding-left: 10px;
+font-size: 14px;
+font-weight: bold;
+display: block;
+color: #ccc;
+text-shadow: rgba(0,0,0,.8) 0 1px 0;
+}

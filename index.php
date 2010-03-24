@@ -172,7 +172,7 @@ include ('bin/auth.php');
 		<div id="edittimer">
 			<div class="toolbar">
 			<a href="#" class="back">Back</a>
-			<a href="#home" id="home_but" class="button slideup">Home</a>
+			<a href="#home" id="home_but" class="button">Home</a>
                 <h1></h1>
 			</div>
 			<form name="timer" id="timer" action="#">
@@ -230,34 +230,24 @@ include ('bin/auth.php');
 			</ul>
 		</div>
 		
-		<div id="on">
+		<div id="now">
 			<div class="toolbar">
 				<a href="#" class="back">Back</a>
-				<a href="#home" id="home_but" class="button slideup">Home</a>
-                <h1>WHAT'S ON</h1>
+				<a href="#home" id="home_but" class="button">Home</a>
+                <h1>WHAT'S NOW</h1>
 			</div>
-			<form name="epg_chanselector" id="epg_chanselector" action="">
-				<ul class="rounded">
-					<li><span class="timertitle">Select a Channel</span></li>
-					<li><select id="epg_chan" onchange="epg_selectchan()">
-						<optgroup label="NATIONALES & TNT">
-							<option value="1">TF1</option>
-							<option value="2">FRANCE 2</option>
-							<option value="3">FRANCE 3</option>
-							<option value="4">FRANCE 4</option>
-							<option value="5">TV5</option>
-							<option value="6">M6</option>
-						</optgroup>
-						<optgroup label="DIVERTISSEMENT">
-							<option value="11">COMEDIE!</option>
-							<option value="12">13EME RUE</option>
-							<option value="13">FOX LIFE</option>
-						</optgroup>
-					</select>
-					</li>
-				</ul>
-			</form>	
-				
+			<ul class="edgetoedge">
+				<li class="sep">TF1</li>
+				<li><a href="#"><span class="epgtime">14h00-14h45</span><span class="epgname">Attention à la marche</span></a></li>
+				<li><a href="#"><span class="epgtime">14h45-15h20</span><span class="epgname">Tournez manège</span></a></li>
+				<li><a href="#"><span class="epgtime">See more...</span></a></li>
+			</ul>
+			<ul class="edgetoedge">
+				<li class="sep">FRANCE 2</li>
+				<li><a href="#"><span class="epgtime">13h55-14h20</span><span class="epgname">Bulletin Météo</span></a></li>
+				<li><a href="#"><span class="epgtime">14h25-15h30</span><span class="epgname">Envoyé Spécial</span></a></li>
+				<li><a href="#"><span class="epgtime">See more...</span></a></li>
+			</ul>	
 		</div>
 		<!------------------------------------ /EPG ------------------------------------------->
 	</div>
