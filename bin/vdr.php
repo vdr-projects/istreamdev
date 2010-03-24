@@ -200,13 +200,11 @@ function vdrgetchannels($category, $now)
 
 function vdrgetchannum($chan)
 {
-	global $channels;
-
-	if ($channels == "")
-		$channels = vdrsendcommand("LSTC");
+	if ($_SESSION['channels'] == "")
+		$_SESSION['channels'] = vdrsendcommand("LSTC");
 
 	// Get channel number
-	$chans = preg_grep(quotemeta('"'.$chan.';|'.$chan.':"'), $channels);
+	$chans = preg_grep(quotemeta('"'.$chan.';|'.$chan.':"'), $_SESSION['channels']);
 
 	$chans = explode(" ", $chans[key($chans)]);
 	$channum = $chans[0];
@@ -228,6 +226,44 @@ function vdrgetchanname($channum)
 		$channame = utf8_encode($channame);
 
         return $channame;
+}
+
+function vdrgetchancat($chaname)
+{
+        global $vdrchannels;
+
+	if (!file_exists($vdrchannels))
+                return "";
+
+	$fp = fopen ($vdrchannels,"r");
+	if (!fp)
+		return "";
+
+	$cat = "";
+
+	while ($line = fgets($fp, 1024))
+	{
+		if ($line[0] == ":")
+		{
+			$cat = substr($line, 1, -1);
+			if($cat[0] == '@')
+			{
+				$catarray = explode(' ', $cat);
+				$cat = substr($cat, strlen($catarray[0])+1);
+                        }
+			if (!is_utf8($cat))
+				$cat = utf8_encode($cat);
+
+			continue;
+		}
+		
+		$name = explode(":", $line);
+		$name = explode(";", $name[0]);
+		if ($name[0] == $chaname)
+			break;
+	}
+
+	return $cat;
 }
 
 function vdrgetchaninfo($channum)
@@ -287,16 +323,16 @@ function vdrgetfullepgat($at, $programs)
 	$chanentry = array();
 	$chanepg = array();
 	$fullepg = array();
+	
+	$addedchans = array();
 
 	// Update EPG is needed
 	if ($_SESSION['fullepg'] == "")
 		$_SESSION['fullepg'] = vdrsendcommand("LSTE");
 
-	$validepg = 0;
-
 	// For all epg
-	$count = count($_SESSION['fullepg']);
-	for ($i = 0; $i < $count; $i++)
+	$count1 = count($_SESSION['fullepg']);
+	for ($i = 0; $i < $count1; $i++)
 	{
 		// Find chan
 		if(ereg("^C", $_SESSION['fullepg'][$i]))
@@ -305,14 +341,20 @@ function vdrgetfullepgat($at, $programs)
                         $channames = explode(" ", $channame);
                         $channame = substr($channame, strlen($channames[0])+1);
 
+			// Dont add chans twice
+			if (count(preg_grep(quotemeta('"' .$channame .'"'), $addedchans)))
+				continue;
+
 			// Create a new chan entry
 			$chanentry['name'] = $channame;
-			$chanentry['number'] = "TODO";
-			$chanentry['category'] = "TODO";
+			$chanentry['number'] = vdrgetchannum($channame);
+			$chanentry['category'] = vdrgetchancat($channame);
 			$chanentry['epg'] = array();
 			
 			$programscounter = 0;
+
 			$validepg = 0;
+			$validchan = 1;
 
 			continue;
                 }
@@ -320,11 +362,21 @@ function vdrgetfullepgat($at, $programs)
 		// Close chan
 		if(ereg("^c", $_SESSION['fullepg'][$i]))
 		{
-			// Add new entry
-			$fullepg[] = $chanentry;
+			if ($programscounter && $validchan)
+			{
+				// Add new entry
+				$fullepg[] = $chanentry;
+				$addedchans[] = $chanentry['name'];
+			}
+	
+			$validchan = 0;
                         
 			continue;
 		}
+
+		// Continue to parse chan ?
+		if (!$validchan)
+			continue;
 
 		// Dont get more programs for current chan		
 		if ($programscounter >= $programs)
@@ -362,15 +414,27 @@ function vdrgetfullepgat($at, $programs)
 		}
 
 		// Add a new epg
-		if(ereg("^e", $_SESSION['fullepg'][$i]) && $validepg)
+		if(ereg("^e", $_SESSION['fullepg'][$i]))
 		{
-			$chanentry['epg'][] = $chanepg;
-			$programscounter++;
+			if ($validepg)
+			{
+				$chanentry['epg'][] = $chanepg;
+				$programscounter++;
 
-			$validepg = 0;
+				$validepg = 0;
+			}
 
 			continue;
 		}
+	}
+
+	if (count($fullepg))
+	{
+		// Sort it
+		foreach ($fullepg as $key => $row)
+			$channum[$key] = $row['number'];
+
+		array_multisort($channum, SORT_ASC, $fullepg);
 	}
 
 	return $fullepg;
@@ -398,7 +462,7 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 		$chanentry = array();
 		$chanentry['name'] = vdrgetchanname($channel);
 		$chanentry['number'] = $channel;
-		$chanentry['category'] = "Unknown";
+		$chanentry['category'] = vdrgetchancat($$chanentry['name']);
 
 		$chanentry['epg'] = array();
 
