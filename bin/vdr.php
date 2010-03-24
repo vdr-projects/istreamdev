@@ -372,14 +372,12 @@ function vdrgetfullepgat($channel, $at, $programs)
 		{
 			if ($programscounter && $validchan)
 			{
-				if ($channel == "all")
-				{
-					// Add new entry
-					$fullepg[] = $chanentry;
-					$addedchans[] = $chanentry['name'];
-				}
-				else
-					return $chanentry;
+				// Add new entry
+				$fullepg[] = $chanentry;
+				$addedchans[] = $chanentry['name'];
+
+				if ($channel != "all")
+					break;
 			}
 	
 			$validchan = 0;
