@@ -188,4 +188,22 @@ function streamAudio($path, $file)
 
 }
 
+function getEpg($channel, $time, $day, $programs)
+{
+	$ret = array();
+
+	$ret['channel'] = vdrgetepg($channel, $time, $day, $programs, 0);
+
+	return json_encode($ret);
+}
+
+function getEpgInfo($channel, $time, $day)
+{
+	$ret = array();
+
+	$ret['program'] = vdrgetepg($channel, $time, $day, 1, 1);
+
+	return json_encode($ret);
+}
+
 ?>

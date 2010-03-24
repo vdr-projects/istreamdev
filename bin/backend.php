@@ -100,6 +100,15 @@ switch ($action)
 			$tree = streamAudio($_REQUEST['path'], $_REQUEST['file']);
 			print $tree;
 			break;
+
+		case ("getEpg"):
+			$tree = getEpg($_REQUEST['channel'], $_REQUEST['time'], $_REQUEST['day'], $_REQUEST['programs']);
+			print $tree;
+			break;
+		case ("getEpgInfo"):
+			$tree = getEpgInfo($_REQUEST['channel'], $_REQUEST['time'], $_REQUEST['day']);
+			print $tree;
+			break;
 	}
 
 ?>
