@@ -67,11 +67,23 @@ function openSelectTime(layer,timer_hour,timer_minute) {
 	}
 
 	SpinningWheel.addSlot(hours, 'right', now_hour);
-	//SpinningWheel.addSlot({ separator: 'h' }, 'readonly shrink');
 	SpinningWheel.addSlot(minutes, '', now_minute);
 	
 	SpinningWheel.setCancelAction( function() { $('a').removeClass('active');} );
-	SpinningWheel.setDoneAction(function () {var results = SpinningWheel.getSelectedValues(); document.getElementById(layer).innerHTML = results.values.join('h');if ( layer == 'layer_starttime' ) { var forminput = 'timer_starttime'; } else { var forminput = 'timer_endtime'; }; eval ("document.timer." + forminput + ".value = results.values.join('')");$('a').removeClass('active'); });
+	SpinningWheel.setDoneAction( function () {
+		var results = SpinningWheel.getSelectedValues();
+		$('#'+layer).html(results.values.join('h'));
+		if ( layer == 'layer_starttime' ) { 
+			var forminput = 'timer_starttime';
+			} else if ( layer == 'layer_endtime' ) {
+			var forminput = 'timer_endtime'; 
+			} else if ( layer == 'layer_epgtime' ) {
+			var forminput = 'epg_time';
+			}
+		//eval ("document.timer." + forminput + ".value = results.values.join('')");
+		$('#'+forminput).val(results.values.join(''));
+		$('a').removeClass('active');
+		});
 	SpinningWheel.open();
 }
 

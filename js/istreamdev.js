@@ -112,9 +112,9 @@ function json_start(button) {
 		$('#loader').css("top", window.pageYOffset);
 }
 function json_complete(destination,effect) {
-		$('#loader').removeClass("loader");
-		$('a').removeClass('active');
 		jQT.goTo(destination,effect);
+		//$('#loader').removeClass("loader");
+		$('a').removeClass('active');
 }
 function hide_loader() {
 	$('#loader').removeClass("loader");
@@ -133,6 +133,7 @@ function reinitDivs() {
 $(document).ready(function(e){ 
 $('div').bind('pageAnimationEnd', function(event, info){ 
 	if (info.direction == 'in') {
+		$('#loader').removeClass("loader");
 		$('li[rel="toggle"]').show();
 		}
 		
@@ -151,7 +152,7 @@ $('a[class="back"]').tap(function(event) {
 // show active sessions
 $(document).ready(function(e){ 
 getRunningSessions();
-//preloadLogos();
+preloadLogos();
 });
 
 //reinit RunningSessions when going to Home:
@@ -218,6 +219,7 @@ $('#timers_but').tap(function(event) {
 
 $('#epg_but').tap(function(event) {
 	event.preventDefault();
+	json_start(this);
 	gen_epgmenu();
 	return false;
 });
@@ -964,11 +966,29 @@ function showStatus( timeout, message ) {
 //  [/TIMER SECTION]
 
 //   [EPG SECTION]
+//buttons
+$('.submit_epg').tap(function(event) {  
+		event.preventDefault();
+		channel = $('#epgform #epg_chan').val();
+		time = $('#epgform #epg_time').val();
+		day = $('#epgform select##epg_day').val();
+		if ( channel == "all" ) {
+		programs = 2;
+		}
+		else {
+		programs = 10;
+		}
+		get_epg(channel,time,day,programs);
+		$(this).removeClass('active');
+		});
 
+
+
+//functions
 function gen_epgmenu() {
-	jQT.goTo('#epg','cube');
 	gen_epgchanlist();
 	gen_epgdatelist();
+	json_complete('#epg','cube');
 }
 
 function gen_epgchanlist() {
@@ -984,25 +1004,33 @@ function gen_epgchanlist() {
 		});
 }
 
-// check if chan is selected
-function epg_selectchan() {
-	selectedchan = $('#epg_chan').val();
-}
 function gen_epgdatelist() {
 var daymax = 8;
 var date = new Date();
 var date_year = date.getFullYear();
 var date_month = date.getMonth()+1;
 var date_day = date.getDate();
-var date_fulldate = date_year + '-' + str_pad(date_month,2,'0','STR_PAD_LEFT') + '-' + str_pad(date_day,2,'0','STR_PAD_LEFT');
-$('#epg #epg_day').html('<option value="' + date_fulldate + '">Today</option>');
+var date_hour = str_pad(date.getHours(),2,'0','STR_PAD_LEFT');
+var date_min = str_pad(date.getMinutes(),2,'0','STR_PAD_LEFT');
+$('#epg #epg_time').val(date_hour + '' + date_min);
+//var date_fulldate = date_year + '-' + str_pad(date_month,2,'0','STR_PAD_LEFT') + '-' + str_pad(date_day,2,'0','STR_PAD_LEFT');
+$('#epg #epg_day').html('<option value="0">Today</option>');
 var dayname = new Array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
-	for ( i=0;i<daymax;i++ ) {
+	for ( i=1;i<daymax;i++ ) {
 		date_milli=date.getTime();
 		date.setTime(date_milli+86400000);
-		$('#epg #epg_day').append('<option value="' + date.getFullYear() + '-' + str_pad(date.getMonth()+1,2,'0','STR_PAD_LEFT') + '-' + str_pad(date.getDate(),2,'0','STR_PAD_LEFT') + '">' + dayname[date.getDay()] + ' ' + date.getDate() + '/' + (date.getMonth()+1) + '</option>');
+		$('#epg #epg_day').append('<option value="' + i +  '">' + dayname[date.getDay()] + ' ' + date.getDate() + '/' + (date.getMonth()+1) + '</option>');
 		}
 }
 
+function get_epg(channel,time,day,programs) {
+var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' + day + '&programs=' + programs; 
+		$.getJSON("bin/backend.php",
+		dataString,
+		function(data) {
+		$.each(data.channel, function(i,channel){
+		 //TODO
+		});
+}
 
 //   [/EPG SECTION]
