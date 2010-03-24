@@ -175,7 +175,7 @@ include ('bin/auth.php');
 			<a href="#home" id="home_but" class="button slideup">Home</a>
                 <h1></h1>
 			</div>
-			<form name="timer" id="timer" onsubmit="checktimerform();">
+			<form name="timer" id="timer" action="#">
 			<ul class="rounded">
 				<li><span class="timertitle">Active</span><span class="toggle"><input id="timer_active" name="timer_active" type="checkbox" /></span></li>
 			</ul>

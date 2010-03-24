@@ -910,7 +910,6 @@ $('.submit_form').tap(function(event) {
 		});
 
 function checktimerform() {
-
 		$('.formerror').hide();  
 		var timer_name = $("input#timer_name").val();   
 		if (timer_name == "") {  
@@ -947,7 +946,6 @@ function checktimerform() {
 				gen_timers("true");
 				json_start(this);
 				showStatus( 0,message );
-				return false;
 				});
 		return false;
 }; 
