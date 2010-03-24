@@ -910,11 +910,12 @@ $('.submit_form').tap(function(event) {
 		});
 
 function checktimerform() {
+
 		$('.formerror').hide();  
 		var timer_name = $("input#timer_name").val();   
-		if (timer_name == "") {   
-			$("li#timer_name_error").show();   
-			$.scrollTo('#edittimer #ul[rel="name"]');
+		if (timer_name == "") {  
+		$.scrollTo('#edittimer .toolbar', 400, {easing:'swing'});		
+		$("li#timer_name_error").show();   
 		return false;   
 		}   
 		var timer_date = $("input#timer_date").val();   
