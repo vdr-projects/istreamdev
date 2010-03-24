@@ -58,6 +58,7 @@ $.getJSON("bin/backend.php",
 			audio_path = data.audio_path;
 			if (streamdev_server != "" && streamdev_server != "null") {
 			addVdr();
+			gen_formchanlist();
 			}
 			if ( video_path != "" && video_path != "null") {
 			addVideofiles();
@@ -72,7 +73,7 @@ function addVdr() {
 	vdrmenu += '	<li class="arrow"><a id="categories_but" href="#"><img class="menuicon" src="img/tv.png" /><span class="menuname">Watch TV</span></a></li>';
 	vdrmenu += '	<li class="arrow"><a id="recording_but" href="#"><img class="menuicon" src="img/record.png" /><span class="menuname">Recordings</span></a></li>';
 	vdrmenu += '	<li class="arrow"><a id="timers_but" href="#"><img class="menuicon" src="img/timers.png" /><span class="menuname">Timers</span></a></li>'; 
-	vdrmenu += '	<li class="arrow"><a id="epg_but" href="#epg"><img class="menuicon" src="img/epg.png" /><span class="menuname">Program Guide</span></a></li>\n</ul>';
+	vdrmenu += '	<li class="arrow"><a id="epg_but" href="#"><img class="menuicon" src="img/epg.png" /><span class="menuname">Program Guide</span></a></li>\n</ul>';
 	$('#home #runningsessions').after(vdrmenu);
 }
 function addVideofiles() {
@@ -212,6 +213,12 @@ $('#timers_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	gen_timers();
+	return false;
+});
+
+$('#epg_but').tap(function(event) {
+	event.preventDefault();
+	gen_epgmenu();
 	return false;
 });
 
@@ -732,11 +739,6 @@ function addplayer(button) {
 //	[/BROWSER SECTION]
 
 //  [TIMER SECTION]
-//get fullchannel list onload
-
-$(document).ready(function(e){ 
-gen_formchanlist();
-});
 
 // buttons
 $('#timers li[class="arrow"] a').tap(function(event) {
@@ -962,21 +964,45 @@ function showStatus( timeout, message ) {
 //  [/TIMER SECTION]
 
 //   [EPG SECTION]
+
+function gen_epgmenu() {
+	jQT.goTo('#epg','cube');
+	gen_epgchanlist();
+	gen_epgdatelist();
+}
+
 function gen_epgchanlist() {
+	$('#epg #epg_chan').html('<option value="all">All channels</option>');
 	data = $('#jqt').data('channellist');
 	$.each(data.category, function(i,category){
-		$('#epg_chan').append('<optgroup label="' + category.name + '">');
+		$('#epg #epg_chan').append('<optgroup label="' + category.name + '">');
 			var catname = category.name;
 			$.each(category.channel, function(j, channel){
-				$('#epg_chan optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
+				$('#epg #epg_chan optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
 			});
 		$('#epg_chan').append('</optgroup>');
 		});
 }
 
-// check if chan is slected
+// check if chan is selected
 function epg_selectchan() {
 	selectedchan = $('#epg_chan').val();
 }
+function gen_epgdatelist() {
+var daymax = 8;
+var date = new Date();
+var date_year = date.getFullYear();
+var date_month = date.getMonth()+1;
+var date_day = date.getDate();
+var date_fulldate = date_year + '-' + str_pad(date_month,2,'0','STR_PAD_LEFT') + '-' + str_pad(date_day,2,'0','STR_PAD_LEFT');
+$('#epg #epg_day').html('<option value="' + date_fulldate + '">Today</option>');
+var dayname = new Array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
+	for ( i=0;i<daymax;i++ ) {
+		date_milli=date.getTime();
+		date.setTime(date_milli+86400000);
+		$('#epg #epg_day').append('<option value="' + date.getFullYear() + '-' + str_pad(date.getMonth()+1,2,'0','STR_PAD_LEFT') + '-' + str_pad(date.getDate(),2,'0','STR_PAD_LEFT') + '">' + dayname[date.getDay()] + ' ' + date.getDate() + '/' + (date.getMonth()+1) + '</option>');
+		}
+}
+
 
 //   [/EPG SECTION]

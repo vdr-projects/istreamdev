@@ -335,11 +335,15 @@ top: 12px;
 left: 5px;
 font-size: 14px;
 }
+
+.whitetitle {
+color: #fff;
+}
 ul.edgetoedge span.epgname {
 padding-top: 0px;
 padding-right: 10px;
 padding-left: 10px;
-font-size: 17px;
+font-size: 14px;
 font-weight: bold;
 display: block;
 color: white;
@@ -349,7 +353,7 @@ ul.edgetoedge span.epgtime {
 padding-top: 0px;
 padding-right: 10px;
 padding-left: 10px;
-font-size: 14px;
+font-size: 12px;
 font-weight: bold;
 display: block;
 color: #ccc;

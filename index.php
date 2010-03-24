@@ -11,13 +11,14 @@ include ('bin/auth.php');
         <meta charset="UTF-8" />
         <title>iStreamdev</title>
         <link rel="stylesheet" href="min/?b=css&f=jqtouch.css,theme.css,istreamdev.css,spinningwheel.css" type="text/css" media="screen" />
-        <script src="min/?b=js&f=jquery-1.4.2.min.js,jqtouch.js,jqtouch.transitions.js,istreamdev.js,functions.js,spinningwheel.js,jquery.scrollTo-1.4.2.js" type="text/javascript" charset="utf-8"></script>
-    </head>
+        <script src="min/?b=js&f=jquery-1.4.2.min.js,jqtouch.js,jqtouch.transitions.js,functions.js,spinningwheel.js,jquery.scrollTo-1.4.2.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/istreamdev.js" type="text/javascript" charset="utf-8"></script>
+	</head>
     <body>
 	<div id="loader"></div>
 	<div id="status_box"></div>
 	<div id="jqt">
-	<!---------------------------------- HOME SCREEN (always present) ---------------------------------->
+	<!-- HOME SCREEN (always present) -->
         	
 		<div id="home" class="current">
             <div class="toolbar">
@@ -28,9 +29,9 @@ include ('bin/auth.php');
 				<li>Checking running session</li>
 			</ul>
         </div>
-	 <!----------------------------------/ HOME SCREEN ---------------------------------->
-	 <!---------------------------------- CHAN CATEGORY SCREEN ---------------------------------->
-        <!----------------------------------categories------------------------------>
+	 <!-- / HOME SCREEN -->
+	 <!-- CHAN CATEGORY SCREEN -->
+
 		<div id="categories">
             <div class="toolbar">
                 <a href="#" class="back">Home</a>
@@ -39,7 +40,7 @@ include ('bin/auth.php');
             <ul id="cat_menu" class="rounded">
 			</ul>
         </div>
-	<!----------------------------------channels------------------------------>
+
 		<div id="channels">
 			<div class="toolbar">
 			<a href="#" class="back">Back</a>
@@ -49,9 +50,9 @@ include ('bin/auth.php');
 			<ul id="chan_menu" class="rounded">
 			</ul>
 		</div>
-	<!---------------------------------- /CHAN CATEGORY SCREEN ---------------------------------->
-	<!---------------------------------- STREAM SCREEN ---------------------------------->
-		<!------------------------ tv start stream ----------------------------------------->
+	<!--/CHAN CATEGORY SCREEN -->
+	<!-- STREAM SCREEN -->
+
 		<div id="streamchannel">
 			<div class="toolbar">
 			<a href="#" class="back">Back</a>
@@ -153,8 +154,8 @@ include ('bin/auth.php');
             </div>						
 		</div>		
 		
-		<!---------------------------------- /STREAM SCREEN ---------------------------------->
-		<!---------------------------------- TIMERS SCREEN ---------------------------------->
+		<!-- /STREAM SCREEN -->
+		<!-- TIMERS SCREEN -->
 		
 		<div id="timers">
 			<div class="toolbar">
@@ -216,18 +217,21 @@ include ('bin/auth.php');
 			<input name="timer_endtime" type="hidden" id="timer_endtime" value="" />
 			</form>
 		</div>
-		<!---------------------------------- /TIMERS SCREEN ---------------------------------->
-		<!------------------------------------ EPG ------------------------------------------->
+		<!-- EPG -->
 		<div id="epg">
 			<div class="toolbar">
 					<a href="#" class="back">Home</a>
 						<h1>EPG</h1>
 				</div>
 			<ul class="rounded">
-				<li class="arrow"><a href="#now"><span class="menuname">What's Now</span></a></li>
-				<li class="arrow"><a href="#at"><span class="menuname">What's At</span></a></li>
-				<li class="arrow"><a href="#on"><span class="menuname">What's On</span></a></li>
+				<li><span class="timertitle">Select Channel:</span></li>
+				<li><select id="epg_chan"><option value="all">All channels</option></select></li>
+				<li><span class="timertitle">Select Day:</span></li>
+				<li><select id="epg_day"><option value="today">Today</option></select>
+				<li><span class="timertitle">Select Time:</span></li>
+				<li class="arrow"><a onclick="$('#timer_starttime_error').hide();" href="javascript:openSelectTime('layer_epgtime')" class="abutton" id="a_starttime"><span id="layer_epgtime" class="menuname">Now</span></a></li>
 			</ul>
+			<ul class="rounded" ref="submitbut"><li><center><a href="#" class="submit_form">Get Programs</a></center></li></ul>
 		</div>
 		
 		<div id="now">
@@ -249,7 +253,6 @@ include ('bin/auth.php');
 				<li><a href="#"><span class="epgtime">See more...</span></a></li>
 			</ul>	
 		</div>
-		<!------------------------------------ /EPG ------------------------------------------->
 	</div>
     </body>
 </html>
