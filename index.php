@@ -241,7 +241,7 @@ include ('bin/auth.php');
 			<div class="toolbar">
 				<a href="#" class="back">Back</a>
 				<a href="#home" id="home_but" class="button">Home</a>
-                <h1>WHAT'S NOW</h1>
+                <h1>EPG</h1>
 			</div>
 			<ul class="edgetoedge" id="ul_epglist">
 			</ul>	
