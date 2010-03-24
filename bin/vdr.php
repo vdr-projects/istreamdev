@@ -236,13 +236,13 @@ function vdrgetchaninfo($channum)
 
 	$info['name'] = vdrgetchanname($channum);
 	$info['number'] = $channum;
-	list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetchanat($channum, "now");
-	list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetchanat($channum, "next");
+	list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetepgat($channum, "now");
+	list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetepgat($channum, "next");
 
 	return $info;
 }
 
-function vdrgetchanat($channum, $at)
+function vdrgetepgat($channum, $at)
 {
 	$cmd = "LSTE " .$channum ." " .$at;
 
@@ -266,9 +266,10 @@ function vdrgetchanat($channum, $at)
 			$timearray = explode(" ", $time);
 
 			$time = date('H\hi', $timearray[1]) ."-" .date('H\hi', $timearray[1]+$timearray[2]);
-			$endtime = $timearray[1]+$timearray[2];
 
 			$date = date('Y\/m\/d', $timearray[1]);
+
+			$endtime = $timearray[1]+$timearray[2];
 		}
 	}
 	
@@ -281,40 +282,102 @@ function vdrgetchanat($channum, $at)
 	return array($date, $time, $title, $desc, $endtime);
 }
 
-function vdrgetchanepg($channame, $channum, $chancat, $time, $programs, $extended)
+function vdrgetfullepgat($at, $programs)
 {
-                               
-	// Create a new chan entry in epg
 	$chanentry = array();
-	$chanentry['name'] = $channame;
-	$chanentry['number'] = $channum;
-	$chanentry['category'] = $chancat;
-	$chanentry['epg']= array();
-
-	$attime = $time;
-	$nbepg = 0;
-
 	$chanepg = array();
-	do
-	{
-		if (!$extended)
-			list ($date, $chanepg['time'], $chanepg['title'], $desc, $endtime) = vdrgetchanat($channum, "at " .$attime);
-		else
-			list ($chanepg['date'], $chanepg['time'], $chanepg['title'], $chanepg['desc'], $endtime) = vdrgetchanat($channum, "at " .$attime);
-		$chanentry['epg'][] = $chanepg;
-                                        
-		$attime = $endtime+1;
-		$nbepg++;
-	}
-	while ($nbepg < $programs);
+	$fullepg = array();
 
-	return $chanentry;
+	// Update EPG is needed
+	if ($_SESSION['fullepg'] == "")
+		$_SESSION['fullepg'] = vdrsendcommand("LSTE");
+
+	$validepg = 0;
+
+	// For all epg
+	$count = count($_SESSION['fullepg']);
+	for ($i = 0; $i < $count; $i++)
+	{
+		// Find chan
+		if(ereg("^C", $_SESSION['fullepg'][$i]))
+                {
+                        $channame = substr($_SESSION['fullepg'][$i], 2);
+                        $channames = explode(" ", $channame);
+                        $channame = substr($channame, strlen($channames[0])+1);
+
+			// Create a new chan entry
+			$chanentry['name'] = $channame;
+			$chanentry['number'] = "TODO";
+			$chanentry['category'] = "TODO";
+			$chanentry['epg'] = array();
+			
+			$programscounter = 0;
+			$validepg = 0;
+
+			continue;
+                }
+
+		// Close chan
+		if(ereg("^c", $_SESSION['fullepg'][$i]))
+		{
+			// Add new entry
+			$fullepg[] = $chanentry;
+                        
+			continue;
+		}
+
+		// Dont get more programs for current chan		
+		if ($programscounter >= $programs)
+			continue;
+
+		// Find a new EPG entry
+		if(ereg("^E", $_SESSION['fullepg'][$i]))
+		{
+			$time = substr($_SESSION['fullepg'][$i], 2);
+			$timearray = explode(" ", $time);
+
+			// Dont use this one
+			if ($timearray[1] < $at)
+			{
+				$validepg = 0;
+				continue;
+			}
+
+			// New valid epg found
+			$chanepg['title'] = "";
+			$chanepg['time'] = date('H\hi', $timearray[1]) ."-" .date('H\hi', $timearray[1]+$timearray[2]);
+
+			$validepg = 1;
+
+			continue;
+		}
+
+		if(ereg("^T", $_SESSION['fullepg'][$i]) && $validepg)
+		{
+			$chanepg['title'] = substr($_SESSION['fullepg'][$i], 2);
+			if (!is_utf8($chanepg['title']))
+				$chanepg['title'] = utf8_encode($chanepg['title']);
+
+			continue;
+		}
+
+		// Add a new epg
+		if(ereg("^e", $_SESSION['fullepg'][$i]) && $validepg)
+		{
+			$chanentry['epg'][] = $chanepg;
+			$programscounter++;
+
+			$validepg = 0;
+
+			continue;
+		}
+	}
+
+	return $fullepg;
 }
 
 function vdrgetepg($channel, $time, $day, $programs, $extended)
 {
-	$epgout = array();
-
 	// Compute time
 	$currentdate = gettimeofday();
 
@@ -328,29 +391,39 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 	// Comput requested date
 	$requesteddate = $currentday + ((int)$day * (3600*24)) + $requestedtime - 3600;
 
-	// Get epg
-	if ($channel == all)
+	// Single chan case
+	if ($channel != "all")
 	{
-		// Get all categories
-		$categories = vdrgetcategories();
+		// Create a new chan entry in epg
+		$chanentry = array();
+		$chanentry['name'] = vdrgetchanname($channel);
+		$chanentry['number'] = $channel;
+		$chanentry['category'] = "Unknown";
 
-		// For all categories
-		$catcount = count($categories);
-		for ($i = 0; $i < $catcount; $i++)
+		$chanentry['epg'] = array();
+
+		if ($extended)
+	                list ($chanentry['date'], $chanentry['time'], $chanentry['title'], $chanentry['desc']) = vdrgetepgat($channel, "at " .$requesteddate);
+		else
 		{
-			// Get all channels
-			$channels = vdrgetchannels($categories[$i]['name'], 0);
+			$chanentry['epg'] = array();
+			$attime = $requesteddate;
+			$nbprograms = 0;
+			while ($nbprograms < $programs)
+			{
+				list ($date, $chanepg['time'], $chanepg['title'], $desc, $endtime) = vdrgetepgat($channel, "at " .$attime);
+				$chanentry['epg'][] = $chanepg;
 
-			// For all channels
-			$chancount = count($channels);
-			for ($j = 0; $j < $chancount; $j++)
-				$epgout[] =  vdrgetchanepg($channels[$j]['name'], $channels[$j]['number'], $categories[$i]['name'], $requesteddate, $programs, 0);
+				$attime = $endtime+1;
+				$nbprograms ++;
+			}
 		}
+		
+		return $chanentry;
 	}
-	else
-		$epgout[] =  vdrgetchanepg(vdrgetchanname($channel), $channel, "Unknown", $requesteddate, $programs, $extended);
 
-	return $epgout;
+	// All chans
+	return vdrgetfullepgat($requesteddate, $programs);
 }
 
 function vdrgetrecinfo($rec)

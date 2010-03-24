@@ -142,8 +142,8 @@ function sessiongetinfo($session)
 		case 'tv':
 			$info['name'] = $channame;
 			$channum = vdrgetchannum($channame);
-			list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetchanat($channum, "now");
-			list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetchanat($channum, "next");
+			list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetepgat($channum, "now");
+			list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetepgat($channum, "next");
 			break;
 		case 'rec':
 			$info['channel'] = $channame;
