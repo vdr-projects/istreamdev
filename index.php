@@ -237,23 +237,13 @@ include ('bin/auth.php');
 			</form>
 		</div>
 		
-		<div id="now">
+		<div id="epglist">
 			<div class="toolbar">
 				<a href="#" class="back">Back</a>
 				<a href="#home" id="home_but" class="button">Home</a>
                 <h1>WHAT'S NOW</h1>
 			</div>
-			<ul class="edgetoedge">
-				<li class="sep">TF1</li>
-				<li><a href="#"><span class="epgtime">14h00-14h45</span><span class="epgname">Attention à la marche</span></a></li>
-				<li><a href="#"><span class="epgtime">14h45-15h20</span><span class="epgname">Tournez manège</span></a></li>
-				<li><a href="#"><span class="epgtime">See more...</span></a></li>
-			</ul>
-			<ul class="edgetoedge">
-				<li class="sep">FRANCE 2</li>
-				<li><a href="#"><span class="epgtime">13h55-14h20</span><span class="epgname">Bulletin Météo</span></a></li>
-				<li><a href="#"><span class="epgtime">14h25-15h30</span><span class="epgname">Envoyé Spécial</span></a></li>
-				<li><a href="#"><span class="epgtime">See more...</span></a></li>
+			<ul class="edgetoedge" id="ul_epglist">
 			</ul>	
 		</div>
 	</div>

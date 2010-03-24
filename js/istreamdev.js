@@ -1024,13 +1024,19 @@ var dayname = new Array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
 }
 
 function get_epg(channel,time,day,programs) {
+$('#epglist #ul_epglist').html('');
 var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' + day + '&programs=' + programs; 
-		$.getJSON("bin/backend.php",
-		dataString,
-		function(data) {
+	$.getJSON("bin/backend.php",
+	dataString,
+	function(data) {
 		$.each(data.channel, function(i,channel){
-		 //TODO
+		$('#epglist #ul_epglist').append('<li class="sep">' + channel.name + '</li>');
+			$.each(channel.epg, function(j,epg){
+			$('#epglist #ul_epglist').append('<li><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
+			});
 		});
+	json_complete('#epglist','cube');
+	});
 }
 
 //   [/EPG SECTION]
