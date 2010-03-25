@@ -485,6 +485,8 @@ function vdrgetfullepgat($channel, $at, $programs)
 	}
 
 
+	$finalepg = array();
+
 	for ($i=0; $i<count($epgout); $i++)
 	{
 		if (count($epgout[$i]['channel']))
@@ -496,10 +498,12 @@ function vdrgetfullepgat($channel, $at, $programs)
 				$channum[$key] = $row['number'];
 
 			array_multisort($channum, SORT_ASC, $epgout[$i]['channel']);
+
+			$finalepg[] = $epgout[$i];
 		}
 	}
 
-	return $epgout;
+	return $finalepg;
 }
 
 function vdrgetepg($channel, $time, $day, $programs, $extended)
