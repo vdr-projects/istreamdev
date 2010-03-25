@@ -966,7 +966,7 @@ function showStatus( timeout, message ) {
 //  [/TIMER SECTION]
 
 //   [EPG SECTION]
-//buttons
+//buttons & events
 $('.submit_epg').tap(function(event) {  
 event.preventDefault();
 json_start(this);
@@ -990,6 +990,7 @@ event.preventDefault();
 json_start(this);
 get_epg("all","now","0","2");
 });
+
 
 
 //functions
@@ -1032,59 +1033,85 @@ var dayname = new Array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
 }
 
 function get_epg(channel,time,day,programs) {
-$('#epglist #ul_epglist').html('');
 var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' + day + '&programs=' + programs; 
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data) {
 		$('#jqt').data("epg",data);
-		$('#epglist #epg_selector').html('');
-		if ( data.category.length > 1 )
-		{
-			$('#epglist #epg_selector').append('<select id="epglist_cat"></select>');
-			$.each(data.category, function(i,category){
-				$('#epglist #epg_selector #epglist_cat').append('<option value="' + i + '">' + category.name + '</option>');
-			});
+		if ( data.category.length > 1 ) {
+		type = 'cat';
+		} else {
+		type = 'chan';
 		}
-		else {
-			$('#epglist #epg_selector').append('<select id="epglist_chan"></select>');
-			data = $('#jqt').data('channellist');
-			$.each(data.category, function(i,category){
-			$('#epglist #epg_selector #epglist_chan').append('<optgroup label="' + category.name + '">');
-			var catname = category.name;
-			$.each(category.channel, function(j, channel){
-				$('#epglist #epg_selector #epglist_chan optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
-			});
-		$('#epg_chan').append('</optgroup>');
-		});
-		}
-		var k=1;
-		$.each(data.category[0].channel, function(i,channel){
-		if ( k > 10 ) {
-					togglestatus = 'toggle';
-				}
-				else
-				{
-					togglestatus = '';
-				}
-		k++;
-		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '" class="sep">' + channel.name + '</li>');
-			$.each(channel.epg, function(j,epg){
-				if ( k > 10 ) {
-					togglestatus = 'toggle';
-				}
-				else
-				{
-					togglestatus = '';
-				}
-			$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
-			
-			k++;
-			});
-		});
-	$('#epglist li[rel="toggle"]').hide();
-	json_complete('#epglist','cube');
+		parse_epg(data,0,type);
+		$('#epglist li[rel="toggle"]').hide();
+		json_complete('#epglist','cube');
 	});
+}
+
+function parse_epg(data,selectedvalue,type){	
+	$('#epglist #epg_selector').html('');
+	$('#epglist #ul_epglist').html('');
+	if ( data.category.length > 1 )
+	{
+		$('#epglist #epg_selector').append('<select id="epglist_cat"></select>');
+		$.each(data.category, function(i,category){
+			$('#epglist #epg_selector #epglist_cat').append('<option value="' + i + '">' + category.name + '</option>');
+		});
+		$('#epglist #epg_selector select option[value=' + selectedvalue + ']').attr("selected", "selected");
+	}
+	else {
+		$('#epglist #epg_selector').append('<select id="epglist_chan"></select>');
+		data = $('#jqt').data('channellist');
+		$.each(data.category, function(i,category){
+		$('#epglist #epg_selector #epglist_chan').append('<optgroup label="' + category.name + '">');
+		var catname = category.name;
+		$.each(category.channel, function(j, channel){
+			$('#epglist #epg_selector #epglist_chan optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
+		});
+	$('#epg_chan').append('</optgroup>');
+	});
+	$('#epglist #epg_selector select option[value=' + selectedvalue + ']').attr("selected", "selected");
+	}
+	var k=1;
+	if ( type == "cat" ) {
+	arrayvalue = selectedvalue;
+	} else {
+	arrayvalue = 0;
+	}
+	$.each(data.category[arrayvalue].channel, function(i,channel){
+	if ( k > 10 ) {
+				togglestatus = 'toggle';
+			}
+			else
+			{
+				togglestatus = '';
+			}
+	k++;
+	$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '" class="sep">' + channel.name + '</li>');
+		$.each(channel.epg, function(j,epg){
+			if ( k > 10 ) {
+				togglestatus = 'toggle';
+			}
+			else
+			{
+				togglestatus = '';
+			}
+		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
+		
+		k++;
+		});
+	});
+$("#epglist #epg_selector select").change(function () {
+epgdata = $('#jqt').data("epg");
+selectedvalue = $("#epglist #epg_selector select option:selected").val();
+if ($("#epglist #epg_selector select").attr("id") == 'epglist_cat') {
+type = 'cat';
+} else {
+type = 'chan';
+}
+parse_epg(epgdata,selectedvalue,type);
+});
 }
 
 //   [/EPG SECTION]
