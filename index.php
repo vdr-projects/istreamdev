@@ -247,6 +247,7 @@ include ('bin/auth.php');
 				<a href="#home" id="home_but" class="button">Home</a>
                 <h1>EPG</h1>
 			</div>
+			<ul class="rounded"><li id="epg_selector"></li></ul>
 			<ul class="edgetoedge" id="ul_epglist">
 			</ul>	
 		</div>

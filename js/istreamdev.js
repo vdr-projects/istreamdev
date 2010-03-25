@@ -973,13 +973,13 @@ json_start(this);
 channel = $('#epgform #epg_chan').val();
 time = $('#epgform #epg_time').val();
 day = $('#epgform select##epg_day').val();
-	if ( channel == "all" ) {
-	programs = 2;
-	}
-	else if ( time == "" ) {
+	if ( time == "" ) {
 	programs = "day";
+	}
+	else if ( channel == "all" ) {
+	programs = 2;
 	} else {
-	programs = 20;
+	programs = "day";
 	}
 get_epg(channel,time,day,programs);
 $(this).removeClass('active');
@@ -1001,8 +1001,8 @@ function gen_epgmenu() {
 
 function gen_epgchanlist() {
 	$('#epg #epg_chan').html('<option value="all">All channels</option>');
-	data = $('#jqt').data('channellist');
-	$.each(data.category, function(i,category){
+	datachanlist = $('#jqt').data('channellist');
+	$.each(datachanlist.category, function(i,category){
 		$('#epg #epg_chan').append('<optgroup label="' + category.name + '">');
 			var catname = category.name;
 			$.each(category.channel, function(j, channel){
@@ -1037,8 +1037,29 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data) {
+		$('#jqt').data("epg",data);
+		$('#epglist #epg_selector').html('');
+		if ( data.category.length > 1 )
+		{
+			$('#epglist #epg_selector').append('<select id="epglist_cat"></select>');
+			$.each(data.category, function(i,category){
+				$('#epglist #epg_selector #epglist_cat').append('<option value="' + i + '">' + category.name + '</option>');
+			});
+		}
+		else {
+			$('#epglist #epg_selector').append('<select id="epglist_chan"></select>');
+			data = $('#jqt').data('channellist');
+			$.each(data.category, function(i,category){
+			$('#epglist #epg_selector #epglist_chan').append('<optgroup label="' + category.name + '">');
+			var catname = category.name;
+			$.each(category.channel, function(j, channel){
+				$('#epglist #epg_selector #epglist_chan optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
+			});
+		$('#epg_chan').append('</optgroup>');
+		});
+		}
 		var k=1;
-		$.each(data.channel, function(i,channel){
+		$.each(data.category[0].channel, function(i,channel){
 		if ( k > 10 ) {
 					togglestatus = 'toggle';
 				}
