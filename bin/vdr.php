@@ -389,9 +389,12 @@ function vdrgetfullepgat($channel, $at, $programs)
 		if (!$validchan)
 			continue;
 
-		// Dont get more programs for current chan		
-		if ($programscounter >= $programs)
-			continue;
+		// Dont get more programs for current chan
+		if (is_numeric($programs))
+		{
+			if ($programscounter >= $programs)
+				continue;
+		}
 
 		// Find a new EPG entry
 		if(ereg("^E", $_SESSION['fullepg'][$i]))
@@ -399,18 +402,31 @@ function vdrgetfullepgat($channel, $at, $programs)
 			$time = substr($_SESSION['fullepg'][$i], 2);
 			$timearray = explode(" ", $time);
 
-			// Dont use this one
-			if ($timearray[1] < $at)
+			switch ($programs)
 			{
-				$validepg = 0;
+				case "all":
+					$validepg = 1;
+					break;
+				case "day":
+					if (($timearray[1] >= $at) && ($timearray[1] < ($at + 3600*24)))
+						$validepg = 1;
+					else
+						$validepg = 0;
+					break;
+				default:
+					if ($timearray[1] >= $at)
+						$validepg = 1;
+					else
+						$validepg = 0;
+					break;
+			} 
+
+			if (!$validepg)
 				continue;
-			}
 
 			// New valid epg found
 			$chanepg['title'] = "";
 			$chanepg['time'] = date('H\hi', $timearray[1]) ."-" .date('H\hi', $timearray[1]+$timearray[2]);
-
-			$validepg = 1;
 
 			continue;
 		}
@@ -456,12 +472,17 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 	// Compute time
 	$currentdate = gettimeofday();
 
-	// Remove current day minutes
+	// Remove current day seconds
 	$currentday = $currentdate['sec'] - ($currentdate['sec'] % (3600*24));
-
-	$requestedhours = (int) substr($time, 0, 2);
-	$requestedmins = (int) substr($time, 2);
-	$requestedtime = ($requestedhours * 3600) + ($requestedmins * 60);
+	
+	if (is_numeric($programs))
+	{
+		$requestedhours = (int) substr($time, 0, 2);
+		$requestedmins = (int) substr($time, 2);
+		$requestedtime = ($requestedhours * 3600) + ($requestedmins * 60);
+	}
+	else
+		$requestedtime = 0;
 
 	// Comput requested date
 	$requesteddate = $currentday + ((int)$day * (3600*24)) + $requestedtime - 3600;
