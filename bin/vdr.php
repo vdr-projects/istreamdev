@@ -481,10 +481,10 @@ function vdrgetfullepgat($channel, $at, $programs)
 function vdrgetepg($channel, $time, $day, $programs, $extended)
 {
 	// Compute time
-	$currentdate = gettimeofday();
+	$currentdate = time();
 
 	// Remove current day seconds
-	$currentday = $currentdate['sec'] - ($currentdate['sec'] % (3600*24));
+	$currentday = $currentdate - ($currentdate % (3600*24));
 
 	switch ($programs)
 	{
@@ -495,7 +495,7 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 
 		case "day":
 			// Get all day
-			$requesteddate = $currentdate['sec'] - ($currentdate['sec'] % (3600*24)) + ($day * (3600*24));
+			$requesteddate = $currentdate - ($currentdate % (3600*24)) + ($day * (3600*24)) - 3600;
 			break;
 
 		default:
@@ -503,12 +503,12 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 			switch ($time)
 			{
 				case "now":
-					$requesteddate = $currentdate['sec'];
+					$requesteddate = $currentdate;
 					break;
 				default:
-					$requestedday = $currentdate['sec'] - ($currentdate['sec'] % (3600*24)) + ($day * (3600*24));
+					$requestedday = $currentdate - ($currentdate % (3600*24)) + ($day * (3600*24));
 					$requestedtime = ((int) substr($time, 0, 2) * 3600) + ((int) substr($time, 2) * 60);
-					$requesteddate = $requestedday + $requestedtime;
+					$requesteddate = $requestedday + $requestedtime - 3600;
 					break;
 			}
 	}
