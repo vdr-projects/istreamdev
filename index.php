@@ -230,9 +230,9 @@ include ('bin/auth.php');
 				<li><span class="timertitle">Select Day:</span></li>
 				<li><select id="epg_day"><option value="today">Today</option></select>
 				<li><span class="timertitle">Select Time:</span></li>
-				<li class="arrow"><a href="javascript:openSelectTime('layer_epgtime')" class="abutton" id="a_starttime"><span id="layer_epgtime" class="menuname">Now</span></a></li>
+				<li class="arrow"><a href="javascript:openSelectTime('layer_epgtime')" class="abutton" id="a_starttime"><span id="layer_epgtime" class="menuname"></span></a></li>
 			</ul>
-			 <input name="epg_time" type="hidden" id="epg_time" value="" />
+			 <input name="epg_time" type="hidden" id="epg_time" value="all" />
 			<ul class="rounded" ref="submitbut"><li><center><a href="#" class="submit_epg">Get Programs</a></center></li></ul>
 			</form>
 		</div>
@@ -241,7 +241,7 @@ include ('bin/auth.php');
 			<div class="toolbar">
 				<a href="#" class="back">Back</a>
 				<a href="#home" id="home_but" class="button">Home</a>
-                <h1>WHAT'S NOW</h1>
+                <h1>EPG</h1>
 			</div>
 			<ul class="edgetoedge" id="ul_epglist">
 			</ul>	
