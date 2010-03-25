@@ -232,7 +232,7 @@ include ('bin/auth.php');
 				<li><span class="timertitle">Select Time:</span></li>
 				<li class="arrow"><a href="javascript:openSelectTime('layer_epgtime')" class="abutton" id="a_starttime"><span id="layer_epgtime" class="menuname"></span></a></li>
 			</ul>
-			 <input name="epg_time" type="hidden" id="epg_time" value="all" />
+			 <input name="epg_time" type="hidden" id="epg_time" value="" />
 			<ul class="rounded" ref="submitbut"><li><center><a href="#" class="submit_epg">Get Programs</a></center></li></ul>
 			</form>
 		</div>

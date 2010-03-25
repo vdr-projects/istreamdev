@@ -975,8 +975,10 @@ $('.submit_epg').tap(function(event) {
 		if ( channel == "all" ) {
 		programs = 2;
 		}
-		else {
-		programs = 10;
+		else if ( time == "" ) {
+		programs = "day";
+		} else {
+		programs = 20;
 		}
 		get_epg(channel,time,day,programs);
 		$(this).removeClass('active');
@@ -1029,10 +1031,21 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data) {
+		var k=1;
 		$.each(data.channel, function(i,channel){
+		k++;
 		$('#epglist #ul_epglist').append('<li class="sep">' + channel.name + '</li>');
 			$.each(channel.epg, function(j,epg){
-			$('#epglist #ul_epglist').append('<li><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
+				if ( k > 10 ) {
+					togglestatus = 'toggle';
+				}
+				else
+				{
+					togglestatus = '';
+				}
+			$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
+			
+			k++;
 			});
 		});
 	json_complete('#epglist','cube');
