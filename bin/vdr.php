@@ -343,9 +343,19 @@ function vdrgetfullepgat($channel, $at, $programs)
 		$channelname = vdrgetchanname($channel);
 	}
 
+	// Generate the epgout squeletum
+	$categories = vdrgetcategories();
+	for ($i=0; $i<count($categories); $i++)
+	{
+		$catentry = array();
+		$catentry['name'] = $categories[$i]['name'];
+		$catentry['channel'] = array();
+
+		$epgout[] = $catentry;
+	}
+
 	// For all epg
-	$count1 = count($epgin);
-	for ($i = 0; $i < $count1; $i++)
+	for ($i=0; $i<count($epgin); $i++)
 	{
 		// Find chan
 		if(ereg("^C", $epgin[$i]))
@@ -364,7 +374,6 @@ function vdrgetfullepgat($channel, $at, $programs)
 			// Create a new chan entry
 			$chanentry['name'] = $channame;
 			$chanentry['number'] = vdrgetchannum($channame);
-			$chanentry['category'] = vdrgetchancat($channame);
 			$chanentry['epg'] = array();
 			
 			$programscounter = 0;
@@ -380,8 +389,17 @@ function vdrgetfullepgat($channel, $at, $programs)
 		{
 			if ($programscounter && $validchan)
 			{
-				// Add new entry
-				$epgout[] = $chanentry;
+				// Add new entry in the right category
+				$chancat = vdrgetchancat($chanentry['name']);
+				for ($j=0; $j<count($epgout); $j++)
+				{
+					if ($chancat == $epgout[$j]['name'])
+					{
+						$epgout[$j]['channel'][] = $chanentry;
+						break;
+					}
+				}
+
 				$addedchans[] = $chanentry['name'];
 
 				if ($channel != "all")
@@ -466,13 +484,19 @@ function vdrgetfullepgat($channel, $at, $programs)
 		}
 	}
 
-	if (count($epgout))
-	{
-		// Sort it
-		foreach ($epgout as $key => $row)
-			$channum[$key] = $row['number'];
 
-		array_multisort($channum, SORT_ASC, $epgout);
+	for ($i=0; $i<count($epgout); $i++)
+	{
+		if (count($epgout[$i]['channel']))
+		{
+			$channum = array();
+
+			// Sort it
+			foreach ($epgout[$i]['channel'] as $key => $row)
+				$channum[$key] = $row['number'];
+
+			array_multisort($channum, SORT_ASC, $epgout[$i]['channel']);
+		}
 	}
 
 	return $epgout;

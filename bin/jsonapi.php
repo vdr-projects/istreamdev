@@ -192,7 +192,7 @@ function getEpg($channel, $time, $day, $programs)
 {
 	$ret = array();
 
-	$ret['channel'] = vdrgetepg($channel, $time, $day, $programs, 0);
+	$ret['category'] = vdrgetepg($channel, $time, $day, $programs, 0);
 
 	return json_encode($ret);
 }
