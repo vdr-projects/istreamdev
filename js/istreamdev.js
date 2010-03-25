@@ -152,7 +152,7 @@ $('a[class="back"]').tap(function(event) {
 // show active sessions
 $(document).ready(function(e){ 
 getRunningSessions();
-preloadLogos();
+//preloadLogos();
 });
 
 //reinit RunningSessions when going to Home:
@@ -968,22 +968,28 @@ function showStatus( timeout, message ) {
 //   [EPG SECTION]
 //buttons
 $('.submit_epg').tap(function(event) {  
-		event.preventDefault();
-		channel = $('#epgform #epg_chan').val();
-		time = $('#epgform #epg_time').val();
-		day = $('#epgform select##epg_day').val();
-		if ( channel == "all" ) {
-		programs = 2;
-		}
-		else if ( time == "" ) {
-		programs = "day";
-		} else {
-		programs = 20;
-		}
-		get_epg(channel,time,day,programs);
-		$(this).removeClass('active');
-		});
+event.preventDefault();
+json_start(this);
+channel = $('#epgform #epg_chan').val();
+time = $('#epgform #epg_time').val();
+day = $('#epgform select##epg_day').val();
+	if ( channel == "all" ) {
+	programs = 2;
+	}
+	else if ( time == "" ) {
+	programs = "day";
+	} else {
+	programs = 20;
+	}
+get_epg(channel,time,day,programs);
+$(this).removeClass('active');
+});
 
+$('#epg ul li a[rel="whatsnow"]').tap(function(event) {
+event.preventDefault();
+json_start(this);
+get_epg("all","now","0","2");
+});
 
 
 //functions
@@ -1033,8 +1039,15 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 	function(data) {
 		var k=1;
 		$.each(data.channel, function(i,channel){
+		if ( k > 10 ) {
+					togglestatus = 'toggle';
+				}
+				else
+				{
+					togglestatus = '';
+				}
 		k++;
-		$('#epglist #ul_epglist').append('<li class="sep">' + channel.name + '</li>');
+		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '" class="sep">' + channel.name + '</li>');
 			$.each(channel.epg, function(j,epg){
 				if ( k > 10 ) {
 					togglestatus = 'toggle';
@@ -1043,11 +1056,12 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 				{
 					togglestatus = '';
 				}
-			$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
+			$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
 			
 			k++;
 			});
 		});
+	$('#epglist li[rel="toggle"]').hide();
 	json_complete('#epglist','cube');
 	});
 }

@@ -223,13 +223,17 @@ include ('bin/auth.php');
 					<a href="#" class="back">Home</a>
 						<h1>EPG</h1>
 				</div>
+			<ul class="rounded">
+			<li class="arrow"><a href="#" rel="whatsnow"><span class="menuname">WHAT'S NOW</span></a></li>
+			</ul>
 			<form name="epgform" id="epgform" action="#">
 			<ul class="rounded">
-				<li><span class="timertitle">Select Channel:</span></li>
+				<li><span class="menuname" style="color:white">WHAT'S:</span></li>
+				<li><span class="timertitle">IN Channel:</span></li>
 				<li><select id="epg_chan"><option value="all">All channels</option></select></li>
-				<li><span class="timertitle">Select Day:</span></li>
+				<li><span class="timertitle">ON Day:</span></li>
 				<li><select id="epg_day"><option value="today">Today</option></select>
-				<li><span class="timertitle">Select Time:</span></li>
+				<li><span class="timertitle">AT Time:</span></li>
 				<li class="arrow"><a href="javascript:openSelectTime('layer_epgtime')" class="abutton" id="a_starttime"><span id="layer_epgtime" class="menuname"></span></a></li>
 			</ul>
 			 <input name="epg_time" type="hidden" id="epg_time" value="" />
