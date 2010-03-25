@@ -410,19 +410,22 @@ function vdrgetfullepgat($channel, $at, $programs)
 			$time = substr($epgin[$i], 2);
 			$timearray = explode(" ", $time);
 
+			$starttime = $timearray[1];
+			$endtime = $timearray[1]+$timearray[2];
+
 			switch ($programs)
 			{
 				case "all":
 					$validepg = 1;
 					break;
 				case "day":
-					if (($timearray[1] >= $at) && ($timearray[1] < ($at + 3600*24)))
+					if (($endtime >= $at) && ($starttime < ($at + 3600*24)))
 						$validepg = 1;
 					else
 						$validepg = 0;
 					break;
 				default:
-					if ($timearray[1] >= $at)
+					if ($endtime >= $at)
 						$validepg = 1;
 					else
 						$validepg = 0;
@@ -482,18 +485,33 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 
 	// Remove current day seconds
 	$currentday = $currentdate['sec'] - ($currentdate['sec'] % (3600*24));
-	
-	if (is_numeric($programs))
-	{
-		$requestedhours = (int) substr($time, 0, 2);
-		$requestedmins = (int) substr($time, 2);
-		$requestedtime = ($requestedhours * 3600) + ($requestedmins * 60);
-	}
-	else
-		$requestedtime = 0;
 
-	// Comput requested date
-	$requesteddate = $currentday + ((int)$day * (3600*24)) + $requestedtime - 3600;
+	switch ($programs)
+	{
+		case "all":
+			// Get all entries
+			$requesteddate = 0;
+			break;
+
+		case "day":
+			// Get all day
+			$requesteddate = $currentdate['sec'] - ($currentdate['sec'] % (3600*24)) + ($day * (3600*24));
+			break;
+
+		default:
+			// Get exact time
+			switch ($time)
+			{
+				case "now":
+					$requesteddate = $currentdate['sec'];
+					break;
+				default:
+					$requestedday = $currentdate['sec'] - ($currentdate['sec'] % (3600*24)) + ($day * (3600*24));
+					$requestedtime = ((int) substr($time, 0, 2) * 3600) + ((int) substr($time, 2) * 60);
+					$requesteddate = $requestedday + $requestedtime;
+					break;
+			}
+	}
 
 	if ($extended)
 	{
