@@ -322,31 +322,39 @@ function vdrgetfullepgat($channel, $at, $programs)
 {
 	$chanentry = array();
 	$chanepg = array();
-	$fullepg = array();
+	$epgout = array();
 	
 	$addedchans = array();
 
-	if ($channel != "all")
-		$channel = vdrgetchanname($channel);
+	if ($channel == "all")
+	{
+		// Update full EPG is needed
+		if ($_SESSION['fullepg'] == "")
+			$_SESSION['fullepg'] = vdrsendcommand("LSTE");
+		
+		$epgin = $_SESSION['fullepg'];
+	}
 	else
-		$channel = "all";
-
-	// Update EPG is needed
-	if ($_SESSION['fullepg'] == "")
-		$_SESSION['fullepg'] = vdrsendcommand("LSTE");
+	{
+		if ($_SESSION['epg' .$channel] == "")
+			$_SESSION['epg' .$channel] = vdrsendcommand("LSTE " .$channel);
+		$epgin = $_SESSION['epg' .$channel];
+	
+		$channelname = vdrgetchanname($channel);
+	}
 
 	// For all epg
-	$count1 = count($_SESSION['fullepg']);
+	$count1 = count($epgin);
 	for ($i = 0; $i < $count1; $i++)
 	{
 		// Find chan
-		if(ereg("^C", $_SESSION['fullepg'][$i]))
+		if(ereg("^C", $epgin[$i]))
                 {
-                        $channame = substr($_SESSION['fullepg'][$i], 2);
+                        $channame = substr($epgin[$i], 2);
                         $channames = explode(" ", $channame);
                         $channame = substr($channame, strlen($channames[0])+1);
 
-			if (($channel != "all") && ($channame != $channel))
+			if (($channel != "all") && ($channame != $channelname))
 				continue;
 
 			// Dont add chans twice
@@ -368,12 +376,12 @@ function vdrgetfullepgat($channel, $at, $programs)
                 }
 
 		// Close chan
-		if(ereg("^c", $_SESSION['fullepg'][$i]))
+		if(ereg("^c", $epgin[$i]))
 		{
 			if ($programscounter && $validchan)
 			{
 				// Add new entry
-				$fullepg[] = $chanentry;
+				$epgout[] = $chanentry;
 				$addedchans[] = $chanentry['name'];
 
 				if ($channel != "all")
@@ -397,9 +405,9 @@ function vdrgetfullepgat($channel, $at, $programs)
 		}
 
 		// Find a new EPG entry
-		if(ereg("^E", $_SESSION['fullepg'][$i]))
+		if(ereg("^E", $epgin[$i]))
 		{
-			$time = substr($_SESSION['fullepg'][$i], 2);
+			$time = substr($epgin[$i], 2);
 			$timearray = explode(" ", $time);
 
 			switch ($programs)
@@ -431,9 +439,9 @@ function vdrgetfullepgat($channel, $at, $programs)
 			continue;
 		}
 
-		if(ereg("^T", $_SESSION['fullepg'][$i]) && $validepg)
+		if(ereg("^T", $epgin[$i]) && $validepg)
 		{
-			$chanepg['title'] = substr($_SESSION['fullepg'][$i], 2);
+			$chanepg['title'] = substr($epgin[$i], 2);
 			if (!is_utf8($chanepg['title']))
 				$chanepg['title'] = utf8_encode($chanepg['title']);
 
@@ -441,7 +449,7 @@ function vdrgetfullepgat($channel, $at, $programs)
 		}
 
 		// Add a new epg
-		if(ereg("^e", $_SESSION['fullepg'][$i]))
+		if(ereg("^e", $epgin[$i]))
 		{
 			if ($validepg)
 			{
@@ -455,16 +463,16 @@ function vdrgetfullepgat($channel, $at, $programs)
 		}
 	}
 
-	if (count($fullepg))
+	if (count($epgout))
 	{
 		// Sort it
-		foreach ($fullepg as $key => $row)
+		foreach ($epgout as $key => $row)
 			$channum[$key] = $row['number'];
 
-		array_multisort($channum, SORT_ASC, $fullepg);
+		array_multisort($channum, SORT_ASC, $epgout);
 	}
 
-	return $fullepg;
+	return $epgout;
 }
 
 function vdrgetepg($channel, $time, $day, $programs, $extended)
