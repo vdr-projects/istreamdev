@@ -1040,16 +1040,17 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 		$('#jqt').data("epg",data);
 		if ( data.category.length > 1 ) {
 		type = 'cat';
+		parse_epg(data,0,type);
 		} else {
 		type = 'chan';
+		parse_epg(data,channel,type);
 		}
-		parse_epg(data,0,type);
 		$('#epglist li[rel="toggle"]').hide();
 		json_complete('#epglist','cube');
 	});
 }
 
-function parse_epg(data,selectedvalue,type){	
+function parse_epg(data,selectedvalue,type){
 	$('#epglist #epg_selector').html('');
 	$('#epglist #ul_epglist').html('');
 	if ( data.category.length > 1 )
@@ -1062,8 +1063,8 @@ function parse_epg(data,selectedvalue,type){
 	}
 	else {
 		$('#epglist #epg_selector').append('<select id="epglist_chan"></select>');
-		data = $('#jqt').data('channellist');
-		$.each(data.category, function(i,category){
+		datalistchan = $('#jqt').data('channellist');
+		$.each(datalistchan.category, function(i,category){
 		$('#epglist #epg_selector #epglist_chan').append('<optgroup label="' + category.name + '">');
 		var catname = category.name;
 		$.each(category.channel, function(j, channel){
@@ -1106,11 +1107,21 @@ $("#epglist #epg_selector select").change(function () {
 epgdata = $('#jqt').data("epg");
 selectedvalue = $("#epglist #epg_selector select option:selected").val();
 if ($("#epglist #epg_selector select").attr("id") == 'epglist_cat') {
-type = 'cat';
+	parse_epg(epgdata,selectedvalue,'cat');
 } else {
-type = 'chan';
+	time = $('#epgform #epg_time').val();
+	day = $('#epgform select##epg_day').val();
+	if ( time == "" ) {
+		programs = "day";
+	}
+	else if ( channel == "all" ) {
+		programs = 2;
+	} else {
+		programs = "day";
+	}
+	get_epg(selectedvalue,time,day,programs)
 }
-parse_epg(epgdata,selectedvalue,type);
+
 });
 }
 
