@@ -979,7 +979,7 @@ day = $('#epgform select##epg_day').val();
 	else if ( channel == "all" ) {
 	programs = 2;
 	} else {
-	programs = "day";
+	programs = 2;
 	}
 get_epg(channel,time,day,programs);
 $(this).removeClass('active');
@@ -1046,7 +1046,6 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 		parse_epg(data,channel,type);
 		}
 		$('#epglist li[rel="toggle"]').hide();
-		json_complete('#epglist','cube');
 	});
 }
 
@@ -1117,12 +1116,19 @@ if ($("#epglist #epg_selector select").attr("id") == 'epglist_cat') {
 	else if ( channel == "all" ) {
 		programs = 2;
 	} else {
-		programs = "day";
+		programs = 2;
 	}
-	get_epg(selectedvalue,time,day,programs)
+	json_start('null');
+	get_epg(selectedvalue,time,day,programs);
 }
 
 });
+	if ( $('div[class="current"]').attr('id') == "epg" || $('div[class="current reverse"]').attr('id') == "epg") {
+	json_complete('#epglist','cube');
+	}
+	else {
+	hide_loader();
+	}
 }
 
 //   [/EPG SECTION]
