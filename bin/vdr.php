@@ -387,7 +387,7 @@ function vdrgetfullepgat($channel, $at, $programs)
 		// Close chan
 		if(ereg("^c", $epgin[$i]))
 		{
-			if ($programscounter && $validchan)
+			if ($validchan)
 			{
 				// Add new entry in the right category
 				$chancat = vdrgetchancat($chanentry['name']);
@@ -437,7 +437,8 @@ function vdrgetfullepgat($channel, $at, $programs)
 					$validepg = 1;
 					break;
 				case "day":
-					if (($endtime > $at) && ($starttime < ($at + 3600*24)))
+					$dayendtime = $at - ($at % (3600*24)) + (3600*24);
+					if (($endtime > $at) && ($starttime < $dayendtime))
 						$validepg = 1;
 					else
 						$validepg = 0;
@@ -524,6 +525,11 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 		case "day":
 			// Get all day
 			$requesteddate = $currentdate - ($currentdate % (3600*24)) + ($day * (3600*24)) - 3600;
+			if ($time != "")
+			{
+				$requestedtime = ((int) substr($time, 0, 2) * 3600) + ((int) substr($time, 2) * 60);
+				$requesteddate += $requestedtime;
+			}
 			break;
 
 		default:
