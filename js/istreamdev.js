@@ -1004,7 +1004,7 @@ event.preventDefault();
 json_start(this);
 channum = $(this).attr("rel");
 epgtime = $(this).find('span[class="epgtime"]').text();
-startingtime = epgtime.substring(0,2) + '' + epgtime.substring(3);
+startingtime = epgtime.substring(0,2) + '' + epgtime.substring(3,5);
 day = $('#epglist div[rel="dataholder"] span[rel="day"]').text();
 get_epgdetails(channum,startingtime,day);
 });
