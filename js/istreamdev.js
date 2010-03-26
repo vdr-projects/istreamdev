@@ -971,7 +971,6 @@ function showStatus( timeout, message ) {
 //buttons & events
 $('.submit_epg').tap(function(event) {  
 	event.preventDefault();
-	json_start(this);
 	channel = $('#epgform #epg_chan').val();
 	time = $('#epgform #epg_time').val();
 	day = $('#epgform #epg_day').val();
@@ -987,6 +986,7 @@ $('.submit_epg').tap(function(event) {
 	} else {
 	programs = "day";
 	}
+	json_start(this);
 	get_epg(channel,time,day,programs);
 	$(this).removeClass('active');
 });
