@@ -1138,7 +1138,7 @@ function parse_epg(data,selectedvalue,type){
 		else if ( channel == "all" ) {
 			programs = 2;
 		} else {
-			programs = 2;
+			programs = day;
 		}
 		json_start('null');
 		get_epg(selectedvalue,time,day,programs);
