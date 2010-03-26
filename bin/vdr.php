@@ -302,12 +302,12 @@ function vdrgetepgat($channum, $at)
 			$timearray = explode(" ", $time);
 
 			$starttime = $timearray[1];
-			$endtime = $timearray[2];
+			$endtime = $timearray[1]+$timearray[2];
 
 			$time = date('H\hi', $starttime) ."-" .date('H\hi', $endtime);
 			$date = date('Y\/m\/d', $starttime);
 
-			$currenttime = time();
+			$currenttime = date("U");
 			if (($currenttime >= $starttime) && ($currenttime < $endtime))
 				$running = "yes";
 			else
@@ -324,7 +324,7 @@ function vdrgetepgat($channum, $at)
 	return array($date, $time, $title, $desc, $endtime, $running);
 }
 
-function vdrgetfullepgat($channel, $at, $programs)
+function vdrgetfullepgat($channel, $at, $programs, $requestedday)
 {
 	$chanentry = array();
 	$chanepg = array();
@@ -443,7 +443,7 @@ function vdrgetfullepgat($channel, $at, $programs)
 					$validepg = 1;
 					break;
 				case "day":
-					$dayendtime = $at - ($at % (3600*24)) + (3600*24);
+					$dayendtime = $requestedday + (3600*24);
 					if (($endtime > $at) && ($starttime < $dayendtime))
 						$validepg = 1;
 					else
@@ -515,25 +515,24 @@ function vdrgetfullepgat($channel, $at, $programs)
 
 function vdrgetepg($channel, $time, $day, $programs, $extended)
 {
-	// Compute time
-	$currentdate = time();
+	// Get local time (Not UTC)
+	$currentdate = date("U");
 
 	// Remove current day seconds
-	$currentday = $currentdate - ($currentdate % (3600*24));
+	$requestedday = $currentdate - date("Z") - ($currentdate % (3600*24)) + ($day * (3600*24));
 
 	switch ($programs)
 	{
 		case "all":
 			// Get all entries
-			$requesteddate = 0;
 			break;
 
 		case "day":
 			// Get all day
-			$requesteddate = $currentdate - ($currentdate % (3600*24)) + ($day * (3600*24));
+			$requesteddate = $requestedday;
 			if ($time)
 			{
-				$requestedtime = ((int) substr($time, 0, 2) * 3600) + ((int) substr($time, 2) * 60);
+				$requestedtime = (substr($time, 0, 2) * 3600) + (substr($time, 2) * 60);
 				$requesteddate += $requestedtime;
 			}
 			break;
@@ -546,8 +545,7 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 					$requesteddate = $currentdate;
 					break;
 				default:
-					$requestedday = $currentdate - ($currentdate % (3600*24)) + ($day * (3600*24));
-					$requestedtime = ((int) substr($time, 0, 2) * 3600) + ((int) substr($time, 2) * 60);
+					$requestedtime = (substr($time, 0, 2) * 3600) + (substr($time, 2) * 60);
 					$requesteddate = $requestedday + $requestedtime;
 					break;
 			}
@@ -555,12 +553,13 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 
 	if ($extended)
 	{
-		list ($chanentry['date'], $chanentry['time'], $chanentry['title'], $chanentry['desc'], $endtime, $chanentry['running']) = vdrgetepgat($channel, "at " .$requesteddate);
+		list ($chanentry['date'], $chanentry['time'], $chanentry['title'], $chanentry['desc'], $endtime, $chanentry['running'])
+			= vdrgetepgat($channel, "at " .$requesteddate);
 		$chanentry['name'] = vdrgetchanname($channel);
 		return $chanentry;
 	}
 	else
-		return vdrgetfullepgat($channel, $requesteddate, $programs);
+		return vdrgetfullepgat($channel, $requesteddate, $programs, $requestedday);
 }
 
 function vdrgetrecinfo($rec)
