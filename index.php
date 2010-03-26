@@ -270,7 +270,7 @@ include ('bin/auth.php');
 			</ul>
 			<center>
 			<br>
-			<span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>
+			<div id="epgdetails_buttons"></div>
 			<br><br>
 			</center>
 			<div rel="dataholder" style="visibility:hidden">
@@ -279,6 +279,7 @@ include ('bin/auth.php');
 				<span rel="date"></span>
 				<span rel="stime"></span>
 				<span rel="etime"></span>
+				<span rel="url"></span>
             </div>			
 		</div>
 		

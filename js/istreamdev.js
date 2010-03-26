@@ -1207,6 +1207,7 @@ function get_epgdetails(channum,startingtime,day) {
 	title = data.program.title;
 	desc = data.program.desc;
 	stime = startingtime;
+	running = data.program.running;
 	etime =  time.substring(6,8) + epgtime.substring(9);
 	$('#epgdetails h1').html('<img class="menuicon" src="img/tv.png" />' + name);
 	$('#epgdetails ul[class="thumb"] img[class="thumbnail"]').attr('src','logos/'+name+'.png');
@@ -1219,7 +1220,7 @@ function get_epgdetails(channum,startingtime,day) {
 	$('#epgdetails div[rel="dataholder"] span[rel="stime"]').html(stime);
 	$('#epgdetails div[rel="dataholder"] span[rel="etime"]').html(etime);
 	$('#epgdetails div[rel="dataholder"] span[rel="url"]').html(streamdev_server + channum);
-	if ( data.program.running == "yes" ) {
+	if ( running == "yes" ) {
 		$('#epgdetails #epgdetails_buttons').html('<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="cube"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="cube">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');		
 	} else {
 		$('#epgdetails #epgdetails_buttons').html('<span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');
