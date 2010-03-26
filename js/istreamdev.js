@@ -1002,7 +1002,7 @@ get_epg("all","now","0","2");
 $('#epglist #ul_epglist a').tap(function(event) {
 event.preventDefault();
 json_start(this);
-channum = $(this).find('span[rel="channum"]').text();
+channum = $(this).attr("rel");
 epgtime = $(this).find('span[class="epgtime"]').text();
 startingtime = epgtime.substring(0,2) + '' + epgtime.substring(3);
 day = $('#epglist div[rel="dataholder"] span[rel="day"]').text();
@@ -1151,7 +1151,7 @@ function parse_epg(data,selectedvalue,type,day){
 			{
 				togglestatus = '';
 			}
-		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span><span style="visibility:hidden" rel="channum">' + channel.number + '</span></a></li>');
+		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#" rel="' + channel.number + '"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
 		
 		k++;
 		});
