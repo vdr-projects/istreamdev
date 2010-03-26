@@ -347,6 +347,9 @@ font-size: 14px;
 font-weight: bold;
 display: block;
 color: white;
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
 text-shadow: rgba(0,0,0,.8) 0 1px 0;
 }
 ul.edgetoedge span.epgtime {
