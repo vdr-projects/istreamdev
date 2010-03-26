@@ -1149,6 +1149,7 @@ function parse_epg(data,selectedvalue,type){
 		json_complete('#epglist','cube');
 		}
 		else {
+		$('li[rel="toggle"]').show();
 		hide_loader();
 		}
 }
