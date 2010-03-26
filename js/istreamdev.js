@@ -1063,18 +1063,26 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 		$('#jqt').data("epg",data);
 		if ( data.category.length > 1 ) {
 		type = 'cat';
-		parse_epg(data,0,type);
+		parse_epg(data,0,type,day);
 		} else {
 		type = 'chan';
-		parse_epg(data,channel,type);
+		parse_epg(data,channel,type,day);
 		}
 		$('#epglist li[rel="toggle"]').hide();
 	});
 }
 
-function parse_epg(data,selectedvalue,type){
+function parse_epg(data,selectedvalue,type,day){
 	$('#epglist #epg_selector').html('');
 	$('#epglist #ul_epglist').html('');
+	date = new Date();
+	var date_milli=date.getTime();
+	date.setTime(date_milli+(86400000*day));
+	var date_year = date.getFullYear();
+	var date_month = date.getMonth()+1;
+	var date_day = date.getDate();
+	var epgdate = date_year + "-" + date_month + "-" + date_day;
+	$('#epglist #ul_epglist').append('<li rel="epgdate" class="sep">' + epgdate + '</li>');
 	if ( data.category.length > 1 )
 	{
 		$('#epglist #epg_selector').append('<select id="epglist_cat"></select>');
@@ -1129,7 +1137,7 @@ function parse_epg(data,selectedvalue,type){
 	epgdata = $('#jqt').data("epg");
 	selectedvalue = $("#epglist #epg_selector select option:selected").val();
 	if ($("#epglist #epg_selector select").attr("id") == 'epglist_cat') {
-		parse_epg(epgdata,selectedvalue,'cat');
+		parse_epg(epgdata,selectedvalue,'cat',day);
 	} else {
 		time = $('#epgform #epg_time').val();
 		day = $('#epgform select##epg_day').val();

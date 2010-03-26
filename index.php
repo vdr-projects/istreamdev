@@ -252,6 +252,33 @@ include ('bin/auth.php');
 			<ul class="edgetoedge" id="ul_epglist">
 			</ul>	
 		</div>
+		
+		<div id="epgdetails">
+			<div class="toolbar">
+			<a href="#" class="back">Back</a>
+			<a href="#home" id="home_but" class="button">Home</a>
+                <h1><img class="menuicon" src="img/tv.png" />Channel</h1>
+			</div>
+			<center><ul class="thumb" style="width:90px"><img class="thumbnail" id="thumbnail" src="" onerror="this.src='img/nologoTV.png'" /></ul></center>
+			<ul class="streaminfo">
+			<li><span class="name_now"></span>
+			<span class="epgtime_now"></span>
+			<span class="desc_now"></span></li>
+			</ul>
+			<center>
+			<br>
+			<span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>
+			<br><br>
+			</center>
+			<div rel="dataholder" style="visibility:hidden">
+				<span rel="number"></span>
+				<span rel="channame"></span>
+				<span rel="date"></span>
+				<span rel="stime"></span>
+				<span rel="etime"></span>
+            </div>			
+		</div>
+		
 	</div>
     </body>
 </html>
