@@ -1079,8 +1079,8 @@ function parse_epg(data,selectedvalue,type,day){
 	var date_milli=date.getTime();
 	date.setTime(date_milli+(86400000*day));
 	var date_year = date.getFullYear();
-	var date_month = date.getMonth()+1;
-	var date_day = date.getDate();
+	var date_month = str_pad(date.getMonth()+1,2,'0','STR_PAD_LEFT');
+	var date_day = str_pad(date.getDate(),2,'0','STR_PAD_LEFT');
 	var epgdate = date_year + "-" + date_month + "-" + date_day;
 	$('#epglist #ul_epglist').append('<li rel="epgdate" class="sep">' + epgdate + '</li>');
 	if ( data.category.length > 1 )
