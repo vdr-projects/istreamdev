@@ -1185,7 +1185,7 @@ function get_epgdetails(channum,startingtime,day) {
 	stime = startingtime;
 	etime =  time.substring(6,8) + epgtime.substring(9);
 	$('#epgdetails h1').html('<img class="menuicon" src="img/tv.png" />' + name);
-	$('#epgdetails ul[class="thumb"] img[class="thumbnail"]').attr('src') = 'logos/'+name+'.png';
+	$('#epgdetails ul[class="thumb"] img[class="thumbnail"]').attr('src','logos/'+name+'.png');
 	$('#epgdetails ul[class="streaminfo"] li span[class="name_now"]').html(title);
 	$('#epgdetails ul[class="streaminfo"] li span[class="epgtime_now"]').html(date + ' ' + time);
 	$('#epgdetails ul[class="streaminfo"] li span[class="epgdesc_now"]').html(desc);
