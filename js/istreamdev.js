@@ -1188,7 +1188,7 @@ function get_epgdetails(channum,startingtime,day) {
 	$('#epgdetails ul[class="thumb"] img[class="thumbnail"]').attr('src','logos/'+name+'.png');
 	$('#epgdetails ul[class="streaminfo"] li span[class="name_now"]').html(title);
 	$('#epgdetails ul[class="streaminfo"] li span[class="epgtime_now"]').html(date + ' ' + time);
-	$('#epgdetails ul[class="streaminfo"] li span[class="epgdesc_now"]').html(desc);
+	$('#epgdetails ul[class="streaminfo"] li span[class="desc_now"]').html(desc);
 	$('#epgdetails div[rel="dataholder"] span[rel="number"]').html(channum);
 	$('#epgdetails div[rel="dataholder"] span[rel="channame"]').html(name);
 	$('#epgdetails div[rel="dataholder"] span[rel="date"]').html(date);
