@@ -524,8 +524,8 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 
 		case "day":
 			// Get all day
-			$requesteddate = $currentdate - ($currentdate % (3600*24)) + ($day * (3600*24)) - 3600;
-			if ($time != "")
+			$requesteddate = $currentdate - ($currentdate % (3600*24)) + ($day * (3600*24));
+			if ($time)
 			{
 				$requestedtime = ((int) substr($time, 0, 2) * 3600) + ((int) substr($time, 2) * 60);
 				$requesteddate += $requestedtime;
@@ -542,7 +542,7 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 				default:
 					$requestedday = $currentdate - ($currentdate % (3600*24)) + ($day * (3600*24));
 					$requestedtime = ((int) substr($time, 0, 2) * 3600) + ((int) substr($time, 2) * 60);
-					$requesteddate = $requestedday + $requestedtime - 3600;
+					$requesteddate = $requestedday + $requestedtime;
 					break;
 			}
 	}
