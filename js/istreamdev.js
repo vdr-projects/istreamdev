@@ -976,6 +976,7 @@ $('.submit_epg').tap(function(event) {
 	day = $('#epgform #epg_day').val();
 	if ( channel == "all" && time == "") {
 			alert("You have to select a time for All channels listing");
+			$(this).removeClass('active');
 			return false;
 	}
 	if ( time == "" ) {
