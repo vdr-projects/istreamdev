@@ -250,7 +250,10 @@ include ('bin/auth.php');
 			<ul class="rounded"><li id="epg_selector"></li></ul>
 			</form>
 			<ul class="edgetoedge" id="ul_epglist">
-			</ul>	
+			</ul>
+			<div rel="dataholder" style="visibility:hidden">
+                <span rel="day"></span>
+            </div>				
 		</div>
 		
 		<div id="epgdetails">

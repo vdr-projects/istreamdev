@@ -999,7 +999,15 @@ json_start(this);
 get_epg("all","now","0","2");
 });
 
-
+$('#epglist #ul_epglist a').tap(function(event) {
+event.preventDefault();
+json_start(this);
+channum = $(this).find('span[rel="channum"]').text();
+epgtime = $(this).find('span[class="epgtime"]').text();
+startingtime = epgtime.substring(0,2) + '' + epgtime.substring(3);
+day = $('#epglist div[rel="dataholder"] span[rel="day"]').text();
+get_epgdetails(channum,startingtime,day);
+});
 
 //functions
 function gen_epgmenu() {
@@ -1075,6 +1083,7 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 function parse_epg(data,selectedvalue,type,day){
 	$('#epglist #epg_selector').html('');
 	$('#epglist #ul_epglist').html('');
+	$('#epglist div[rel="dataholder"] span[rel="day"]').html(day);
 	date = new Date();
 	var date_milli=date.getTime();
 	date.setTime(date_milli+(86400000*day));
@@ -1128,7 +1137,7 @@ function parse_epg(data,selectedvalue,type,day){
 			{
 				togglestatus = '';
 			}
-		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
+		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span><span style="visibility:hidden" rel="channum">' + channel.number + '</span></a></li>');
 		
 		k++;
 		});
@@ -1163,4 +1172,29 @@ function parse_epg(data,selectedvalue,type,day){
 		}
 }
 
+function get_epgdetails(channum,startingtime,day) {
+	var dataString = 'action=getEpgInfo&channel=' + channum + '&time=' + startingtime + '&day=' + day;
+	$.getJSON("bin/backend.php",
+	dataString,
+	function(data) {
+	name = data.program.name;
+	date = data.program.date;
+	time = data.program.time;
+	title = data.program.title;
+	desc = data.program.desc;
+	stime = startingtime;
+	etime =  time.substring(6,8) + epgtime.substring(9);
+	$('#epgdetails h1').html('<img class="menuicon" src="img/tv.png" />' + name);
+	$('#epgdetails ul[class="thumb"] img[class="thumbnail"]').attr('src') = 'logos/'+name+'.png';
+	$('#epgdetails ul[class="streaminfo"] li span[class="name_now"]').html(title);
+	$('#epgdetails ul[class="streaminfo"] li span[class="epgtime_now"]').html(date + ' ' + time);
+	$('#epgdetails ul[class="streaminfo"] li span[class="epgdesc_now"]').html(desc);
+	$('#epgdetails div[rel="dataholder"] span[rel="number"]').html(channum);
+	$('#epgdetails div[rel="dataholder"] span[rel="channame"]').html(name);
+	$('#epgdetails div[rel="dataholder"] span[rel="date"]').html(date);
+	$('#epgdetails div[rel="dataholder"] span[rel="stime"]').html(stime);
+	$('#epgdetails div[rel="dataholder"] span[rel="etime"]').html(etime);
+	json_complete('#epgdetails','cube');
+	});
+}
 //   [/EPG SECTION]
