@@ -1023,6 +1023,16 @@ $('#epgdetails span.recButton a').tap(function(event) {
     gen_edittimer(id,name,active,channumber,channame,rec_date,starttime,endtime);
 	return false;
 });
+
+$('#epgdetails  span.streamButton a').tap(function(event) {
+	event.preventDefault();
+	json_start(this);
+    var url = $("#streamchannel").find('span[rel="url"]').text();
+    var mode = $(this).attr('id');
+    start_broadcast('tv',url,mode);
+	return false;
+});
+
 //functions
 function gen_epgmenu() {
 	gen_epgchanlist();
@@ -1208,6 +1218,12 @@ function get_epgdetails(channum,startingtime,day) {
 	$('#epgdetails div[rel="dataholder"] span[rel="date"]').html(date);
 	$('#epgdetails div[rel="dataholder"] span[rel="stime"]').html(stime);
 	$('#epgdetails div[rel="dataholder"] span[rel="etime"]').html(etime);
+	$('#epgdetails div[rel="dataholder"] span[rel="url"]').html(streamdev_server + channum);
+	if ( data.program.running == "yes" ) {
+		$('#epgdetails #epgdetails_buttons').html('<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="cube"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="cube">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');		
+	} else {
+		$('#epgdetails #epgdetails_buttons').html('<span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');
+	}
 	json_complete('#epgdetails','cube');
 	});
 }
