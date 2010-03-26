@@ -1009,6 +1009,20 @@ day = $('#epglist div[rel="dataholder"] span[rel="day"]').text();
 get_epgdetails(channum,startingtime,day);
 });
 
+$('#epgdetails span.recButton a').tap(function(event) {
+	event.preventDefault();
+	json_start(this);
+	var id = "new";
+	var active= 1;
+	var name = $("#epgdetails").find('span[class="name_now"]').text();
+	var channumber = $("#epgdetails" ).find('span[rel="number"]').text();
+	var channame = $("#epgdetails").find('span[rel="channame"]').text();
+	var rec_date = $("#epgdetails").find('span[rel="date"]').text();
+	var starttime = $("#epgdetails").find('span[rel="stime"]').text();
+	var endtime = $("#epgdetails").find('span[rel="etime"]').text();
+    gen_edittimer(id,name,active,channumber,channame,rec_date,starttime,endtime);
+	return false;
+});
 //functions
 function gen_epgmenu() {
 	gen_epgchanlist();
