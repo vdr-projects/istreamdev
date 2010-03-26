@@ -433,7 +433,8 @@ div#jqt.landscape .toolbar > h1 {
 #jqt ul.edgetoedge li {
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#4c4d4e), to(#404142));
     font-size: 14px;
-    margin-bottom: -3px;
+    margin-bottom: -1px;
+	border-bottom: 2px solid #333333;
 }
 #jqt ul.edgetoedge li.sep {
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,0)), to(rgba(0,0,0,.5)));
