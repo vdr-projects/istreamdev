@@ -1105,7 +1105,7 @@ function parse_epg(data,selectedvalue,type,day){
 	var date_month = str_pad(date.getMonth()+1,2,'0','STR_PAD_LEFT');
 	var date_day = str_pad(date.getDate(),2,'0','STR_PAD_LEFT');
 	var epgdate = date_year + "-" + date_month + "-" + date_day;
-	$('#epglist #ul_epglist').append('<li rel="epgdate" class="sep">' + epgdate + '</li>');
+	$('#epglist h1').html(epgdate);
 	if ( data.category.length > 1 )
 	{
 		$('#epglist #epg_selector').append('<select id="epglist_cat"></select>');
