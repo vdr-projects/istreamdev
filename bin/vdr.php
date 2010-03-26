@@ -437,13 +437,13 @@ function vdrgetfullepgat($channel, $at, $programs)
 					$validepg = 1;
 					break;
 				case "day":
-					if (($endtime >= $at) && ($starttime < ($at + 3600*24)))
+					if (($endtime > $at) && ($starttime < ($at + 3600*24)))
 						$validepg = 1;
 					else
 						$validepg = 0;
 					break;
 				default:
-					if ($endtime >= $at)
+					if ($endtime > $at)
 						$validepg = 1;
 					else
 						$validepg = 0;
