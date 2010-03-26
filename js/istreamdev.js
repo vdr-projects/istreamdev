@@ -1027,7 +1027,7 @@ $('#epgdetails span.recButton a').tap(function(event) {
 $('#epgdetails  span.streamButton a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-    var url = $("#streamchannel").find('span[rel="url"]').text();
+    var url = $("#epgdetails").find('span[rel="url"]').text();
     var mode = $(this).attr('id');
     start_broadcast('tv',url,mode);
 	return false;
