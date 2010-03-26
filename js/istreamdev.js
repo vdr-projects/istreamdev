@@ -166,19 +166,6 @@ $('#home').bind('pageAnimationStart', function(event, info){
 	})
 });
 
-
-$(document).ready(function(e){ 
-$('#epg').bind('pageAnimationStart', function(event, info){ 
-	if (info.direction == 'in') {
-		$('#epg #epg_time').val("");
-		$('#epg #layer_epgtime').html('');
-		}  
-	})
-});
-
-
-
-
 //trick to prevent animation bug with object.
 $(document).ready(function(e){ 
 $('#streaming').bind('pageAnimationEnd', function(event, info){ 
@@ -983,11 +970,15 @@ function showStatus( timeout, message ) {
 //   [EPG SECTION]
 //buttons & events
 $('.submit_epg').tap(function(event) {  
-event.preventDefault();
-json_start(this);
-channel = $('#epgform #epg_chan').val();
-time = $('#epgform #epg_time').val();
-day = $('#epgform select##epg_day').val();
+	event.preventDefault();
+	json_start(this);
+	channel = $('#epgform #epg_chan').val();
+	time = $('#epgform #epg_time').val();
+	day = $('#epgform #epg_day').val();
+	if ( channel == "all" && time == "") {
+			alert("You have to select a time for All channels listing");
+			return false;
+	}
 	if ( time == "" ) {
 	programs = "day";
 	}
@@ -996,9 +987,10 @@ day = $('#epgform select##epg_day').val();
 	} else {
 	programs = "day";
 	}
-get_epg(channel,time,day,programs);
-$(this).removeClass('active');
+	get_epg(channel,time,day,programs);
+	$(this).removeClass('active');
 });
+
 
 $('#epg ul li a[rel="whatsnow"]').tap(function(event) {
 event.preventDefault();
@@ -1012,6 +1004,7 @@ get_epg("all","now","0","2");
 function gen_epgmenu() {
 	gen_epgchanlist();
 	gen_epgdatelist();
+	genepg_timelist()
 	json_complete('#epg','cube');
 }
 
@@ -1045,6 +1038,20 @@ var dayname = new Array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
 		date.setTime(date_milli+86400000);
 		$('#epg #epg_day').append('<option value="' + i +  '">' + dayname[date.getDay()] + ' ' + date.getDate() + '/' + (date.getMonth()+1) + '</option>');
 		}
+}
+
+function genepg_timelist() {
+starth = 0;
+startm = 0;
+$('#epg #epg_time').append('<option value="">All</option>');
+	for ( i=0;i<24;i++ ) {
+	curh = str_pad(starth+i,2,'0','STR_PAD_LEFT');
+		for ( j=0;j<4;j++) {
+		curm = str_pad(startm+(j*15),2,'0','STR_PAD_LEFT');
+		$('#epg #epg_time').append('<option value="' + curh + curm +'">' + curh + 'h' + curm + '</option>');
+		}
+	
+	}
 }
 
 function get_epg(channel,time,day,programs) {
@@ -1117,33 +1124,33 @@ function parse_epg(data,selectedvalue,type){
 		k++;
 		});
 	});
-$("#epglist #epg_selector select").change(function () {
-epgdata = $('#jqt').data("epg");
-selectedvalue = $("#epglist #epg_selector select option:selected").val();
-if ($("#epglist #epg_selector select").attr("id") == 'epglist_cat') {
-	parse_epg(epgdata,selectedvalue,'cat');
-} else {
-	time = $('#epgform #epg_time').val();
-	day = $('#epgform select##epg_day').val();
-	if ( time == "" ) {
-		programs = "day";
-	}
-	else if ( channel == "all" ) {
-		programs = 2;
+	$("#epglist #epg_selector select").change(function () {
+	epgdata = $('#jqt').data("epg");
+	selectedvalue = $("#epglist #epg_selector select option:selected").val();
+	if ($("#epglist #epg_selector select").attr("id") == 'epglist_cat') {
+		parse_epg(epgdata,selectedvalue,'cat');
 	} else {
-		programs = 2;
+		time = $('#epgform #epg_time').val();
+		day = $('#epgform select##epg_day').val();
+		if ( time == "" ) {
+			programs = "day";
+		}
+		else if ( channel == "all" ) {
+			programs = 2;
+		} else {
+			programs = 2;
+		}
+		json_start('null');
+		get_epg(selectedvalue,time,day,programs);
 	}
-	json_start('null');
-	get_epg(selectedvalue,time,day,programs);
-}
 
-});
-	if ( $('div[class="current"]').attr('id') == "epg" || $('div[class="current reverse"]').attr('id') == "epg") {
-	json_complete('#epglist','cube');
-	}
-	else {
-	hide_loader();
-	}
+	});
+		if ( $('div[class="current"]').attr('id') == "epg" || $('div[class="current reverse"]').attr('id') == "epg") {
+		json_complete('#epglist','cube');
+		}
+		else {
+		hide_loader();
+		}
 }
 
 //   [/EPG SECTION]

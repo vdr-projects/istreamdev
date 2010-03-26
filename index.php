@@ -234,9 +234,8 @@ include ('bin/auth.php');
 				<li><span class="timertitle">ON Day:</span></li>
 				<li><select id="epg_day"><option value="today">Today</option></select>
 				<li><span class="timertitle">AT Time:</span></li>
-				<li class="arrow"><a href="javascript:openSelectTime('layer_epgtime')" class="abutton" id="a_starttime"><span id="layer_epgtime" class="menuname"></span></a></li>
+				<li><select id="epg_time"></select></li>
 			</ul>
-			 <input name="epg_time" type="hidden" id="epg_time" value="" />
 			<ul class="rounded" ref="submitbut"><li><center><a href="#" class="submit_epg">Get Programs</a></center></li></ul>
 			</form>
 		</div>
