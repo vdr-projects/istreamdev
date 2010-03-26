@@ -149,6 +149,8 @@ $('a[class="back"]').tap(function(event) {
 	event.preventDefault();
 	$(this).parents('div').find('a').unbind("tap");
 });
+
+
 // show active sessions
 $(document).ready(function(e){ 
 getRunningSessions();
@@ -163,6 +165,19 @@ $('#home').bind('pageAnimationStart', function(event, info){
 		}  
 	})
 });
+
+
+$(document).ready(function(e){ 
+$('#epg').bind('pageAnimationStart', function(event, info){ 
+	if (info.direction == 'in') {
+		$('#epg #epg_time').val("");
+		$('#epg #layer_epgtime').html('');
+		}  
+	})
+});
+
+
+
 
 //trick to prevent animation bug with object.
 $(document).ready(function(e){ 
@@ -979,7 +994,7 @@ day = $('#epgform select##epg_day').val();
 	else if ( channel == "all" ) {
 	programs = 2;
 	} else {
-	programs = 2;
+	programs = "day";
 	}
 get_epg(channel,time,day,programs);
 $(this).removeClass('active');
