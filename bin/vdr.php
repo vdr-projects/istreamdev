@@ -550,6 +550,7 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 	if ($extended)
 	{
 		list ($chanentry['date'], $chanentry['time'], $chanentry['title'], $chanentry['desc']) = vdrgetepgat($channel, "at " .$requesteddate);
+		$chanentry['name'] = vdrgetchanname($channel);
 		return $chanentry;
 	}
 	else
