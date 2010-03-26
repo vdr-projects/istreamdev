@@ -301,11 +301,17 @@ function vdrgetepgat($channum, $at)
 			$time = substr($epg[$i], 2);
 			$timearray = explode(" ", $time);
 
-			$time = date('H\hi', $timearray[1]) ."-" .date('H\hi', $timearray[1]+$timearray[2]);
+			$starttime = $timearray[1];
+			$endtime = $timearray[2];
 
-			$date = date('Y\/m\/d', $timearray[1]);
+			$time = date('H\hi', $starttime) ."-" .date('H\hi', $endtime);
+			$date = date('Y\/m\/d', $starttime);
 
-			$endtime = $timearray[1]+$timearray[2];
+			$currenttime = time();
+			if (($currenttime >= $starttime) && ($currenttime < $endtime))
+				$running = "yes";
+			else
+				$running = "no";
 		}
 	}
 	
@@ -315,7 +321,7 @@ function vdrgetepgat($channum, $at)
 	if (!is_utf8($desc))
 		$desc = utf8_encode($desc);
 
-	return array($date, $time, $title, $desc, $endtime);
+	return array($date, $time, $title, $desc, $endtime, $running);
 }
 
 function vdrgetfullepgat($channel, $at, $programs)
@@ -549,7 +555,7 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 
 	if ($extended)
 	{
-		list ($chanentry['date'], $chanentry['time'], $chanentry['title'], $chanentry['desc']) = vdrgetepgat($channel, "at " .$requesteddate);
+		list ($chanentry['date'], $chanentry['time'], $chanentry['title'], $chanentry['desc'], $endtime, $chanentry['running']) = vdrgetepgat($channel, "at " .$requesteddate);
 		$chanentry['name'] = vdrgetchanname($channel);
 		return $chanentry;
 	}
