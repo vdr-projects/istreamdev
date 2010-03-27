@@ -4,6 +4,8 @@ function mediagetinfostream($stream)
 {
 	$info = array();
 
+	addlog("Requesting media info from " .$stream);
+
         // Get info
         $getid3 = new getID3;
         $fileinfo = $getid3->analyze($stream);
@@ -31,6 +33,8 @@ function mediagetinfostream($stream)
 function mediagentb($stream, $dest)
 {
 	global $ffmpegpath;
+
+	addlog("Generating thumbnail for stream " .$stream ." to " .$dest);
 
 	// Get info
 	$getid3 = new getID3;
@@ -72,9 +76,11 @@ function mediagentb($stream, $dest)
 	}
 
 	if ($file)
-		exec("cp \"" .$file ."\" ../ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ../ram/stream-tb-tmp.jpg -s " .$resx ."x" .$resy ." " .$dest ." ; rm ../ram/stream-tb-tmp.jpg");
+		$cmd = "cp \"" .$file ."\" ../ram/stream-tb-tmp.jpg;  " .$ffmpegpath ." -y -i ../ram/stream-tb-tmp.jpg -s " .$resx ."x" .$resy ." " .$dest ." ; rm ../ram/stream-tb-tmp.jpg";
 	else
-	        exec($ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s " .$resx ."x" .$resy ." -f mjpeg " .$dest);
+	        $cmd = $ffmpegpath ." -y -i \"" .$stream ."\" -an -ss 00:00:05.00 -r 1 -vframes 1 -s " .$resx ."x" .$resy ." -f mjpeg " .$dest;
+
+	addlog("Thumbnail generation command: " .$cmd);
 
 	if (!file_exists($dest))
 		exec('cp ../logos/nologoMEDIA.png ' .$dest);
@@ -107,6 +113,8 @@ function filegettype($file)
 
 function mediagetmusicinfo($file)
 {
+	addlog("Getting info for music file: " .$file);
+
 	// Get info
 	$getid3 = new getID3;
 	$fileinfo = $getid3->analyze($file);
@@ -133,6 +141,8 @@ function mediagetmusicinfo($file)
 
 function generatelogo($type, $name, $dest)
 {
+	addlog("Generating stream logo for file " .$name ." of type " .$type);
+
         switch ($type)
         {
                 case 'tv':
@@ -158,6 +168,8 @@ function generatelogo($type, $name, $dest)
 
 function filesgetlisting($dir)
 {
+	addlog("Listing dir: " .$dir);
+
 	$filelisting = array();
 	$folderlisting = array();
 

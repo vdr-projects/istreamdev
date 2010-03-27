@@ -1,3 +1,4 @@
+
 <?php
 
 /*
@@ -10,6 +11,8 @@
 
 function writeinfostream($session, $type, $mode, $url, $channame)
 {
+	addlog("Writting stream info from session " .$session ." (type=" .$type .", mode=" .$mode .", url=" .$url .", channame=" .$channame .")");
+
 	$ram = "../ram/" .$session ."/";
 
 	$infofile = fopen($ram ."streaminfo", 'w');

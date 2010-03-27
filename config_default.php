@@ -4,6 +4,10 @@
 	$enablemediavideo=1;		// Video files streaming
 	$enablemediaaudio=1;		// Audio files streaming
 
+	// Debug mode
+	$debug=0;			// Debug all action 
+	$debugfile="/tmp/istreamdev.log"; // Debug file
+
 	// Http configuration
 	$user = 'istreamdev';		// Login
 	$pass = 'iguest';		// Password

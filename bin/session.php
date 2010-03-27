@@ -4,6 +4,8 @@ function sessioncreate($type, $url, $mode)
 {
 	global $httppath, $ffmpegpath, $segmenterpath, $quality, $maxencodingprocesses;
 
+	addlog("Creating a new session for \"" .$url ."\" (" .$type .", " .$mode .")");
+
 	// Check url
 	if (!isurlvalid($url, $type))
 		return "";
@@ -11,7 +13,10 @@ function sessioncreate($type, $url, $mode)
 	// Check that the max number of session is not reached yet
 	$nbencprocess = exec("find ../ram/ -name segmenter.pid | wc | awk '{ print $1 }'");
 	if ($nbencprocess >= $maxencodingprocesses)
+	{
+		addlog("Error: Cannot create sesssion, too much sessions already encoding");
 		return "";
+	}
 
 	// Get a free session
 	$i=0;
@@ -20,6 +25,12 @@ function sessioncreate($type, $url, $mode)
 		$session = "session" .$i;
 		if (!file_exists('../ram/' .$session))
 			break;
+	}
+
+	if ($i == 1000)
+	{
+		addlog("Error: Cannot find a new session name");
+		return "";
 	}
 
 	// Default
@@ -36,6 +47,7 @@ function sessioncreate($type, $url, $mode)
 	}
 
 	// Create session
+	addlog("Creating new session dir ram/" .$session);
 	exec('mkdir ../ram/' .$session);
 	// Extract $channame if needed
         switch ($type)
@@ -74,6 +86,8 @@ function sessioncreate($type, $url, $mode)
 			$cmd = "";
 	}
 	
+	addlog("Sending encoding command: " .$cmd);
+
 	$cmd = str_replace('%', '%%', $cmd);
 	exec ($cmd);
 
@@ -86,7 +100,7 @@ function sessioncreate($type, $url, $mode)
 function sessiondelete($session)
 {
 	$ret = array();
-
+	
 	if ($session == 'all')
 	{
 		$dir_handle = @opendir('../ram/');
@@ -121,6 +135,8 @@ function sessiondelete($session)
 function sessiongetinfo($session)
 {
 	$info = array();
+
+	addlog("Getting info for session " .$session);
 
 	// Get some info
 	list($type, $mode, $url, $channame) = readinfostream($session);
@@ -167,11 +183,15 @@ function sessiongetinfo($session)
 
 function sessiondeletesingle($session)
 {
+	addlog("Deleting session " .$session);
+
 	$ram = "../ram/" .$session ."/";
 
 	// Get segmenter PID if any
 	if (file_exists($ram ."segmenter.pid"))
 		$cmd = "/usr/local/bin/fw;kill `cat " .$ram ."segmenter.pid`; rm " .$ram ."segmenter.pid; ";
+
+	addlog("Sending session kill command: " .$cmd);
 
 	$cmd .= "rm -rf " .$ram;
 	exec ($cmd);
@@ -272,17 +292,25 @@ function sessiongetstatus($session, $prevmsg)
 	
 		// Alway return ready
 		if ($status['status'] == "ready")
+		{
+			addlog("Returning status: " .$status['message']);
 			return $status;
+		}
 
 		// Status change
 		if ($status['message'] != $prevmsg)
+		{
+			addlog("Returning status: " .$status['message']);
 			return $status;
+		}
 
 		// Check session creation timeout
 		if ($checkstart && ((time() - $time) >= 10))
 		{
 			$status['status'] = "error";
 			$status['message'] = "Error: session could not start";
+
+			addlog("Returning status: " .$status['message']);
 			return $status;
 		}
 
@@ -292,12 +320,16 @@ function sessiongetstatus($session, $prevmsg)
 	/* Time out */
 	$status['status'] = "wait";
 	$status['message'] = $prevmsg;
+
+	addlog("Returning status: " .$status['message']);
 	return $status;
 }
 
 function sessiongetlist()
 {
 	$sessions = array();
+
+	addlog("Listing sessions");
 
 	$dir_handle = @opendir('../ram/');
 	if ($dir_handle)
@@ -339,6 +371,8 @@ function sessiongetlist()
 function streammusic($path, $file)
 {
 	global $httppath;
+
+	addlog("Streaming music from path \"" .$path ."\"");
 
 	if (!isurlvalid($path, "media"))
 		return array();

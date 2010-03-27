@@ -5,10 +5,14 @@ function vdrsendcommand($cmd)
 {
         global $svdrpip, $svdrpport;
 
+	addlog("Sending SVDRP command: " .$cmd);
+
         $svdrp = new SVDRP($svdrpip, $svdrpport);
         $svdrp->Connect();
         $ret = $svdrp->Command($cmd);
         $svdrp->Disconnect();
+
+	addlog("SVDRP command result received");
 
         return $ret;
 }
@@ -17,10 +21,13 @@ function vdrgetcategories()
 {
 	global $vdrchannels;
 
+	addlog("VDR: vdrgetcategories()");
+
 	$catlist = array();
 
 	if (!file_exists($vdrchannels))
 	{
+		addlog("Error: can't find vdr channels file " .$vdrchannels);
 		print "Error: channels file not found";
 		return $catlist;
 	}
@@ -28,6 +35,7 @@ function vdrgetcategories()
 	$fp = fopen ($vdrchannels,"r");
 	if (!fp)
 	{
+		addlog("Error: can't open vdr channels file " .$vdrchannels);
 		print "Unable to open channels file";
 		return $catlist;
 	}
@@ -84,10 +92,13 @@ function vdrgetchannels($category, $now)
 {
         global $vdrchannels;
 
+	addlog("VDR: vdrgetchannels(category=" .$category .", now=" .$now .")");
+
 	$chanlist=array();
 
         if (!file_exists($vdrchannels))
         {
+		addlog("Error: can't find vdr channels file " .$vdrchannels);
                 print "Error: channels file not found";
                 return $chanlist;
         }
@@ -95,6 +106,7 @@ function vdrgetchannels($category, $now)
         $fp = fopen ($vdrchannels,"r");
         if (!fp)
         {
+		addlog("Error: can't open vdr channels file " .$vdrchannels);
                 print "Unable to open channels file";
 		return $chanlist;
         }
@@ -200,6 +212,8 @@ function vdrgetchannels($category, $now)
 
 function vdrgetchannum($chan)
 {
+	addlog("VDR: vdrgetchannum(chan=" .$chan .")");
+
 	if ($_SESSION['channels'] == "")
 		$_SESSION['channels'] = vdrsendcommand("LSTC");
 
@@ -214,6 +228,8 @@ function vdrgetchannum($chan)
 
 function vdrgetchanname($channum)
 {
+	addlog("VDR: vdrgetchanname(channum=" .$channum .")");
+
         $channel = vdrsendcommand("LSTC " .$channum);
 
         // Get channel name
@@ -228,16 +244,24 @@ function vdrgetchanname($channum)
         return $channame;
 }
 
-function vdrgetchancat($chaname)
+function vdrgetchancat($channame)
 {
         global $vdrchannels;
 
+	addlog("VDR: vdrgetchancat(channame=" .$channame .")");
+
 	if (!file_exists($vdrchannels))
+	{
+		addlog("Error: can't find vdr channels file " .$vdrchannels);
                 return "";
+	}
 
 	$fp = fopen ($vdrchannels,"r");
 	if (!fp)
+	{
+		addlog("Error: can't open vdr channels file " .$vdrchannels);
 		return "";
+	}
 
 	$cat = "";
 
@@ -259,7 +283,7 @@ function vdrgetchancat($chaname)
 		
 		$name = explode(":", $line);
 		$name = explode(";", $name[0]);
-		if ($name[0] == $chaname)
+		if ($name[0] == $channame)
 			break;
 	}
 
@@ -268,6 +292,8 @@ function vdrgetchancat($chaname)
 
 function vdrgetchaninfo($channum)
 {
+	addlog("VDR: vdrgetchaninfo(channum=" .$channum .")");
+	
 	$info = array();
 
 	$info['name'] = vdrgetchanname($channum);
@@ -280,6 +306,8 @@ function vdrgetchaninfo($channum)
 
 function vdrgetepgat($channum, $at)
 {
+	addlog("VDR: vdrgetepgat(channum=" .$channum .", at=" .$at .")");
+
 	$cmd = "LSTE " .$channum ." " .$at;
 
 	$epg = vdrsendcommand($cmd);
@@ -326,6 +354,8 @@ function vdrgetepgat($channum, $at)
 
 function vdrgetfullepgat($channel, $at, $programs, $requestedday)
 {
+	addlog("VDR: vdrgetfullepgat(channel=" .$channel .", at=" .$at .", program=" .$programs .", requestedday=" .$requestedday .")");
+
 	$chanentry = array();
 	$chanepg = array();
 	$epgout = array();
@@ -515,6 +545,8 @@ function vdrgetfullepgat($channel, $at, $programs, $requestedday)
 
 function vdrgetepg($channel, $time, $day, $programs, $extended)
 {
+	addlog("VDR: vdrgetepg(channel=" .$channel .", time=" .$time .", programs=" .$programs .", extended=" .$extented .")");
+
 	// Get local time (Not UTC)
 	$currentdate = date("U");
 
@@ -564,8 +596,9 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 
 function vdrgetrecinfo($rec)
 {
+	addlog("VDR: vdrgetrecinfo(rec=" .$rec .")");
+
 	$infofile = $rec ."/info";
-	$infofile = addcslashes($infofile, "'");
 	if (file_exists($infofile))
 		$info= file_get_contents($infofile);
 	else
@@ -618,6 +651,8 @@ function vdrgetrecinfo($rec)
 
 function vdrlisttimers()
 {
+	addlog("VDR: vdrlisttimers()");
+
 	$timerslist = array();
 
 	$timers = vdrsendcommand("LSTT");
@@ -661,6 +696,8 @@ function vdrlisttimers()
 
 function vdrdeltimer($timer)
 {
+	addlog("VDR: vdrdeltimer(timer=" .$timer .")");
+
 	$ret = array();
 
 	$message = vdrsendcommand("DELT " .$timer);
@@ -681,6 +718,8 @@ function vdrdeltimer($timer)
 
 function vdrsettimer($prevtimer, $channum, $date, $stime, $etime, $desc, $active)
 {
+	addlog("VDR: vdrsettimer(prevtimer=" .$prevtimer .", channum=" .$channum .", date=" .$date .", stime=" .$stime .", etime=" .$etime .", desc=" .$desc .", active=" .$active .")");
+
 	$ret = array();
 
 	if ($prevtimer == "")

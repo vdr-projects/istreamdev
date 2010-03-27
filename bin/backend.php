@@ -6,6 +6,7 @@ if (file_exists('../config.php'))
 	include ('../config.php');
 else
 	include ('../config_default.php');
+include ('./debug.php');
 include ('./auth.php');
 include ('../getid3/getid3.php');
 include ('./utils.php');
@@ -16,6 +17,9 @@ include ('./session.php');
 include ('./jsonapi.php');
 
 $action=$_REQUEST['action'];
+
+addlog("Executing action [" .$action ."]");
+
 switch ($action)
         {
 	        case ("getGlobals"):
