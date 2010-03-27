@@ -221,7 +221,7 @@ function filesgetlisting($dir)
 				$date = preg_replace('/-/', '/', substr($value, 0, 10));
 				$time = preg_replace('/\./', 'h', substr($value, 11, 5));
 				$recnice = $date .' at ' .$time;
-				//$newentry['name'] = $recnice;
+				$newentry['name'] = $recnice;
 				$folderlisting[] = $newentry;
 				break;
 			default:
