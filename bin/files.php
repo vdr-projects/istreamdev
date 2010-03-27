@@ -206,18 +206,23 @@ function filesgetlisting($dir)
 				list($newentry['trackname'], $newentry['length']) = mediagetmusicinfo($dir ."/" .$value);
 				$newentry['number'] = $number;
 				$number++;
+				$filelisting[] = $newentry;
+				break;
 			case 'video':
+				$filelisting[] = $newentry;
+				break;
 			case 'folder':
+				$newentry['path'] = $newentry['path'] .'/';
+				// Skip emtpy dirs
+				if (glob(quotemeta($newentry['path']) .'*'))
+					$folderlisting[] = $newentry;
+				break;
 			case 'rec':
-				if ($type == 'folder')
-				{
-					$newentry['path'] = $newentry['path'] .'/';
-
-					if (glob(quotemeta($newentry['path']) .'*'))
-						$folderlisting[] = $newentry;
-				}
-				else
-					$filelisting[] = $newentry;
+				$date = preg_replace('/-/', '/', substr($value, 0, 10));
+				$time = preg_replace('/\./', 'h', substr($value, 11, 5));
+				$recnice = $date .' at ' .$time;
+				//$newentry['name'] = $recnice;
+				$folderlisting[] = $newentry;
 				break;
 			default:
 		}
