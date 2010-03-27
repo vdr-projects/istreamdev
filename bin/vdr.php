@@ -565,7 +565,7 @@ function vdrgetepg($channel, $time, $day, $programs, $extended)
 function vdrgetrecinfo($rec)
 {
 	$infofile = $rec ."/info";
-	$infofile = addslashes($infofile);
+	$infofile = addcslashes($infofile, "'");
 	if (file_exists($infofile))
 		$info= file_get_contents($infofile);
 	else
