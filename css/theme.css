@@ -444,6 +444,23 @@ div#jqt.landscape .toolbar > h1 {
     padding: 2px 10px;
     text-shadow: #000 0 1px 0;
 }
+#jqt ul.edgetoedge li.sep a{
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(0,0,0,0)), to(rgba(0,0,0,.5)));
+    color: #ff8300;
+    font-size: 16px;
+    margin: 0px 0 0 0;
+    padding: 2px 10px;
+    text-shadow: #000 0 1px 0;
+}
+#jqt ul.edgetoedge li.sep a.active{
+    background-color: #ff8300;
+    color: #fff;
+    font-size: 16px;
+    margin: 0px 0 0 0;
+    padding: 2px 10px;
+    text-shadow: #000 0 1px 0;
+}
+
 #jqt ul.edgetoedge li em {
     font-weight: normal;
     font-style: normal;
