@@ -999,7 +999,7 @@ json_start(this);
 get_epg("all","now","0","2");
 });
 
-$('#epglist #ul_epglist a').tap(function(event) {
+$('#epglist #ul_epglist a.epgdetailsbutton').tap(function(event) {
 event.preventDefault();
 json_start(this);
 channum = $(this).attr("rel");
@@ -1007,6 +1007,14 @@ epgtime = $(this).find('span[class="epgtime"]').text();
 startingtime = epgtime.substring(0,2) + '' + epgtime.substring(3,5);
 day = $('#epglist div[rel="dataholder"] span[rel="day"]').text();
 get_epgdetails(channum,startingtime,day);
+});
+
+$('#epglist #ul_epglist a[rel="epgchan"]').tap(function(event) {
+event.preventDefault();
+json_start(this);
+channum = $(this).find('span').text();
+day = $('#epglist div[rel="dataholder"] span[rel="day"]').text();
+get_epg(channum,"",day,"day")
 });
 
 $('#epgdetails span.recButton a').tap(function(event) {
@@ -1100,7 +1108,6 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 		type = 'chan';
 		parse_epg(data,channel,type,day);
 		}
-		$('#epglist li[rel="toggle"]').hide();
 	});
 }
 
@@ -1152,7 +1159,7 @@ function parse_epg(data,selectedvalue,type,day){
 				togglestatus = '';
 			}
 	k++;
-	$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '" class="sep">' + channel.name + '</li>');
+	$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '" class="sep"><a href="#" rel="epgchan"><span class="epgtime_now">' + channel.number + '</span>' + ' - ' + channel.name  + '</a></li>');
 		$.each(channel.epg, function(j,epg){
 			if ( k > 10 ) {
 				togglestatus = 'toggle';
@@ -1161,7 +1168,7 @@ function parse_epg(data,selectedvalue,type,day){
 			{
 				togglestatus = '';
 			}
-		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#" rel="' + channel.number + '"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
+		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#" class="epgdetailsbutton" rel="' + channel.number + '"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
 		
 		k++;
 		});
