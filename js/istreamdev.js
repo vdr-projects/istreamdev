@@ -618,7 +618,6 @@ $('ul[rel="filelist"] li[class="arrow"] a').tap(function(event) {
 	else if ( type == "rec" )
 		{
 		var path = $(this).find('span[class=filepath]').attr('rel');
-		alert(path);
 		gen_streamrec(name,path);
 		}
 	else if ( type == "video" )
