@@ -452,7 +452,7 @@ function gen_streamchannel(channame,channumber) {
 }
 
 function gen_streamrec(folder,path) {
-	var dataString = "action=getRecInfo&rec=" + encodeURIComponent(path) + "/" + encodeURIComponent(folder);
+	var dataString = "action=getRecInfo&rec=" + encodeURIComponent(path);
 	//Json call to get rec info
 	$.getJSON("bin/backend.php",
 			dataString,
@@ -470,7 +470,7 @@ function gen_streamrec(folder,path) {
 }
 
 function gen_streamvid(filename,path) {
-	var dataString = "action=getVidInfo&file=" + encodeURIComponent(path) + "/" + encodeURIComponent(filename);
+	var dataString = "action=getVidInfo&file=" + encodeURIComponent(path);
 	//Json call to get rec info
 	$.getJSON("bin/backend.php",
 			dataString,
@@ -617,10 +617,12 @@ $('ul[rel="filelist"] li[class="arrow"] a').tap(function(event) {
 		}
 	else if ( type == "rec" )
 		{
+		var path = $(this).find('span[class=filepath]').attr('rel');
 		gen_streamrec(name,path);
 		}
 	else if ( type == "video" )
 		{
+		var path = $(this).find('span[class=filepath]').attr('rel');
 		gen_streamvid(name,path);
 		}
 	return false;
@@ -691,10 +693,10 @@ function gen_browser(path,browser,name,foldertype) {
 				$("#browser" + browser).find('ul').append('<li class="arrow" rel="' + hidetoggle + '"><a href="#" rel="folder"><span class="menuname">' + list.name + '</span></a></li>');			
 				}
 				else if (list.type == "rec") {
-				$("#browser" + browser).find('ul').append('<li class="arrow" rel="' + hidetoggle + '"><a href="#" rel="rec"><img class="menuicon" src="img/record.png" /><span class="menuname">' + list.name + '</span></a></li>');	
+				$("#browser" + browser).find('ul').append('<li class="arrow" rel="' + hidetoggle + '"><a href="#" rel="rec"><img class="menuicon" src="img/record.png" /><span class="menuname">' + list.name + '</span><span class="filepath" rel="' + list.path + '"></span></a></li>');	
 				}
 				else if ( list.type == "video" ) {
-				$("#browser" + browser).find('ul').append('<li class="arrow" rel="' + hidetoggle + '"><a href="#" rel="video"><img class="menuicon" src="img/video.png" /><span class="menuname">' + list.name + '</span></a></li>');	
+				$("#browser" + browser).find('ul').append('<li class="arrow" rel="' + hidetoggle + '"><a href="#" rel="video"><img class="menuicon" src="img/video.png" /><span class="menuname">' + list.name + '</span><span class="filepath" rel="' + list.path + '"></span></a></li>');	
 				}
 				else if ( list.type == "audio" ) {
 					if ( list.trackname != "" ) {
