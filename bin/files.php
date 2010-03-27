@@ -197,7 +197,7 @@ function filesgetlisting($dir)
 
 		$newentry = array();
 		$newentry['name'] = $value;
-		$newentry['path'] = $dir ."/" .$value;
+		$newentry['path'] = $dir .$value;
 		$newentry['type'] = $type;
 
 		switch ($type)
