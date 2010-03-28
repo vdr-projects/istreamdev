@@ -298,8 +298,8 @@ function vdrgetchaninfo($channum)
 
 	$info['name'] = vdrgetchanname($channum);
 	$info['number'] = $channum;
-	list($info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetepgat($channum, "now");
-	list($info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetepgat($channum, "next");
+	list($date, $info['now_time'], $info['now_title'], $info['now_desc']) = vdrgetepgat($channum, "now");
+	list($date, $info['next_time'], $info['next_title'], $info['next_desc']) = vdrgetepgat($channum, "next");
 
 	return $info;
 }
