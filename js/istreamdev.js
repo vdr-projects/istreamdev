@@ -398,7 +398,7 @@ $('#streamchannel span.recButton a').tap(function(event) {
 	rec_month = str_pad(rec_month,2,'0','STR_PAD_LEFT');
 	var rec_day = date.getDate();
 	rec_day = str_pad(rec_day,2,'0','STR_PAD_LEFT');
-	var rec_date = rec_year + "-" + rec_month + "-" + rec_day;
+	var rec_date = rec_year + "/" + rec_month + "/" + rec_day;
 	var epgtime = $("#streamchannel").find('span[class="epgtime_now"]').text();
 	var starttime = epgtime.substr(0,2) + epgtime.substr(3,2);
 	var endtime  = epgtime.substr(6,2) + epgtime.substr(9,2);
