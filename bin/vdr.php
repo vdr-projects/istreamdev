@@ -683,7 +683,7 @@ function vdrlisttimers()
 		$newtimer['active'] = ($typearray[1] & 0x1)?"1":0;
 		$newtimer['channumber'] = $timerarray[1];
 		$newtimer['channame'] = vdrgetchanname($timerarray[1]);
-		$newtimer['date'] = $timerarray[2];
+		$newtimer['date'] = preg_replace("$-$", "/", $timerarray[2]);
 		$newtimer['starttime'] = $timerarray[3];
 		$newtimer['endtime'] = $timerarray[4];
 		$newtimer['running'] = ($typearray[1] & 0x8)?1:0;
@@ -721,6 +721,9 @@ function vdrsettimer($prevtimer, $channum, $date, $stime, $etime, $desc, $active
 	addlog("VDR: vdrsettimer(prevtimer=" .$prevtimer .", channum=" .$channum .", date=" .$date .", stime=" .$stime .", etime=" .$etime .", desc=" .$desc .", active=" .$active .")");
 
 	$ret = array();
+
+	// Convert date to VDR format
+	$date = preg_replace("$/$", "-", $date);
 
 	if ($prevtimer == "")
 		$command = "NEWT " .$active .":" .$channum .":" .$date .":" .$stime .":" .$etime .":99:99:" .$desc;
