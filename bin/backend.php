@@ -1,6 +1,6 @@
 <?php
 
-header('Content-Type: application/json; charset: utf-8');
+header('Content-Encoding: gzip; Content-Type: application/json; charset: utf-8');
 
 if (file_exists('../config.php'))
 	include ('../config.php');
