@@ -1,8 +1,5 @@
 <?php
-
-//header('Content-Encoding: gzip');
 header('Content-Type: application/json; charset: utf-8'); 
-//header('Content-Transfer-Encoding: binary');
 
 if (file_exists('../config.php'))
 	include ('../config.php');
