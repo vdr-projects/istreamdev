@@ -1,6 +1,0 @@
-{ 
-	"streamdev_server": "http://127.0.0.1:3000",
-	"rec_path": "/video/",
-	"video_path": "/mnt/media/Videos/",
-	"audio_path": "/mnt/media/Music/"
-}

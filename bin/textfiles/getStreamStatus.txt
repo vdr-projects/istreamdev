@@ -1,1 +1,0 @@
-{"status": "ready","message": "3G Broadcast ready", "url": "ram/session1/stream.m3u8"}

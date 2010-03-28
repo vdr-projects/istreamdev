@@ -49,6 +49,7 @@ jQT = new $.jQTouch({
 // [GENERIC STUFF]
 // Global variable
 dataString = "action=getGlobals";
+showStatus( 0,"Getting configuration data" );
 $.getJSON("bin/backend.php",
 			dataString,
 			function(data){	
@@ -161,7 +162,7 @@ getRunningSessions();
 $(document).ready(function(e){ 
 $('#home').bind('pageAnimationStart', function(event, info){ 
 	if (info.direction == 'in') {
-		getRunningSessions()
+	getRunningSessions()
 		}  
 	})
 });
@@ -184,6 +185,7 @@ $('#streaming').bind('pageAnimationStart', function(event, info){
 });
 //preload logos
 function preloadLogos() {
+	showStatus( 0,"Preloading logo pictures" );
 	$.getJSON("bin/genlogolist.php",
 	dataString,
 	function(data){
@@ -270,6 +272,7 @@ $('#runningsessions li a').tap(function(event) {
 
 // Get Active broadcast & encoding sessions
 function getRunningSessions() {
+showStatus( 0,"Getting active sessions" );
 var dataString = "action=getRunningSessions";
 	$('#home #runningsessions').html('<li><span class="menutitle">SESSIONS</span></li>\n<li>Checking running session</li>');
 	//Json call to get category array
@@ -894,6 +897,7 @@ function gen_edittimer(id,name,active,channumber,channame,date,starttime,endtime
 }
 //get full chanlist for timer page ( doing it one time on document load ).
 function gen_formchanlist() {
+	showStatus( 0,"Getting VDR channels list" );
 	var dataString = 'action=getFullChanList';
 	$.getJSON("bin/backend.php",
 	dataString,

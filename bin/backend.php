@@ -51,12 +51,12 @@ switch ($action)
 			break;
 		
 		case ("getRecInfo"):
-			$tree = getRecInfo($_REQUEST['rec']);
+			$tree = getRecInfo(stripslashes($_REQUEST['rec']));
 	       	        print $tree;
 			break;
 		
 		case ("getVidInfo"):
-			$tree = getVidInfo($_REQUEST['file']);
+			$tree = getVidInfo(stripslashes($_REQUEST['file']));
         	        print $tree;
 			break;
 		
@@ -66,7 +66,7 @@ switch ($action)
 			break;
 		
 		case ("startBroadcast"):
-			$tree = startBroadcast($_REQUEST['type'], $_REQUEST['url'], $_REQUEST['mode']);
+			$tree = startBroadcast($_REQUEST['type'], stripslashes($_REQUEST['url']), $_REQUEST['mode']);
 			print $tree;
 			break;
 		
@@ -86,7 +86,7 @@ switch ($action)
 			break;
 		
 		case ("editTimer"):
-			$tree = editTimer($_REQUEST['id'], $_REQUEST['name'], $_REQUEST['active'], $_REQUEST['channumber'], $_REQUEST['date'], $_REQUEST['starttime'], $_REQUEST['endtime']);
+			$tree = editTimer($_REQUEST['id'], stripslashes($_REQUEST['name']), $_REQUEST['active'], $_REQUEST['channumber'], $_REQUEST['date'], $_REQUEST['starttime'], $_REQUEST['endtime']);
 			print $tree;
 			break;
 		
