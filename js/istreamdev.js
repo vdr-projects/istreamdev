@@ -856,8 +856,8 @@ function gen_edittimer(id,name,active,channumber,channame,date,starttime,endtime
 		$('#timer_chan option[value="' + channumber + '"]').attr("selected", "selected");
 		$('#timer_date').val(date);
 		var wheeldate = date;
-		while (wheeldate.indexOf("-") > -1)
-		wheeldate = wheeldate.replace("-", ",");
+		while (wheeldate.indexOf("/") > -1)
+		wheeldate = wheeldate.replace("/", ",");
 		$('#a_date').attr('href', "javascript:openSelectDate(" + wheeldate + ");");
 		$('#layer_date').html(date);
 		$('#timer_starttime').val(starttime);
