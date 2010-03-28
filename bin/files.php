@@ -82,6 +82,8 @@ function mediagentb($stream, $dest)
 
 	addlog("Thumbnail generation command: " .$cmd);
 
+	exec($cmd);
+
 	if (!file_exists($dest))
 		exec('cp ../logos/nologoMEDIA.png ' .$dest);
 }
