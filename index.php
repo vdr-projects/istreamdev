@@ -13,8 +13,7 @@ if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandl
         <meta charset="UTF-8" />
         <title>iStreamdev</title>
         <link rel="stylesheet" href="min/?b=css&f=jqtouch.css,theme.css,istreamdev.css,spinningwheel.css" type="text/css" media="screen" />
-        <script src="min/?b=js&f=jquery-1.4.2.min.js,jqtouch.js,jqtouch.transitions.js,functions.js,spinningwheel.js,jquery.scrollTo-1.4.2.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/istreamdev.js" type="text/javascript" charset="utf-8"></script>
+        <script src="min/?b=js&f=jquery-1.4.2.min.js,jqtouch.js,jqtouch.transitions.js,functions.js,spinningwheel.js,jquery.scrollTo-1.4.2.js,istreamdev.js" type="text/javascript" charset="utf-8"></script>
 	</head>
     <body>
 	<div id="loader"></div>
