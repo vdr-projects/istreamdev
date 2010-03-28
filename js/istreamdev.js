@@ -57,6 +57,7 @@ $.getJSON("bin/backend.php",
 			rec_path = data.rec_path;
 			video_path = data.video_path;
 			audio_path = data.audio_path;
+			epg_maxdays = data.epg_maxdays;
 			if (streamdev_server != "" && streamdev_server != "null") {
 			addVdr();
 			gen_formchanlist();
@@ -68,6 +69,16 @@ $.getJSON("bin/backend.php",
 			addAudiofiles();
 			}
 });
+
+function showStatus( timeout, message ) { 
+    if( timeout == 0 ) { 
+		$('#status_box').html(message);
+		$('#status_box').show();
+        setTimeout( function() { showStatus( 1, message ); }, 3000 ); 
+    } else if( timeout == 1 ) { 
+	$('#status_box').hide();
+    } 
+}
 
 function addVdr() {
 	vdrmenu = '	<ul class="rounded">\n<li><span class="menutitle">VDR</span></li>\n';
@@ -962,15 +973,6 @@ function checktimerform() {
 		return false;
 }; 
 
-function showStatus( timeout, message ) { 
-    if( timeout == 0 ) { 
-		$('#status_box').html(message);
-		$('#status_box').show();
-        setTimeout( function() { showStatus( 1, message ); }, 5000 ); 
-    } else if( timeout == 1 ) { 
-	$('#status_box').hide();
-    } 
-}
 //  [/TIMER SECTION]
 
 //   [EPG SECTION]
@@ -1069,18 +1071,13 @@ function gen_epgchanlist() {
 }
 
 function gen_epgdatelist() {
-var daymax = 8;
 var date = new Date();
 var date_year = date.getFullYear();
 var date_month = date.getMonth()+1;
 var date_day = date.getDate();
-//var date_hour = str_pad(date.getHours(),2,'0','STR_PAD_LEFT');
-//var date_min = str_pad(date.getMinutes(),2,'0','STR_PAD_LEFT');
-//$('#epg #epg_time').val(date_hour + '' + date_min);
-//var date_fulldate = date_year + '-' + str_pad(date_month,2,'0','STR_PAD_LEFT') + '-' + str_pad(date_day,2,'0','STR_PAD_LEFT');
 $('#epg #epg_day').html('<option value="0">Today</option>');
 var dayname = new Array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
-	for ( i=1;i<daymax;i++ ) {
+	for ( i=1;i<epg_maxdays;i++ ) {
 		date_milli=date.getTime();
 		date.setTime(date_milli+86400000);
 		$('#epg #epg_day').append('<option value="' + i +  '">' + dayname[date.getDay()] + ' ' + date.getDate() + '/' + (date.getMonth()+1) + '</option>');

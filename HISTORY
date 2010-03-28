@@ -11,7 +11,7 @@ xx.xx.xxxx - 0.1.0-alpha1
 - Added recording from Channel info.
 - Encoding status message is now updated live.
 - Added new status "Encoding finished" for recording and videos files. It appears without "*" character before the name in Home sessions menu too.
-
+- Added Electronic Program Guide. 
 
 
 01.03.2010 - 0.3.7
