@@ -1,5 +1,8 @@
 <?php
+ob_start("ob_gzhandler"); 
+
 header('Content-Type: application/json; charset: utf-8'); 
+header('Content-Encoding: gzip');
 
 if (file_exists('../config.php'))
 	include ('../config.php');
