@@ -2,7 +2,7 @@
 
 function sessioncreate($type, $url, $mode)
 {
-	global $httppath, $ffmpegpath, $segmenterpath, $quality, $maxencodingprocesses;
+	global $httppath, $ffmpegpath, $segmenterpath, $quality, $maxencodingprocesses, $ffmpegdebug, $ffmpegdebugfile;
 
 	addlog("Creating a new session for \"" .$url ."\" (" .$type .", " .$mode .")");
 
@@ -64,23 +64,31 @@ function sessioncreate($type, $url, $mode)
                         $channame = "";
                         break;
         }
+
 	// Create logo
         if ($type == 'vid')
                 generatelogo($type, $url, '../ram/' .$session .'/thumb.png');
         else
                 generatelogo($type, $channame, '../ram/' .$session .'/thumb.png');
+
+	// FFMPEG debug
+	if ($ffmpegdebug)
+		$ffdbg = $ffmpegdebugfile;
+	else
+		$ffdbg = "";
+
 	// Start encoding
 	$url = str_replace("\\'", "'", $url);
 	switch ($type)
 	{
 		case 'tv':
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \" | at now";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
 			break;
 		case 'rec':
-			$cmd = "export SHELL=\"/bin/sh\";printf \"cat \\\"" .$url ."\\\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \" | at now";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"cat \\\"" .$url ."\\\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
 			break;
 		case 'vid':
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \" | at now";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
                         break;
 		default:
 			$cmd = "";
@@ -347,6 +355,9 @@ function sessiongetlist()
 			if ($type == "none")
 				continue;
 
+			// Get status
+			$status = getstreamingstatus($session);
+
 			$newsession = array();
 			$newsession['session'] = substr($session, strlen("session"));
 			$newsession['type'] = $type;
@@ -355,8 +366,11 @@ function sessiongetlist()
 			else
 				$newsession['name'] = $channame;
 
+			if ($status['status'] == "error")
+				$newsession['name'] = "Error: " .$newsession['name'];
+
 			// Check if encoding
-			if (file_exists('../ram/' .$session .'/segmenter.pid'))
+			if (file_exists('../ram/' .$session .'/segmenter.pid') && ($status['status'] != "error"))
 				$newsession['encoding'] = 1;
 			else
 				$newsession['encoding'] = 0;
