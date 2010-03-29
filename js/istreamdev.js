@@ -512,7 +512,8 @@ function gen_streaming(session) {
 			dataString,
 			function(data){	
 			var stream = data.stream;
-			$('#streaming').find('#thumbnail').attr('src','ram/session' + stream.session + '/thumb.png');
+			var time = new Date();
+			$('#streaming').find('#thumbnail').attr('src','ram/session' + stream.session + '/thumb.png?'+time);
 			$("#streaming").find('span[rel="thumbwidth"]').html(stream.thumbwidth);
 			$("#streaming").find('span[rel="thumbheight"]').html(stream.thumbheight);
 			if (stream.type == "tv") 
@@ -584,11 +585,12 @@ function playvideo(session,name) {
 		var status = data.status;
 		var message = data.message;
 		var url = data.url;
+		var time = new Date();
 		var thumbwidth = $('#streaming span[rel="thumbwidth"]').text();
 		var thumbheight = $('#streaming span[rel="thumbheight"]').text();
 		$('#streaming ul[class="streamstatus"]').find('span[class="mode"]').html(message);
 		if ( status == "ready" || status == "error" ) {
-			$('#player').html('<video id="videofeed" width="' + thumbwidth + '" height="' + thumbheight + '" poster="ram/session' + session + '/thumb.png" src="' + url + '" ></video><span rel="ready"></span>');
+			$('#player').html('<video id="videofeed" width="' + thumbwidth + '" height="' + thumbheight + '" poster="ram/session' + session + '/thumb.png?' + time + '" src="' + url + '" ></video><span rel="ready"></span>');
 			return false;
 			}
 		prevmsg = message;
