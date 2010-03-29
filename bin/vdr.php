@@ -323,7 +323,7 @@ function vdrgetepgat($channum, $at)
 		if(ereg("^T ", $epg[$i]))
 			$title = substr($epg[$i], 2);
 		else if(ereg("^D ", $epg[$i]))
-			$desc = substr($epg[$i], 2);
+			$desc = preg_replace("/\|/", "<br>", substr($epg[$i], 2));
 		else if(ereg("^E ", $epg[$i]))
 		{
 			$time = substr($epg[$i], 2);
@@ -627,9 +627,9 @@ function vdrgetrecinfo($rec)
 			$channame = substr($channame, strlen($channames[0])+1);
 		}
 		else if(ereg("^T", $allepg[$i]))
-			$epgtitle=substr($allepg[$i], 2);
+			$epgtitle = substr($allepg[$i], 2);
 		else if(ereg("^D", $allepg[$i]))
-			$epgdesc=substr($allepg[$i], 2);
+			$epgdesc = preg_replace("/\|/", "<br>", substr($allepg[$i], 2));
 		else if(ereg("^E ", $allepg[$i]))
 		{
 			$time = substr($allepg[$i], 2);
