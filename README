@@ -30,7 +30,7 @@ Your Iphone don't needs to be jailbroken, it uses native iphone Quicktime player
 Your iPhone needs at least firmware 3.0 to support HTTP Live Streaming protocol.
 
 TV, recordings & video files are rencoded in mpeg2 TS stream with H264 video and mp3 audio.
-Audio files are to their native formats. So only mp3, aac & wave are supported.
+Audio files are streamed to their native formats. So only mp3, aac & wave are supported.
 
  Features:
  --------
