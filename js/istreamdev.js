@@ -190,6 +190,7 @@ $('#streaming').bind('pageAnimationEnd', function(event, info){
 $('#streaming').bind('pageAnimationStart', function(event, info){ 
 	var session = $("#streaming").find('span[rel="session"]').text();
 	if (info.direction == 'out') {
+		var time = new Date();
 		$('#player').html('<img class="thumbnail" id="thumbnail" src="ram/session' + session + '/thumb.png"></img>');
 		}  
 	})
@@ -518,7 +519,7 @@ function gen_streaming(session) {
 			$("#streaming").find('span[rel="thumbheight"]').html(stream.thumbheight);
 			if (stream.type == "tv") 
 				{
-				$('#streaming').find('h1').html('<img class="menuicon" src="img/tv.png" /> ' + stream.name );
+				$('#streaming').find('h1').html('<img class="menuicon" src="img/tv.png" onerror="this.src=\'img/nologoTV.png\'" /> ' + stream.name );
 				$('#streaming').find('#player').css('width', '90px');
 				var streaminfo = '<li><span class="name_now">Now: ' + stream.now_title + '</span>';
 				streaminfo += '<span class="epgtime_now">' + stream.now_time + '</span>';
@@ -529,7 +530,7 @@ function gen_streaming(session) {
 				}
 			else if (stream.type == "rec") 
 				{
-				$('#streaming').find('h1').html('<img class="menuicon" src="img/record.png" /> ' + stream.name );
+				$('#streaming').find('h1').html('<img class="menuicon" src="img/record.png" onerror="this.src=\'img/nologoREC.png\'" /> ' + stream.name );
 				$('#streaming').find('#player').css('width', '90px');
 				var streaminfo = '<li><span class="name_now">' + stream.name + '</span>';
 				streaminfo += '<span class="epgtime_now">Recorded: ' + stream.recorded + '</span>';
@@ -538,7 +539,7 @@ function gen_streaming(session) {
 				}
 			else if (stream.type == "vid") 
 				{
-				$('#streaming').find('h1').html('<img class="menuicon" src="img/video.png" /> ' + stream.name );
+				$('#streaming').find('h1').html('<img class="menuicon" src="img/video.png" onerror="this.src=\'img/nologoMEDIA.png\'" /> ' + stream.name );
 				$('#streaming').find('#player').css('width', '190px');
 				var streaminfo = '<li><span class="name_now">' + stream.name + '</span>';
 				streaminfo += '<span class="epgtime_now">Duration: ' + stream.duration + '</span>';
