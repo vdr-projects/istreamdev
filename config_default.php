@@ -41,5 +41,5 @@
 	$segmenterpath='/usr/bin/segmenter';	//path to segmenter binary
 
 	// Version
-	$isdversion = "1.0-alpha1";
+	$isdversion = "1.0";
 ?>
