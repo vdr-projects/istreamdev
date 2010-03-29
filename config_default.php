@@ -30,10 +30,10 @@
 	$audiosource='/mnt/media/music/';				// Audio files directory
 
 	// Encoding (The name cannot be changed)
-	//			Name		Video	Audio	Audio channels	Resolution
-	$quality=array	(	'edge'	=>	'128k	64k	1		240x160',
-				'3g'	=>	'350k	64k	1		408x272',
-				'wifi'	=>	'512k	128k	2		480x320');
+	//			Name		Video	Audio	Resolution
+	$quality=array	(	'edge'	=>	'128k	64k	240x160',
+				'3g'	=>	'350k	64k	408x272',
+				'wifi'	=>	'512k	128k	480x320');
 	$maxencodingprocesses=3;		// Max simultaneous encoding processes
 
 	// Misc
