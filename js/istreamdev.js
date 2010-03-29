@@ -191,7 +191,7 @@ $('#streaming').bind('pageAnimationStart', function(event, info){
 	var session = $("#streaming").find('span[rel="session"]').text();
 	if (info.direction == 'out') {
 		var time = new Date();
-		$('#player').html('<img class="thumbnail" id="thumbnail" src="ram/session' + session + '/thumb.png"></img>');
+		$('#player').html('<img class="thumbnail" id="thumbnail" src="ram/session' + session + '/thumb.png" onerror="this.src=\'img/nologoMEDIA.png\'"></img>');
 		}  
 	})
 });
