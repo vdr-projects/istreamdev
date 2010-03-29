@@ -120,3 +120,23 @@ function str_pad (input, pad_length, pad_string, pad_type) {
  
     return input;
 }
+
+function updateOrientation() {
+     switch(window.orientation) {
+     case 0:
+         orient = "portrait";
+         break;
+     case -90:
+         orient = "landscape";
+         break;
+     case 90:
+         orient = "landscape";
+         break;
+     case 180:
+         orient = "portrait";
+         break;
+     }
+     document.body.setAttribute("orient", orient);
+     window.scrollTo(0, 1);
+
+}
