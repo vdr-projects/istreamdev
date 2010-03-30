@@ -123,7 +123,7 @@ $min_serveOptions['minApp']['maxFiles'] = 10;
  * array('//static' => 'D:\\staticStorage')  // Windows
  * </code>
  */
-//$min_symlinks = array();
+$min_symlinks = array();
 
 
 /**
