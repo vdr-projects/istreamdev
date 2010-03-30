@@ -1,4 +1,15 @@
 <?php
+
+// Check PHP modules
+if (function_exists('dl'))
+{
+	if (!extension_loaded('json'))
+		dl(json.so);
+	if (!extension_loaded('zlib'))
+		dl(zlib.so);
+}
+
+
 ob_start("ob_gzhandler"); 
 
 header('Content-Type: application/json; charset: utf-8'); 
