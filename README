@@ -74,6 +74,8 @@ iStreamdev generate a playlist from the requested file to the last file of the f
 
 - an http server with PHP5 (PHP 5 >= 5.2.0)  enabled like apache or lighthttpd
 
+- for some php installation you need to install php5-json & php5-zlib extension.
+
 - having "at" package.
 
 - www-data user should allowed to use "at".

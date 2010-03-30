@@ -1,5 +1,9 @@
 iStreamdev History
 ------------------
+xx.xx.2010 - 1.0.1
+
+- Added fix for PHP version < 5.2.0
+
 
 03.29.2010 - 1.0.0
 

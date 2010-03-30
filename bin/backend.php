@@ -9,8 +9,9 @@ if (function_exists('dl'))
 		dl(zlib.so);
 }
 
-
-ob_start("ob_gzhandler"); 
+if(!ob_start("ob_gzhandler"))
+	ob_start(); 
+ob_start("ob_gzhandler");
 
 header('Content-Type: application/json; charset: utf-8'); 
 header('Content-Encoding: gzip');

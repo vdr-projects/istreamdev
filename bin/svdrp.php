@@ -29,7 +29,7 @@ class SVDRP
 		if($this->handle) Disconnect();
 		$errno = 0;
 		$errstr = "";
-		$this->handle = fsockopen($this->cfgServer, $this->cfgPort, &$errno, &$errstr, $this->cfgTimeOut);
+		$this->handle = fsockopen($this->cfgServer, $this->cfgPort, $errno, $errstr, $this->cfgTimeOut);
 
 		if(!$this->handle)
 		{
