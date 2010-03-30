@@ -11,7 +11,6 @@ if (function_exists('dl'))
 
 if(!ob_start("ob_gzhandler"))
 	ob_start(); 
-ob_start("ob_gzhandler");
 
 header('Content-Type: application/json; charset: utf-8'); 
 header('Content-Encoding: gzip');
