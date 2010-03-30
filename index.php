@@ -233,7 +233,7 @@ if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip')) ob_start("ob_gzhandl
 				<li><span class="timertitle">IN Channel:</span></li>
 				<li><select id="epg_chan"><option value="all">All channels</option></select></li>
 				<li><span class="timertitle">ON Day:</span></li>
-				<li><select id="epg_day"><option value="today">Today</option></select>
+				<li><select id="epg_day"><option value="today">Today</option></select></li>
 				<li><span class="timertitle">AT Time:</span></li>
 				<li><select id="epg_time"></select></li>
 			</ul>
