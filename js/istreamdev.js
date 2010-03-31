@@ -48,35 +48,41 @@ jQT = new $.jQTouch({
 
 // [GENERIC STUFF]
 // Global variable
-dataString = "action=getGlobals";
-showStatus( 0,"Getting configuration data" );
-$.getJSON("bin/backend.php",
-			dataString,
-			function(data){	
-			streamdev_server = data.streamdev_server;
-			rec_path = data.rec_path;
-			video_path = data.video_path;
-			audio_path = data.audio_path;
-			epg_maxdays = data.epg_maxdays;
-			if (streamdev_server != "" && streamdev_server != "null") {
-			addVdr();
-			gen_formchanlist();
-			}
-			if ( video_path != "" && video_path != "null") {
-			addVideofiles();
-			}
-			if ( audio_path != "" && audio_path != "null" ) {
-			addAudiofiles();
-			}
+$(document).ready(function(e){ 
+	dataString = "action=getGlobals";
+	showStatus( 0,"Getting configuration data" );
+	$.getJSON("bin/backend.php",
+				dataString,
+				function(data){	
+				streamdev_server = data.streamdev_server;
+				rec_path = data.rec_path;
+				video_path = data.video_path;
+				audio_path = data.audio_path;
+				epg_maxdays = data.epg_maxdays;
+				if (streamdev_server != "" && streamdev_server != "null") {
+				addVdr();
+				showStatus( 0,"Getting channels list" );
+				gen_formchanlist();
+				gen_epgdatelist();
+				genepg_timelist();
+				}
+				if ( video_path != "" && video_path != "null") {
+				addVideofiles();
+				}
+				if ( audio_path != "" && audio_path != "null" ) {
+				addAudiofiles();
+				}
+				getRunningSessions();
+	});
 });
-
-function showStatus( timeout, message ) { 
+function showStatus( timeout, message ) {
+	status_box = $('#status_box');
     if( timeout == 0 ) { 
-		$('#status_box').html(message);
-		$('#status_box').show();
+		status_box.html(message);
+		status_box.show();
         setTimeout( function() { showStatus( 1, message ); }, 3000 ); 
     } else if( timeout == 1 ) { 
-	$('#status_box').hide();
+	status_box.hide();
     } 
 }
 
@@ -90,18 +96,20 @@ function addVdr() {
 }
 function addVideofiles() {
 	videomenu = '<li class="arrow"><a id="video_but" href="#"><img class="menuicon" src="img/video.png" /><span class="menuname">Video</span></a></li>';
-	if ( $('#home #filemenu').length == 0 ) {
+	home_filemenu = $('#home #filemenu');
+	if ( home_filemenu.length == 0 ) {
 		$('#home').append('<ul class="rounded" id="filemenu"><li><span class="menutitle">FILES</span></li></ul>');
 	}
-	$('#home #filemenu').append(videomenu);
+	home_filemenu.append(videomenu);
 }
 
 function addAudiofiles() {
 	audiomenu = '<li class="arrow"><a id="audio_but" href="#"><img class="menuicon" src="img/audio.png" /><span class="menuname">Audio</span></a></li>';
-	if ( $('#home #filemenu').length == 0 ) {
+	home_filemenu = $('#home #filemenu');
+	if ( home_filemenu.length == 0 ) {
 		$('#home').append('<ul class="rounded" id="filemenu"><li><span class="menutitle">FILES</span></li></ul>');
 	}
-	$('#home #filemenu').append(audiomenu);
+	home_filemenu.append(audiomenu);
 }
 
 //Goto home
@@ -146,13 +154,13 @@ $(document).ready(function(e){
 $('div').bind('pageAnimationEnd', function(event, info){ 
 	if (info.direction == 'in') {
 		$('#loader').removeClass("loader");
-		$('li[rel="toggle"]').show();
+		$(this).find('li[rel="toggle"]').show();
 		}
 		
 	})
 $('div').bind('pageAnimationStart', function(event, info){ 
 	if (info.direction == 'in') {
-		$('li[rel="toggle"]').hide();
+		$(this).find('li[rel="toggle"]').hide();
 		}
 	})
 });
@@ -163,35 +171,29 @@ $('a[class="back"]').tap(function(event) {
 });
 
 
-// show active sessions
-$(document).ready(function(e){ 
-getRunningSessions();
-//preloadLogos();
-});
-
 //reinit RunningSessions when going to Home:
 $(document).ready(function(e){ 
 $('#home').bind('pageAnimationStart', function(event, info){ 
 	if (info.direction == 'in') {
-	getRunningSessions()
+	getRunningSessions();
 		}  
 	})
 });
 
 //trick to prevent animation bug with object.
 $(document).ready(function(e){ 
-$('#streaming').bind('pageAnimationEnd', function(event, info){ 
+$('#streaming').bind('pageAnimationEnd', function(event, info){
 	if (info.direction == 'in') {
-		var session = $("#streaming").find('span[rel="session"]').text();
-		var name = $("#streaming").find('span[rel="name"]').text();
+		var session = $('#streaming span[rel="session"]').text();
+		var name = $('#streaming span[rel="name"]').text();
 		playvideo(session,name);
 		} 
 })
 $('#streaming').bind('pageAnimationStart', function(event, info){ 
-	var session = $("#streaming").find('span[rel="session"]').text();
+	var session = $('#streaming span[rel="session"]').text();
 	if (info.direction == 'out') {
 		var time = new Date();
-		$('#player').html('<img class="thumbnail" id="thumbnail" src="ram/session' + session + '/thumb.png" onerror="this.src=\'img/nologoMEDIA.png\'"></img>');
+		$('#streaming #player').html('<img class="thumbnail" id="thumbnail" src="ram/session' + session + '/thumb.png" onerror="this.src=\'img/nologoMEDIA.png\'"></img>');
 		}  
 	})
 });
@@ -211,14 +213,14 @@ function preloadLogos() {
 
 //	[HOME SECTION]
 //buttons
-$('#categories_but').tap(function(event) {
+$('#home #categories_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	gen_categories();	
 	return false;
 });
 
-$('#recording_but').tap(function(event) {
+$('#home #recording_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	browser = 1;
@@ -226,21 +228,21 @@ $('#recording_but').tap(function(event) {
 	return false;
 });
 
-$('#timers_but').tap(function(event) {
+$('#home #timers_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	gen_timers();
 	return false;
 });
 
-$('#epg_but').tap(function(event) {
+$('#home #epg_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-	gen_epgmenu();
+	json_complete('#epg','cube');
 	return false;
 });
 
-$('#video_but').tap(function(event) {
+$('#home #video_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	browser = 1;
@@ -248,7 +250,7 @@ $('#video_but').tap(function(event) {
 	return false;
 });
 
-$('#audio_but').tap(function(event) {
+$('#home #audio_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	browser = 1;
@@ -256,7 +258,7 @@ $('#audio_but').tap(function(event) {
 	return false;
 });
 
-$('#runningsessions li a').tap(function(event) {
+$('#home #runningsessions li a').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
 	var session = $(this).attr('rel');
@@ -286,12 +288,13 @@ $('#runningsessions li a').tap(function(event) {
 function getRunningSessions() {
 showStatus( 0,"Getting active sessions" );
 var dataString = "action=getRunningSessions";
-	$('#home #runningsessions').html('<li><span class="menutitle">SESSIONS</span></li>\n<li>Checking running session</li>');
+	home_runningsessions = $('#home #runningsessions');
+	home_runningsessions.html('<li><span class="menutitle">SESSIONS</span></li>\n<li>Checking running session</li>');
 	//Json call to get category array
 	$.getJSON("bin/backend.php",
 	dataString,
 	function(data){
-		$('#home #runningsessions').html('<li><span class="menutitle">SESSIONS</span></li>');
+		home_runningsessions.html('<li><span class="menutitle">SESSIONS</span></li>');
 		if ( data.broadcast.length >= 1 ) {
 			$.each(data.broadcast, function(i,broadcast){
 			session = broadcast.session;
@@ -303,12 +306,12 @@ var dataString = "action=getRunningSessions";
 			if (type == 'tv') { var pic='tv.png'; }
 			else if (type == 'rec') { var pic='record.png'; }
 			else if (type == 'vid') { var pic='video.png'; }
-			$('#home #runningsessions').append('<li class="arrow"><a rel="' + session + '" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">' + encstatus + name + '</span></a></li>');
+			home_runningsessions.append('<li class="arrow"><a rel="' + session + '" href="#"><img class="menuicon" src="img/' + pic + '" /><span class="menuname">' + encstatus + name + '</span></a></li>');
 			});
-			$('#home #runningsessions').append('<li><a rel="killsessions" href="#"><span class="menuname">Stop all sessions</span></a></li>');
+			home_runningsessions.append('<li><a rel="killsessions" href="#"><span class="menuname">Stop all sessions</span></a></li>');
 		}
 		else {
-		$('#home #runningsessions').append('<li><span class="menuname">No running session</span></li>');
+		home_runningsessions.append('<li><span class="menuname">No running session</span></li>');
 		}
 	});
 }
@@ -333,14 +336,10 @@ $('#channels ul#chan_menu .chan_but').tap(function(event) {
 	return false;
 });
 
-$('#channels ul#chan_menu .toggleLink').tap(function(event) {
-	event.preventDefault();
-	$('#channels ul#chan_menu li[rel="toggle"]').show();
-	$('#channels ul#chan_menu li[rel="showbut"]').remove();
-});
 //Gen Categories
 function gen_categories() {
-	$("#cat_menu").html('');
+	cat_menu = $("#categories #cat_menu");
+	cat_menu.html('');
 	var dataString = "action=getTvCat";
 		//Json call to get category array
 		$.getJSON("bin/backend.php",
@@ -353,16 +352,17 @@ function gen_categories() {
 		else {
 			togglestatus = "";
 			}
-			$("#cat_menu").append('<li class="arrow" rel="' + togglestatus + '"><a class="cat_but" href="#">' + categories.name  + '</a><small class="counter">' + categories.channels + '</small></li>');
+			cat_menu.append('<li class="arrow" rel="' + togglestatus + '"><a class="cat_but" href="#">' + categories.name  + '</a><small class="counter">' + categories.channels + '</small></li>');
 			});
-		$('li[rel="toggle"]').hide();
+		cat_menu.find('li[rel="toggle"]').hide();
 		json_complete('#categories','cube');
 		})
 }
 
 //Gen Channels
 function gen_channels(category) {
-		$("#chan_menu").html('');
+		chan_menu = $("#channels #chan_menu");
+		chan_menu.html('');
 		var dataString = "action=getTvChan&cat=" + encodeURIComponent(category);
 		//Json call to get category array
 		$.getJSON("bin/backend.php",
@@ -371,13 +371,13 @@ function gen_channels(category) {
 			$.each(data.channel,function(i,channel){
 				//trick to lower cpu while animating. When the page have too much elements, it flickers.
 				if ( i <= 10 ) {
-					$("#chan_menu").append('<li class="channellist"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png" onerror="this.src=\'img/nologoTV-mini.jpg\'" /><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
+					chan_menu.append('<li class="channellist"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png" onerror="this.src=\'img/nologoTV-mini.jpg\'" /><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
 					}
 				else {
-					$("#chan_menu").append('<li class="channellist" rel="toggle"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png" onerror="this.src=\'img/nologoTV-mini.jpg\'" /><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
+					chan_menu.append('<li class="channellist" rel="toggle"><a class="chan_but" href="#"><img src="logos/' + channel.name + '.png" onerror="this.src=\'img/nologoTV-mini.jpg\'" /><small class="counter">' + channel.number + '</small><span class="name">' + channel.name + '</span><span class="comment">' + channel.now_title + '</span></a></li>');
 					}
 				});
-				$('li[rel="toggle"]').hide();
+				chan_menu.find('li[rel="toggle"]').hide();
 				json_complete('#channels','cube');
 		})
 }
@@ -387,23 +387,25 @@ function gen_channels(category) {
 //	[STREAM SECTION]
 //buttons
 $('#streamchannel span.streamButton a').tap(function(event) {
+	stream_channel = $("#streamchannel");
 	event.preventDefault();
 	json_start(this);
-	var type = $("#streamchannel").find('span[rel="type"]').text();
-    var url = $("#streamchannel").find('span[rel="url"]').text();
+	var type = stream_channel.find('span[rel="type"]').text();
+    var url = stream_channel.find('span[rel="url"]').text();
     var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
 });
 $('#streamchannel span.recButton a').tap(function(event) {
+	stream_channel = $("#streamchannel");
 	event.preventDefault();
 	json_start(this);
 	var id = "new";
 	var active= 1;
-	var name = $("#streamchannel").find('span[class="name_now"]').text();
+	var name = stream_channel.find('span[class="name_now"]').text();
 	name = name.substr(4,name.length);
-	var channumber = $("#streamchannel").find('span[rel="number"]').text();
-	var channame = $("#streamchannel").find('span[rel="channame"]').text();
+	var channumber = stream_channel.find('span[rel="number"]').text();
+	var channame = stream_channel.find('span[rel="channame"]').text();
 	date = new Date();
 	var rec_year = date.getFullYear();
 	var rec_month = date.getMonth()+1;
@@ -411,7 +413,7 @@ $('#streamchannel span.recButton a').tap(function(event) {
 	var rec_day = date.getDate();
 	rec_day = str_pad(rec_day,2,'0','STR_PAD_LEFT');
 	var rec_date = rec_year + "/" + rec_month + "/" + rec_day;
-	var epgtime = $("#streamchannel").find('span[class="epgtime_now"]').text();
+	var epgtime = stream_channel.find('span[class="epgtime_now"]').text();
 	var starttime = epgtime.substr(0,2) + epgtime.substr(3,2);
 	var endtime  = epgtime.substr(6,2) + epgtime.substr(9,2);
     gen_edittimer(id,name,active,channumber,channame,rec_date,starttime,endtime);
@@ -419,19 +421,21 @@ $('#streamchannel span.recButton a').tap(function(event) {
 });
 
 $('#streamrec span.streamButton a').tap(function(event) {
+	stream_rec = $("#streamrec");
 	event.preventDefault();
 	json_start(this);
-	var type = $("#streamrec").find('span[rel="type"]').text();
-    var url = $("#streamrec").find('span[rel="url"]').text();
+	var type = stream_rec.find('span[rel="type"]').text();
+    var url = stream_rec.find('span[rel="url"]').text();
     var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
 });
 $('#streamvid span.streamButton a').tap(function(event) {
+	stream_vid = $("#streamvid");
 	event.preventDefault();
 	json_start(this);
-	var type = $("#streamvid").find('span[rel="type"]').text();
-    var url = $("#streamvid").find('span[rel="url"]').text();
+	var type = stream_vid.find('span[rel="type"]').text();
+    var url = stream_vid.find('span[rel="url"]').text();
     var mode = $(this).attr('id');
     start_broadcast(type,url,mode);
 	return false;
@@ -445,68 +449,71 @@ $('#streaming span.streamButton a[rel="stopbroadcast"]').tap(function(event) {
 });
 //Gen tv start stream
 function gen_streamchannel(channame,channumber) {
-	$('#streamchannel').find('h1').html( '<img class="menuicon" src="img/tv.png" /> ' +channame);
-	$('#streamchannel').find('#thumbnail').attr('src','logos/' + channame + ".png");
+	stream_channel = $('#streamchannel');
+	stream_channel.find('h1').html( '<img class="menuicon" src="img/tv.png" /> ' +channame);
+	stream_channel.find('#thumbnail').attr('src','logos/' + channame + ".png");
 	var dataString = "action=getChanInfo&chan=" + channumber;
 	//Json call to get tv program info
 	$.getJSON("bin/backend.php",
 			dataString,
 			function(data){
 			var program = data.program;
-			$("#streamchannel").find('span[class="name_now"]').html( 'Now: ' + program.now_title );
-			$("#streamchannel").find('span[class="epgtime_now"]').html( program.now_time );
-			$("#streamchannel").find('span[class="desc_now"]').html( program.now_desc );
-			$("#streamchannel").find('span[class="name_next"]').html( 'Next: ' + program.next_title );
-			$("#streamchannel").find('span[class="epgtime_next"]').html( program.next_time );
-			$("#streamchannel").find('span[rel="url"]').html(streamdev_server + channumber);
-            $("#streamchannel").find('span[rel="type"]').html('tv');
-			$("#streamchannel").find('span[rel="number"]').html(channumber);
-			$("#streamchannel").find('span[rel="channame"]').html(channame);
+			stream_channel.find('span[class="name_now"]').html( 'Now: ' + program.now_title );
+			stream_channel.find('span[class="epgtime_now"]').html( program.now_time );
+			stream_channel.find('span[class="desc_now"]').html( program.now_desc );
+			stream_channel.find('span[class="name_next"]').html( 'Next: ' + program.next_title );
+			stream_channel.find('span[class="epgtime_next"]').html( program.next_time );
+			stream_channel.find('span[rel="url"]').html(streamdev_server + channumber);
+            stream_channel.find('span[rel="type"]').html('tv');
+			stream_channel.find('span[rel="number"]').html(channumber);
+			stream_channel.find('span[rel="channame"]').html(channame);
 			json_complete('#streamchannel','cube');
 		});
 }
 
 function gen_streamrec(folder,path) {
 	var dataString = "action=getRecInfo&rec=" + encodeURIComponent(path);
+	stream_rec = $('#streamrec');
 	//Json call to get rec info
 	$.getJSON("bin/backend.php",
 			dataString,
 			function(data){
 			var program = data.program;
-			$('#streamrec').find('h1').html('<img class="menuicon" src="img/record.png" /> ' + program.name);
-			$('#streamrec').find('#thumbnail').attr('src','logos/' + program.channel + ".png");
-			$("#streamrec").find('span[class="name_now"]').html( program.name );
-			$("#streamrec").find('span[class="epgtime_now"]').html( 'Recorded: ' + program.recorded );
-			$("#streamrec").find('span[class="desc_now"]').html( program.desc );
-			$("#streamrec").find('span[rel="url"]').html(path);
-            $("#streamrec").find('span[rel="type"]').html('rec');
+			stream_rec.find('h1').html('<img class="menuicon" src="img/record.png" /> ' + program.name);
+			stream_rec.find('#thumbnail').attr('src','logos/' + program.channel + ".png");
+			stream_rec.find('span[class="name_now"]').html( program.name );
+			stream_rec.find('span[class="epgtime_now"]').html( 'Recorded: ' + program.recorded );
+			stream_rec.find('span[class="desc_now"]').html( program.desc );
+			stream_rec.find('span[rel="url"]').html(path);
+            stream_rec.find('span[rel="type"]').html('rec');
 			json_complete('#streamrec','cube');
 		});
 }
 
 function gen_streamvid(filename,path) {
 	var dataString = "action=getVidInfo&file=" + encodeURIComponent(path);
+	stream_vid = $('#streamvid');
 	//Json call to get rec info
 	$.getJSON("bin/backend.php",
 			dataString,
 			function(data){
 			var program = data.program;
 			var time = new Date();
-
-			$('#streamvid').find('h1').html('<img class="menuicon" src="img/video.png" /> ' + program.name);
-			$('#streamvid').find('#thumbnail').attr('src','ram/temp-logo.png?'+time);
-			$("#streamvid").find('span[class="name_now"]').html( program.name );
-			$("#streamvid").find('span[class="epgtime_now"]').html( 'Duration: ' + program.duration );
+			stream_vid.find('h1').html('<img class="menuicon" src="img/video.png" /> ' + program.name);
+			stream_vid.find('#thumbnail').attr('src','ram/temp-logo.png?'+time);
+			stream_vid.find('span[class="name_now"]').html( program.name );
+			stream_vid.find('span[class="epgtime_now"]').html( 'Duration: ' + program.duration );
 			desc='<b>format: </b>' + program.format + '<br><b>video: </b>' + program.video + '<br><b>audio: </b>' + program.audio + '<br><b>resolution: </b>' + program.resolution;
-			$("#streamvid").find('span[class="desc_now"]').html( desc );
-			$("#streamvid").find('span[rel="url"]').html( path );
-            $("#streamvid").find('span[rel="type"]').html('vid');
+			stream_vid.find('span[class="desc_now"]').html( desc );
+			stream_vid.find('span[rel="url"]').html( path );
+            stream_vid.find('span[rel="type"]').html('vid');
 			json_complete('#streamvid','cube');
 			});
 }
 //Gen streaming page
 function gen_streaming(session) {
-	$("#streaming").find('span[rel="session"]').html(session);
+	streaming = $('#streaming');
+	streaming.find('span[rel="session"]').html(session);
 	var dataString = "action=getStreamInfo&session=" + session;
 	//Json call to start streaming 
 	$.getJSON("bin/backend.php",
@@ -514,41 +521,41 @@ function gen_streaming(session) {
 			function(data){	
 			var stream = data.stream;
 			var time = new Date();
-			$('#streaming').find('#thumbnail').attr('src','ram/session' + stream.session + '/thumb.png?'+time);
-			$("#streaming").find('span[rel="thumbwidth"]').html(stream.thumbwidth);
-			$("#streaming").find('span[rel="thumbheight"]').html(stream.thumbheight);
+			streaming.find('#thumbnail').attr('src','ram/session' + stream.session + '/thumb.png?'+time);
+			streaming.find('span[rel="thumbwidth"]').html(stream.thumbwidth);
+			streaming.find('span[rel="thumbheight"]').html(stream.thumbheight);
 			if (stream.type == "tv") 
 				{
-				$('#streaming').find('h1').html('<img class="menuicon" src="img/tv.png" onerror="this.src=\'img/nologoTV.png\'" /> ' + stream.name );
-				$('#streaming').find('#player').css('width', '90px');
+				streaming.find('h1').html('<img class="menuicon" src="img/tv.png" onerror="this.src=\'img/nologoTV.png\'" /> ' + stream.name );
+				streaming.find('#player').css('width', '90px');
 				var streaminfo = '<li><span class="name_now">Now: ' + stream.now_title + '</span>';
 				streaminfo += '<span class="epgtime_now">' + stream.now_time + '</span>';
 				streaminfo += '<span class="desc_now">' + stream.now_desc + '</span></li>';
 				streaminfo += '<li><span class="name_next">Next: ' + stream.next_title + '</span>';
 				streaminfo += '<span class="epgtime_next">' + stream.next_time + '</span></li>';
-				$("#streaming").find('ul[class="streaminfo"]').html(streaminfo);
+				streaming.find('ul[class="streaminfo"]').html(streaminfo);
 				}
 			else if (stream.type == "rec") 
 				{
-				$('#streaming').find('h1').html('<img class="menuicon" src="img/record.png" onerror="this.src=\'img/nologoREC.png\'" /> ' + stream.name );
-				$('#streaming').find('#player').css('width', '90px');
+				streaming.find('h1').html('<img class="menuicon" src="img/record.png" onerror="this.src=\'img/nologoREC.png\'" /> ' + stream.name );
+				streaming.find('#player').css('width', '90px');
 				var streaminfo = '<li><span class="name_now">' + stream.name + '</span>';
 				streaminfo += '<span class="epgtime_now">Recorded: ' + stream.recorded + '</span>';
 				streaminfo += '<span class="desc_now">' + stream.desc + '</span></li>';
-				$("#streaming").find('ul[class="streaminfo"]').html(streaminfo);
+				streaming.find('ul[class="streaminfo"]').html(streaminfo);
 				}
 			else if (stream.type == "vid") 
 				{
-				$('#streaming').find('h1').html('<img class="menuicon" src="img/video.png" onerror="this.src=\'img/nologoMEDIA.png\'" /> ' + stream.name );
-				$('#streaming').find('#player').css('width', '190px');
+				streaming.find('h1').html('<img class="menuicon" src="img/video.png" onerror="this.src=\'img/nologoMEDIA.png\'" /> ' + stream.name );
+				streaming.find('#player').css('width', '190px');
 				var streaminfo = '<li><span class="name_now">' + stream.name + '</span>';
 				streaminfo += '<span class="epgtime_now">Duration: ' + stream.duration + '</span>';
 				desc='<b>format: </b>' + stream.format + '<br><b>video: </b>' + stream.video + '<br><b>audio: </b>' + stream.audio + '<br><b>resolution: </b>' + stream.resolution;
 				streaminfo += '<span class="desc_now">' + desc + '</span></li>';
-				$("#streaming").find('ul[class="streaminfo"]').html(streaminfo);
+				streaming.find('ul[class="streaminfo"]').html(streaminfo);
 				}
-			$('ul[class="streamstatus"]').find('span[class="mode"]').html('Please wait.'); 
-			$("#streaming").find('span[rel="name"]').html(stream.name);
+			streaming.find('ul[class="streamstatus"]').find('span[class="mode"]').html('Please wait.'); 
+			streaming.find('span[rel="name"]').html(stream.name);
 			json_complete('#streaming','cube');
 		});
 }
@@ -583,15 +590,16 @@ function stop_broadcast(session) {
 function playvideo(session,name) {
 	var prevmsg="";
 	var status_OnComplete = function(data) {
+		streaming = $('#streaming');
 		var status = data.status;
 		var message = data.message;
 		var url = data.url;
 		var time = new Date();
-		var thumbwidth = $('#streaming span[rel="thumbwidth"]').text();
-		var thumbheight = $('#streaming span[rel="thumbheight"]').text();
-		$('#streaming ul[class="streamstatus"]').find('span[class="mode"]').html(message);
+		var thumbwidth = streaming.find('span[rel="thumbwidth"]').text();
+		var thumbheight = streaming.find('span[rel="thumbheight"]').text();
+		streaming.find('ul[class="streamstatus"]').find('span[class="mode"]').html(message);
 		if ( status == "ready" || status == "error" ) {
-			$('#player').html('<video id="videofeed" width="' + thumbwidth + '" height="' + thumbheight + '" poster="ram/session' + session + '/thumb.png?' + time + '" src="' + url + '" ></video><span rel="ready"></span>');
+			streaming.find('#player').html('<video id="videofeed" width="' + thumbwidth + '" height="' + thumbheight + '" poster="ram/session' + session + '/thumb.png?' + time + '" src="' + url + '" ></video><span rel="ready"></span>');
 			return false;
 			}
 		prevmsg = message;
@@ -925,6 +933,7 @@ function gen_formchanlist() {
 			});
 		$('#timer_chan').append('</optgroup>');
 		});
+		gen_epgchanlist();
 	});
 }
 
@@ -1053,23 +1062,18 @@ $('#epgdetails  span.streamButton a').tap(function(event) {
 });
 
 //functions
-function gen_epgmenu() {
-	gen_epgchanlist();
-	gen_epgdatelist();
-	genepg_timelist()
-	json_complete('#epg','cube');
-}
 
 function gen_epgchanlist() {
-	$('#epg #epg_chan').html('<option value="all">All channels</option>');
+	epg_chan = $('#epg #epg_chan');
+	epg_chan.html('<option value="all">All channels</option>');
 	datachanlist = $('#jqt').data('channellist');
 	$.each(datachanlist.category, function(i,category){
-		$('#epg #epg_chan').append('<optgroup label="' + category.name + '">');
+		epg_chan.append('<optgroup label="' + category.name + '">');
 			var catname = category.name;
 			$.each(category.channel, function(j, channel){
-				$('#epg #epg_chan optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
+				epg_chan.find('optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
 			});
-		$('#epg_chan').append('</optgroup>');
+		epg_chan.append('</optgroup>');
 		});
 }
 
@@ -1078,24 +1082,26 @@ var date = new Date();
 var date_year = date.getFullYear();
 var date_month = date.getMonth()+1;
 var date_day = date.getDate();
-$('#epg #epg_day').html('<option value="0">Today</option>');
+epg_day = $('#epg #epg_day');
+epg_day.html('<option value="0">Today</option>');
 var dayname = new Array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
 	for ( i=1;i<epg_maxdays;i++ ) {
 		date_milli=date.getTime();
 		date.setTime(date_milli+86400000);
-		$('#epg #epg_day').append('<option value="' + i +  '">' + dayname[date.getDay()] + ' ' + date.getDate() + '/' + (date.getMonth()+1) + '</option>');
+		epg_day.append('<option value="' + i +  '">' + dayname[date.getDay()] + ' ' + date.getDate() + '/' + (date.getMonth()+1) + '</option>');
 		}
 }
 
 function genepg_timelist() {
 starth = 0;
 startm = 0;
-$('#epg #epg_time').append('<option value="">All</option>');
+epg_time = $('#epg #epg_time');
+epg_time.append('<option value="">All</option>');
 	for ( i=0;i<24;i++ ) {
 	curh = str_pad(starth+i,2,'0','STR_PAD_LEFT');
 		for ( j=0;j<4;j++) {
 		curm = str_pad(startm+(j*15),2,'0','STR_PAD_LEFT');
-		$('#epg #epg_time').append('<option value="' + curh + curm +'">' + curh + 'h' + curm + '</option>');
+		epg_time.append('<option value="' + curh + curm +'">' + curh + 'h' + curm + '</option>');
 		}
 	
 	}
@@ -1118,9 +1124,12 @@ var dataString = 'action=getEpg&channel=' + channel + '&time=' + time + '&day=' 
 }
 
 function parse_epg(data,selectedvalue,type,day){
-	$('#epglist #epg_selector').html('');
-	$('#epglist #ul_epglist').html('');
-	$('#epglist div[rel="dataholder"] span[rel="day"]').html(day);
+	epg_list = $('#epglist');
+	epg_selector = epg_list.find('#epg_selector');
+	epg_selector.html('');
+	ul_epglist = epg_list.find('#ul_epglist');
+	ul_epglist.html('');
+	epg_list.find('div[rel="dataholder"] span[rel="day"]').html(day);
 	date = new Date();
 	var date_milli=date.getTime();
 	date.setTime(date_milli+(86400000*day));
@@ -1128,27 +1137,29 @@ function parse_epg(data,selectedvalue,type,day){
 	var date_month = str_pad(date.getMonth()+1,2,'0','STR_PAD_LEFT');
 	var date_day = str_pad(date.getDate(),2,'0','STR_PAD_LEFT');
 	var epgdate = date_year + "-" + date_month + "-" + date_day;
-	$('#epglist h1').html(epgdate);
+	epg_list.find('h1').html(epgdate);
 	if ( data.category.length > 1 )
 	{
-		$('#epglist #epg_selector').append('<select id="epglist_cat"></select>');
+		epg_selector.append('<select id="epglist_cat"></select>');
+		epglist_cat = epg_selector.find('#epglist_cat');
 		$.each(data.category, function(i,category){
-			$('#epglist #epg_selector #epglist_cat').append('<option value="' + i + '">' + category.name + '</option>');
+			epglist_cat.append('<option value="' + i + '">' + category.name + '</option>');
 		});
-		$('#epglist #epg_selector select option[value=' + selectedvalue + ']').attr("selected", "selected");
+		epg_selector.find('select option[value=' + selectedvalue + ']').attr("selected", "selected");
 	}
 	else {
-		$('#epglist #epg_selector').append('<select id="epglist_chan"></select>');
+		epg_selector.append('<select id="epglist_chan"></select>');
 		datalistchan = $('#jqt').data('channellist');
+		epglist_chan = epg_selector.find('#epglist_chan');
 		$.each(datalistchan.category, function(i,category){
-		$('#epglist #epg_selector #epglist_chan').append('<optgroup label="' + category.name + '">');
-		var catname = category.name;
-		$.each(category.channel, function(j, channel){
-			$('#epglist #epg_selector #epglist_chan optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
+			epglist_chan.append('<optgroup label="' + category.name + '">');
+			var catname = category.name;
+			$.each(category.channel, function(j, channel){
+				epglist_chan.find('optgroup[label="' + catname +'"]').append('<option value="' + channel.number + '">' + channel.name +'</option>');
+			});
+			epglist_chan.append('</optgroup>');
 		});
-	$('#epg_chan').append('</optgroup>');
-	});
-	$('#epglist #epg_selector select option[value=' + selectedvalue + ']').attr("selected", "selected");
+		epg_selector.find('select option[value=' + selectedvalue + ']').attr("selected", "selected");
 	}
 	var k=1;
 	if ( type == "cat" ) {
@@ -1165,7 +1176,7 @@ function parse_epg(data,selectedvalue,type,day){
 				togglestatus = '';
 			}
 	k++;
-	$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '" class="sep"><a href="#" rel="epgchan"><span class="epgtime_now">' + channel.number + '</span>' + ' - ' + channel.name  + '</a></li>');
+	ul_epglist.append('<li rel="' + togglestatus + '" class="sep"><a href="#" rel="epgchan"><span class="epgtime_now">' + channel.number + '</span>' + ' - ' + channel.name  + '</a></li>');
 		$.each(channel.epg, function(j,epg){
 			if ( k > 10 ) {
 				togglestatus = 'toggle';
@@ -1174,15 +1185,15 @@ function parse_epg(data,selectedvalue,type,day){
 			{
 				togglestatus = '';
 			}
-		$('#epglist #ul_epglist').append('<li rel="' + togglestatus + '"><a href="#" class="epgdetailsbutton" rel="' + channel.number + '"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
+		ul_epglist.append('<li rel="' + togglestatus + '"><a href="#" class="epgdetailsbutton" rel="' + channel.number + '"><span class="epgtime">' + epg.time + '</span><span class="epgname">' + epg.title + '</span></a></li>');
 		
 		k++;
 		});
 	});
-	$("#epglist #epg_selector select").change(function () {
+	epg_selector.find('select').change(function () {
 	epgdata = $('#jqt').data("epg");
-	selectedvalue = $("#epglist #epg_selector select option:selected").val();
-	if ($("#epglist #epg_selector select").attr("id") == 'epglist_cat') {
+	selectedvalue = epg_selector.find('select option:selected').val();
+	if (epg_selector.find('select').attr("id") == 'epglist_cat') {
 		parse_epg(epgdata,selectedvalue,'cat',day);
 	} else {
 		time = $('#epgform #epg_time').val();
@@ -1204,7 +1215,7 @@ function parse_epg(data,selectedvalue,type,day){
 		json_complete('#epglist','cube');
 		}
 		else {
-		$('li[rel="toggle"]').show();
+		epg_list.find('li[rel="toggle"]').show();
 		hide_loader();
 		}
 }
@@ -1222,21 +1233,22 @@ function get_epgdetails(channum,startingtime,day) {
 	stime = startingtime;
 	running = data.program.running;
 	etime =  time.substring(6,8) + epgtime.substring(9);
-	$('#epgdetails h1').html('<img class="menuicon" src="img/tv.png" />' + name);
-	$('#epgdetails ul[class="thumb"] img[class="thumbnail"]').attr('src','logos/'+name+'.png');
-	$('#epgdetails ul[class="streaminfo"] li span[class="name_now"]').html(title);
-	$('#epgdetails ul[class="streaminfo"] li span[class="epgtime_now"]').html(date + ' ' + time);
-	$('#epgdetails ul[class="streaminfo"] li span[class="desc_now"]').html(desc);
-	$('#epgdetails div[rel="dataholder"] span[rel="number"]').html(channum);
-	$('#epgdetails div[rel="dataholder"] span[rel="channame"]').html(name);
-	$('#epgdetails div[rel="dataholder"] span[rel="date"]').html(date);
-	$('#epgdetails div[rel="dataholder"] span[rel="stime"]').html(stime);
-	$('#epgdetails div[rel="dataholder"] span[rel="etime"]').html(etime);
-	$('#epgdetails div[rel="dataholder"] span[rel="url"]').html(streamdev_server + channum);
+	epg_details = $('#epgdetails');
+	epg_details.find('h1').html('<img class="menuicon" src="img/tv.png" />' + name);
+	epg_details.find('ul[class="thumb"] img[class="thumbnail"]').attr('src','logos/'+name+'.png');
+	epg_details.find('ul[class="streaminfo"] li span[class="name_now"]').html(title);
+	epg_details.find('ul[class="streaminfo"] li span[class="epgtime_now"]').html(date + ' ' + time);
+	epg_details.find('ul[class="streaminfo"] li span[class="desc_now"]').html(desc);
+	epg_details.find('div[rel="dataholder"] span[rel="number"]').html(channum);
+	epg_details.find('div[rel="dataholder"] span[rel="channame"]').html(name);
+	epg_details.find('div[rel="dataholder"] span[rel="date"]').html(date);
+	epg_details.find('div[rel="dataholder"] span[rel="stime"]').html(stime);
+	epg_details.find('div[rel="dataholder"] span[rel="etime"]').html(etime);
+	epg_details.find('div[rel="dataholder"] span[rel="url"]').html(streamdev_server + channum);
 	if ( running == "yes" ) {
-		$('#epgdetails #epgdetails_buttons').html('<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="cube"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="cube">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');		
+		epg_details.find('#epgdetails_buttons').html('<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="cube"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="cube">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');		
 	} else {
-		$('#epgdetails #epgdetails_buttons').html('<span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');
+		epg_details.find('#epgdetails_buttons').html('<span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');
 	}
 	json_complete('#epgdetails','cube');
 	});
