@@ -96,20 +96,18 @@ function addVdr() {
 }
 function addVideofiles() {
 	videomenu = '<li class="arrow"><a id="video_but" href="#"><img class="menuicon" src="img/video.png" /><span class="menuname">Video</span></a></li>';
-	home_filemenu = $('#home #filemenu');
-	if ( home_filemenu.length == 0 ) {
+	if ( $('#home #filemenu').length == 0 ) {
 		$('#home').append('<ul class="rounded" id="filemenu"><li><span class="menutitle">FILES</span></li></ul>');
 	}
-	home_filemenu.append(videomenu);
+	$('#home #filemenu').append(videomenu);
 }
 
 function addAudiofiles() {
 	audiomenu = '<li class="arrow"><a id="audio_but" href="#"><img class="menuicon" src="img/audio.png" /><span class="menuname">Audio</span></a></li>';
-	home_filemenu = $('#home #filemenu');
-	if ( home_filemenu.length == 0 ) {
+	if ( $('#home #filemenu').length == 0 ) {
 		$('#home').append('<ul class="rounded" id="filemenu"><li><span class="menutitle">FILES</span></li></ul>');
 	}
-	home_filemenu.append(audiomenu);
+	$('#home #filemenu').append(audiomenu);
 }
 
 //Goto home
