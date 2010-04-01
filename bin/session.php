@@ -82,13 +82,13 @@ function sessioncreate($type, $url, $mode)
 	switch ($type)
 	{
 		case 'tv':
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
+			$cmd = "./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" >/dev/null &";
 			break;
 		case 'rec':
-			$cmd = "export SHELL=\"/bin/sh\";printf \"cat \\\"" .$url ."\\\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
+			$cmd = "cat \"" .$url ."\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" >/dev/null &";
 			break;
 		case 'vid':
-			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
+			$cmd = "./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" >/dev/null &";
                         break;
 		default:
 			$cmd = "";
@@ -194,10 +194,15 @@ function sessiondeletesingle($session)
 	addlog("Deleting session " .$session);
 
 	$ram = "../ram/" .$session ."/";
+	$cmd = "";
 
-	// Get segmenter PID if any
+	// First kill ffmpeg
+	if (file_exists($ram ."ffmpeg.pid"))
+		$cmd .= " kill `cat " .$ram ."ffmpeg.pid`; rm " .$ram ."ffmpeg.pid; ";
+
+	// Then kill segmenter
 	if (file_exists($ram ."segmenter.pid"))
-		$cmd = "/usr/local/bin/fw;kill `cat " .$ram ."segmenter.pid`; rm " .$ram ."segmenter.pid; ";
+		$cmd .= " kill `cat " .$ram ."segmenter.pid`; rm " .$ram ."segmenter.pid; ";
 
 	addlog("Sending session kill command: " .$cmd);
 
