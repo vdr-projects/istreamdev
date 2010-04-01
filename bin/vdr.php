@@ -33,7 +33,7 @@ function vdrgetcategories()
 	}
 
 	$fp = fopen ($vdrchannels,"r");
-	if (!fp)
+	if (!$fp)
 	{
 		addlog("Error: can't open vdr channels file " .$vdrchannels);
 		print "Unable to open channels file";
@@ -104,7 +104,7 @@ function vdrgetchannels($category, $now)
         }
 
         $fp = fopen ($vdrchannels,"r");
-        if (!fp)
+        if (!$fp)
         {
 		addlog("Error: can't open vdr channels file " .$vdrchannels);
                 print "Unable to open channels file";
