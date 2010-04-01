@@ -82,13 +82,13 @@ function sessioncreate($type, $url, $mode)
 	switch ($type)
 	{
 		case 'tv':
-			$cmd = "./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" >/dev/null &";
+			$cmd = "./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" \"\" >/dev/null &";
 			break;
 		case 'rec':
-			$cmd = "cat \"" .$url ."\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" >/dev/null &";
+			$cmd = "./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" \"cat \\\"" .$url ."/\\\"/0* |\" >/dev/null &";
 			break;
 		case 'vid':
-			$cmd = "./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" >/dev/null &";
+			$cmd = "./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" \"\" >/dev/null &";
                         break;
 		default:
 			$cmd = "";
@@ -259,13 +259,20 @@ function getstreamingstatus($session)
 
 				$status['message'] .= "<br>";
 
-				$status['message'] .= "<br>  * Segmenter: ";
-				if (file_exists($path .'/segmenter.pid'))
+                               
+				$status['message'] .= "<br>  * FFmpeg: ";
+				if (file_exists($path .'/ffmpeg.pid'))
 					$status['message'] .= "<i>running</i>";
 				else
 					$status['message'] .= "<i>stopped</i>";
-				$status['message'] .= "<br>  * Segments: <i>";
-				$status['message'] .= count(glob($path . '/*.ts')) ."/2</i>";
+				$status['message'] .= "<br>  * Segmenter: ";
+				if (file_exists($path .'/segmenter.pid'))
+				{
+					$status['message'] .= "<i>running</i> (";
+					$status['message'] .= count(glob($path . '/*.ts')) ."/2)</i>";
+				}
+				else
+					$status['message'] .= "<i>stopped</i>";
 				
 			}
 		}

@@ -12,6 +12,7 @@ FFPATH=$7
 SEGMENTERPATH=$8
 SESSION=${9}
 FFMPEGLOG=${10}
+FFMPEGPREFIX=${11}
 
 if [ $# -eq 0 ]
 then
@@ -42,22 +43,28 @@ cd ../ram/$SESSION
 # Create a fifo
 2>/dev/null mkfifo ./fifo
 
-#(trap "rm -rf $TMP; /usr/local/bin/fw" EXIT HUP INT TERM ABRT; cat $TMP/$OUT) &
-
 # Start ffmpeg
-(trap "rm -f ./ffmpeg.pid; rm -f ./fifo" EXIT HUP INT TERM ABRT; $FFPATH -i "$STREAM" -deinterlace -f mpegts -acodec libmp3lame -ab $ARATE -ac 2 -s $XY -vcodec libx264 -b $VRATE -flags +loop \
+(trap "rm -f ./ffmpeg.pid; rm -f ./fifo" EXIT HUP INT TERM ABRT; \
+ $FFMPEGPREFIX $FFPATH -i "$STREAM" -deinterlace -f mpegts -acodec libmp3lame -ab $ARATE -ac 2 -s $XY -vcodec libx264 -b $VRATE -flags +loop \
  -cmp \+chroma -partitions +parti4x4+partp8x8+partb8x8 -subq 5 -trellis 1 -refs 1 -coder 0 -me_range 16  -keyint_min 25 \
  -sc_threshold 40 -i_qfactor 0.71 -bt $VRATE -maxrate $VRATE -bufsize $VRATE -rc_eq 'blurCplx^(1-qComp)' -qcomp 0.6 \
- -qmin 10 -qmax 51 -qdiff 4 -level 30  -g 30 -async 2 -threads 4 - 2>$FFMPEGLOG > ./fifo) &
+ -qmin 10 -qmax 51 -qdiff 4 -level 30  -g 30 -async 2 -threads 4 - 2>$FFMPEGLOG >./fifo) &
 
 # Store ffmpeg pid
 PID=$!
-2>/dev/null echo `\ps ax --format pid,ppid | grep "$PID$" | awk {'print $1'}` > ./ffmpeg.pid
+if [ ! -z "$PID" ]
+then
+	2>/dev/null echo `\ps ax --format pid,ppid | grep "$PID$" | awk {'print $1'}` > ./ffmpeg.pid
+fi
 
 # Now start segmenter
 (trap "rm -f ./segmenter.pid" EXIT HUP INT TERM ABRT; 2>/dev/null $SEGMENTERPATH ./fifo $SEGDUR stream stream.m3u8 $HTTP_PATH$SESSION/ $SEGWIN) &
 
 # Store segmenter pid
 PID=$!
-2>/dev/null echo `\ps ax --format pid,ppid | grep "$PID$" | awk {'print $1'}` > ./segmenter.pid
+if [ ! -z "$PID" ]
+then
+	2>/dev/null echo `\ps ax --format pid,ppid | grep "$PID$" | awk {'print $1'}` > ./segmenter.pid
+fi
+
 
