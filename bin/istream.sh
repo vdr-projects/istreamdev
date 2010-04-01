@@ -51,11 +51,13 @@ cd ../ram/$SESSION
  -qmin 10 -qmax 51 -qdiff 4 -level 30  -g 30 -async 2 -threads 4 - 2>$FFMPEGLOG > ./fifo) &
 
 # Store ffmpeg pid
-2>/dev/null echo $! > ./ffmpeg.pid
+PID=$!
+2>/dev/null echo `\ps ax --format pid,ppid | grep "$PID$" | awk {'print $1'}` > ./ffmpeg.pid
 
 # Now start segmenter
 (trap "rm -f ./segmenter.pid" EXIT HUP INT TERM ABRT; 2>/dev/null $SEGMENTERPATH ./fifo $SEGDUR stream stream.m3u8 $HTTP_PATH$SESSION/ $SEGWIN) &
 
 # Store segmenter pid
-2>/dev/null echo $! > ./segmenter.pid
+PID=$!
+2>/dev/null echo `\ps ax --format pid,ppid | grep "$PID$" | awk {'print $1'}` > ./segmenter.pid
 
