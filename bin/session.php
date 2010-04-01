@@ -82,13 +82,13 @@ function sessioncreate($type, $url, $mode)
 	switch ($type)
 	{
 		case 'tv':
-			$cmd = "./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" --task=50 >/dev/null &#038;";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 2 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
 			break;
 		case 'rec':
-			$cmd = "cat \"" .$url ."\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" >/dev/null &#038;";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"cat \\\"" .$url ."\\\"/0* | ./istream.sh - " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
 			break;
 		case 'vid':
-			$cmd = "./istream.sh \"" .$url ."\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \"" .$ffdbg ."\" >/dev/null &#038;";
+			$cmd = "export SHELL=\"/bin/sh\";printf \"./istream.sh \\\"" .$url ."\\\" " .$qparams ." " .$httppath ." 1260 " .$ffmpegpath ." " .$segmenterpath ." " .$session ." \\\"" .$ffdbg ."\\\" \" | at now";
                         break;
 		default:
 			$cmd = "";
