@@ -84,7 +84,7 @@ iStreamdev generate a playlist from the requested file to the last file of the f
 
 - ffmpeg compiled with libx264 and libmp3lame support
 
-- segmenter: use modded version included with istreamdev.
+- segmenter: http://svn.assembla.com/svn/legend/segmenter/
 
 _________________________________________________________
                       INSTALL
@@ -98,7 +98,7 @@ Download a stable release from Files or development revision from Git repository
 Copy the file in your webfolder. /istreamdev for example.
 Copy the config_default.php to config.php and edit it.
 
-Compiles segmenter provided by typing make in segmenter folder and install it:
+Compiles segmenter by typing 'make' when in the segmenter folder and install it:
 "make & cp segmenter /usr/bin/"
 
 At each update, don't forget to remove your old config file and replace it by the new default one to prevent not updated config files.
