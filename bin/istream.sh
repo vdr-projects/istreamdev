@@ -31,6 +31,12 @@ fi
 # sending it to the segmenter via a PIPE
 ##############################################################
 
+# Check that the session dir exists
+if [ ! -e ../ram/$SESSION ]
+then
+	exit;
+fi
+
 cd ../ram/$SESSION
 
 # Create a fifo

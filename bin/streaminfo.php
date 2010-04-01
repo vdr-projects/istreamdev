@@ -15,7 +15,9 @@ function writeinfostream($session, $type, $mode, $url, $channame)
 
 	$ram = "../ram/" .$session ."/";
 
-	$infofile = fopen($ram ."streaminfo", 'w');
+	$infofile = @fopen($ram ."streaminfo", 'w');
+	if (!$infofile)
+		return;
 
 	fwrite($infofile, "type=" .$type ."\n");
 	fwrite($infofile, "mode=" .$mode ."\n");
@@ -33,7 +35,7 @@ function readinfostream($session)
 	if (!file_exists($ram ."streaminfo"))
 		return array("none");
 
-	$infofile = fopen($ram ."streaminfo", 'r');	
+	$infofile = @fopen($ram ."streaminfo", 'r');	
 	if (!$infofile)
 		return array("none");
 
