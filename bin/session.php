@@ -34,7 +34,7 @@ function sessioncreate($type, $url, $mode)
 	}
 
 	// Default
-	$qparams = $quality[0];
+	$qparams = $quality['3g'];
 
 	// Get parameters
 	foreach ($quality as $qn => $qp)
