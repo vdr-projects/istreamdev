@@ -76,12 +76,6 @@ iStreamdev generate a playlist from the requested file to the last file of the f
 
 - for some php installation you need to install php5-json & php5-zlib extension.
 
-- having "at" package.
-
-- www-data user should allowed to use "at".
-
-  Check on your /etc/at/deny if www-data is there, and remove it if so.
-
 - ffmpeg compiled with libx264 and libmp3lame support
 
 - segmenter: http://svn.assembla.com/svn/legend/segmenter/
