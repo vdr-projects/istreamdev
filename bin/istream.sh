@@ -41,7 +41,7 @@ fi
 cd ../ram/$SESSION
 
 # Create a fifo
-2>/dev/null mkfifo ./fifo
+mkfifo ./fifo
 
 if [ ! -z "$FILES" ]
 then
@@ -64,12 +64,12 @@ then
 	SPID=`\ps ax --format pid,cmd,ppid | grep "$FFPID$" | grep -v cat | awk {'print $1'}`;
 	if [ ! -z "$SPID" ]
 	then
-		2>/dev/null echo $SPID > ./ffmpeg.pid
+		echo $SPID > ./ffmpeg.pid
 	fi
 fi
 
 # Now start segmenter
-(trap "rm -f ./segmenter.pid; cat ./fifo" EXIT HUP INT TERM ABRT; 2>/dev/null $SEGMENTERPATH ./fifo $SEGDUR stream stream.m3u8 $HTTP_PATH$SESSION/ $SEGWIN) &
+(trap "rm -f ./segmenter.pid; cat ./fifo" EXIT HUP INT TERM ABRT; $SEGMENTERPATH ./fifo $SEGDUR stream stream.m3u8 $HTTP_PATH$SESSION/ $SEGWIN) &
 
 # Store segmenter pid
 SEGPID=$!
@@ -78,6 +78,6 @@ then
 	SPID=`\ps ax --format pid,cmd,ppid | grep "$SEGPID$" | grep segmenter | awk {'print $1'}`;
 	if [ ! -z "$SPID" ]
 	then
-		2>/dev/null echo $SPID > ./segmenter.pid
+		echo $SPID > ./segmenter.pid
 	fi
 fi
