@@ -75,7 +75,7 @@ fi
 SEGPID=$!
 if [ ! -z "$SEGPID" ]
 then
-	SPID=`\ps ax --format pid,ppid,cmd | grep " $SEGPID " | grep segmenter | awk {'print $1'}`;
+	SPID=`\ps ax --format pid,cmd,ppid | grep "$SEGPID$" | grep segmenter | awk {'print $1'}`;
 	if [ ! -z "$SPID" ]
 	then
 		2>/dev/null echo $SPID > ./segmenter.pid
