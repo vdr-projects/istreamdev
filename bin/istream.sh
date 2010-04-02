@@ -61,7 +61,7 @@ fi
 FFPID=$!
 if [ ! -z "$FFPID" ]
 then
-	SPID=`\ps ax --format pid,ppid | grep "$FFPID$" | awk {'print $1'}`;
+	SPID=`\ps ax --format pid,cmd,ppid | grep "$FFPID$" | grep -v cat | awk {'print $1'}`;
 	if [ ! -z "$SPID" ]
 	then
 		2>/dev/null echo $SPID > ./ffmpeg.pid
