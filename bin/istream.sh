@@ -55,23 +55,29 @@ fi
  $FFMPEGPREFIX | $FFPATH -i "$STREAM" -deinterlace -f mpegts -acodec libmp3lame -ab $ARATE -ac 2 -s $XY -vcodec libx264 -b $VRATE -flags +loop \
  -cmp \+chroma -partitions +parti4x4+partp8x8+partb8x8 -subq 5 -trellis 1 -refs 1 -coder 0 -me_range 16  -keyint_min 25 \
  -sc_threshold 40 -i_qfactor 0.71 -bt $VRATE -maxrate $VRATE -bufsize $VRATE -rc_eq 'blurCplx^(1-qComp)' -qcomp 0.6 \
- -qmin 10 -qmax 51 -qdiff 4 -level 30  -g 30 -async 2 -threads 4 - 2>$FFMPEGLOG >./fifo) &
+ -qmin 10 -qmax 51 -qdiff 4 -level 30  -g 30 -async 2 -threads 4 - 2>$FFMPEGLOG 1>./fifo) &
 
 # Store ffmpeg pid
-PID=$!
-if [ ! -z "$PID" ]
+FFPID=$!
+if [ ! -z "$FFPID" ]
 then
-	2>/dev/null echo `\ps ax --format pid,ppid | grep "$PID$" | awk {'print $1'}` > ./ffmpeg.pid
+	SPID=`\ps ax --format pid,ppid | grep "$FFPID$" | awk {'print $1'}`;
+	if [ ! -z "$SPID" ]
+	then
+		2>/dev/null echo $SPID > ./ffmpeg.pid
+	fi
 fi
 
 # Now start segmenter
-(trap "rm -f ./segmenter.pid" EXIT HUP INT TERM ABRT; 2>/dev/null $SEGMENTERPATH ./fifo $SEGDUR stream stream.m3u8 $HTTP_PATH$SESSION/ $SEGWIN) &
+(trap "rm -f ./segmenter.pid; cat ./fifo" EXIT HUP INT TERM ABRT; 2>/dev/null $SEGMENTERPATH ./fifo $SEGDUR stream stream.m3u8 $HTTP_PATH$SESSION/ $SEGWIN) &
 
 # Store segmenter pid
-PID=$!
-if [ ! -z "$PID" ]
+SEGPID=$!
+if [ ! -z "$SEGPID" ]
 then
-	2>/dev/null echo `\ps ax --format pid,ppid | grep "$PID$" | awk {'print $1'}` > ./segmenter.pid
+	SPID=`\ps ax --format pid,ppid,cmd | grep "$SEGPID$" | grep segmenter | awk {'print $1'}`;
+	if [ ! -z "$SPID" ]
+	then
+		2>/dev/null echo $SPID > ./segmenter.pid
+	fi
 fi
-
-

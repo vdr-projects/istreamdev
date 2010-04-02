@@ -197,11 +197,11 @@ function sessiondeletesingle($session)
 	$cmd = "";
 
 	// First kill ffmpeg
-	if (file_exists($ram ."ffmpeg.pid"))
+	if (is_pid_running($ram ."ffmpeg.pid"))
 		$cmd .= " kill `cat " .$ram ."ffmpeg.pid`; rm " .$ram ."ffmpeg.pid; ";
 
 	// Then kill segmenter
-	if (file_exists($ram ."segmenter.pid"))
+	if (is_pid_running($ram ."segmenter.pid"))
 		$cmd .= " kill `cat " .$ram ."segmenter.pid`; rm " .$ram ."segmenter.pid; ";
 
 	addlog("Sending session kill command: " .$cmd);
@@ -236,10 +236,10 @@ function getstreamingstatus($session)
 
 		if (count(glob($path . '/*.ts')) < 2)
 		{
-			if (!file_exists($path .'/segmenter.pid'))
+			if (!is_pid_running($path .'/ffmpeg.pid') || !is_pid_running($path .'/segmenter.pid'))
 			{
 				$status['status'] = "error";
-				$status['message'] = "<b>Error: segmenter did not start correclty</b>";
+				$status['message'] = "<b>Error: streaming could not start correclty</b>";
 			}
 			else
 			{
@@ -256,25 +256,23 @@ function getstreamingstatus($session)
 						$status['message'] = "<b>Vid: requesting " .$url ."</b>";
 						break;
 				}
-
-				$status['message'] .= "<br>";
-
-                               
-				$status['message'] .= "<br>  * FFmpeg: ";
-				if (file_exists($path .'/ffmpeg.pid'))
-					$status['message'] .= "<i>running</i>";
-				else
-					$status['message'] .= "<i>stopped</i>";
-				$status['message'] .= "<br>  * Segmenter: ";
-				if (file_exists($path .'/segmenter.pid'))
-				{
-					$status['message'] .= "<i>running</i> (";
-					$status['message'] .= count(glob($path . '/*.ts')) ."/2)</i>";
-				}
-				else
-					$status['message'] .= "<i>stopped</i>";
-				
 			}
+
+			$status['message'] .= "<br>";
+
+			$status['message'] .= "<br>  * FFmpeg: ";
+			if (is_pid_running($path .'/ffmpeg.pid'))
+				$status['message'] .= "<i>running</i>";
+			else
+				$status['message'] .= "<i>stopped</i>";
+			$status['message'] .= "<br>  * Segmenter: ";
+			if (is_pid_running($path .'/segmenter.pid'))
+			{
+				$status['message'] .= "<i>running</i> (";
+				$status['message'] .= count(glob($path . '/*.ts')) ."/2)</i>";
+			}
+			else
+				$status['message'] .= "<i>stopped</i>";
 		}
 		else
 		{
@@ -284,7 +282,7 @@ function getstreamingstatus($session)
 
 			$status['message'] .= "<br>  * Quality: <i>" .$mode ."</i>";
 			$status['message'] .= "<br>  * Status: ";
-			if (file_exists($path .'/segmenter.pid'))
+			if (is_pid_running($path .'/segmenter.pid'))
 				$status['message'] .= "<i>encoding...</i>";
 			else
 				$status['message'] .= "<i>fully encoded</i>";
@@ -329,6 +327,25 @@ function sessiongetstatus($session, $prevmsg)
 		{
 			$status['status'] = "error";
 			$status['message'] = "Error: session could not start";
+
+                        
+			$status['message'] .= "<br>";
+                        
+			$status['message'] .= "<br>  * FFmpeg: ";
+
+			if (is_pid_running('../ram/' .$session .'/ffmpeg.pid'))
+				$status['message'] .= "<i>running</i>";
+			else
+				$status['message'] .= "<i>stopped</i>";
+			$status['message'] .= "<br>  * Segmenter: ";
+                        
+			if (is_pid_running('../ram/' .$session .'/segmenter.pid'))
+			{
+				$status['message'] .= "<i>running</i> (";
+				$status['message'] .= count(glob('../ram/' .$session .'/*.ts')) ."/2)</i>";
+			}
+			else
+				$status['message'] .= "<i>stopped</i>";
 
 			addlog("Returning status: " .$status['message']);
 			return $status;
@@ -382,7 +399,7 @@ function sessiongetlist()
 				$newsession['name'] = "Error: " .$newsession['name'];
 
 			// Check if encoding
-			if (file_exists('../ram/' .$session .'/segmenter.pid') && ($status['status'] != "error"))
+			if (is_pid_running('../ram/' .$session .'/segmenter.pid') && ($status['status'] != "error"))
 				$newsession['encoding'] = 1;
 			else
 				$newsession['encoding'] = 0;
