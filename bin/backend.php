@@ -8,7 +8,7 @@ if (function_exists('dl'))
 	if (!extension_loaded('zlib'))
 		dl(zlib.so);
 }
-ob_start(); 
+ob_start();
 
 header('Content-Type: application/json; charset: utf-8'); 
 header('Content-Encoding: gzip');
@@ -26,6 +26,9 @@ include ('./streaminfo.php');
 include ('./vdr.php');
 include ('./session.php');
 include ('./jsonapi.php');
+
+// Set timezone
+date_default_timezone_set(date_default_timezone_get());
 
 $action=$_REQUEST['action'];
 
