@@ -4,6 +4,7 @@ if (file_exists('config.php'))
 else
         include ('config_default.php');
 include ('bin/auth.php');
+if(!ob_start("ob_gzhandler"))
 ob_start();
 ?>
 
