@@ -24,7 +24,11 @@ text-shadow: rgba(255,255,255,.8) 0 1px 0;
 color: #444;
 padding: 15px;
 border-top: 1px solid rgba(255,255,255,.2);
-display: none;
+display: block;
+position: absolute;
+left: 0;
+top: 0;
+width: 100%;
 font: bold 12px "Helvetica Neue", Helvetica;
 }
 
