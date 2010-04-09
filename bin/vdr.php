@@ -149,7 +149,23 @@ function vdrgetchannels($category, $now)
 		else if ($line[0] != "")
 		{
 			if ($line[0] == ":")
-				break;
+			{
+				// Special case
+				$cat = substr($line, 1, -1);
+				if($cat[0] == '@')
+				{
+					$catarray = explode(' ', $cat);
+					$cat = substr($cat, strlen($catarray[0])+1);
+					$channum = substr($catarray[0], 1);
+
+					if ($cat != "")
+						break;
+					else
+						continue;
+				}
+				else
+					break;
+			}
 
 			$channame = explode(":", $line);
 			$channame = explode(";", $channame[0]);
