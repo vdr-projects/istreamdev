@@ -752,9 +752,9 @@ function addplayer(button) {
 	async: false,
 	success: function(json) {
 		var track = json.track;
-		playercode = "<embed id='musicplayer' enablejavascript='true' id='musicplayer' src='" + track[0].file + "' width='0' height='0' autoplay='false' name='player' type='audio/mp3' loop='true' controller='false'"; 
+		playercode = "<embed id='musicplayer' enablejavascript='true' id='musicplayer' src='" + escape(track[0].file) + "' width='0' height='0' autoplay='false' name='player' type='audio/mp3' loop='true' controller='false'"; 
 		for ( var i=1; i<track.length; i+=1 ) {
-			qtattr = "'<" + track[i].file + ">'";
+			qtattr = "'<" + escape(track[i].file) + ">'";
 			playercode += "qtnext" + i + "=" + qtattr;
 			}
 		playercode += "></embed>";
