@@ -93,11 +93,14 @@ function sessioncreate($type, $url, $mode)
 		default:
 			$cmd = "";
 	}
-	
+
 	addlog("Sending encoding command: " .$cmd);
 
 	$cmd = str_replace('%', '%%', $cmd);
 	exec ($cmd);
+
+	// Give the time to the scrip to create pids
+	exec ("sleep 2");
 
 	// Write streaminfo
 	writeinfostream($session, $type, $mode, $url, $channame);
