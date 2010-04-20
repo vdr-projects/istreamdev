@@ -1,11 +1,16 @@
 iStreamdev History
 ------------------
+xx.xx.xxx - dev
+
+- fixed some path & filename bug with special characters for music.
+- removed AT dependency
+
 02.04.2010 - 1.0.1
 
 - Added fix for PHP version < 5.2.0
 - added php module check and dynamic loading if possible.
 - some client speedups and optimisations
-- removed custom segmenter code, no need for a modifief version anymore
+- removed custom segmenter code, no need for a modified version anymore
 - now store segmenter and ffmeg pids to kill them
 
 03.29.2010 - 1.0.0
