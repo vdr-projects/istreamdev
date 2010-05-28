@@ -361,7 +361,7 @@ function vdrgetepgat($channum, $at)
 	
 	// Convert if needed
 	if (!is_utf8($title))
-		$title = utf8_encode(title);
+		$title = utf8_encode($title);
 	if (!is_utf8($desc))
 		$desc = utf8_encode($desc);
 
