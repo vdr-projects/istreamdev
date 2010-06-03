@@ -17,9 +17,9 @@
     (c) 2009 by jQTouch project members.
     See LICENSE.txt for license.
 
-    $Revision: 133 $
-    $Date: 2010-01-15 22:08:54 +0100 (ven. 15 janv. 2010) $
-    $LastChangedBy: RBoulanouar $
+    $Revision: 148 $
+    $Date: 2010-04-24 23:00:00 +0200 (sam. 24 avril 2010) $
+    $LastChangedBy: davidcolbykaneda $
 
 */
 
@@ -45,6 +45,7 @@
             lastAnimationTime=0,
             touchSelectors=[],
             publicObj={},
+            tapBuffer=351,
             extensions=$.jQTouch.prototype.extensions,
             defaultAnimations=['slide','flip','slideup','swap','cube','pop','dissolve','fade','back'],
             animations=[],
@@ -70,7 +71,7 @@
                 touchSelector: 'a, .touch',
                 popSelector: '.pop',
                 preloadImages: false,
-                slideSelector: '#jqt > * > ul li a',
+                slideSelector: '#jqt > * > ul li a, .slide',
                 slideupSelector: '.slideup',
                 startupScreen: null,
                 statusBar: 'default', // other options: black-translucent, black
@@ -111,7 +112,7 @@
                 $head.prepend(hairextensions);
             }
 
-            // Initialize on document load:
+            // Initialize on document ready:
             $(document).ready(function() {
 
                 // Add extensions
@@ -154,23 +155,27 @@
 
                 if (jQTSettings.useFastTouch && $.support.touch) {
                     $body.click(function(e) {
-                        var $el = $(e.target);
+                        var timeDiff = (new Date()).getTime() - lastAnimationTime;
+                        if (timeDiff > tapBuffer) {
+                            var $el = $(e.target);
 
-                        if ($el.attr('nodeName')!=='A' && $el.attr('nodeName')!=='AREA' && $el.attr('nodeName')!=='INPUT') {
-                            $el = $el.closest('a, area');
-                        }
+                            if ($el.attr('nodeName')!=='A' && $el.attr('nodeName')!=='AREA' && $el.attr('nodeName')!=='INPUT') {
+                                $el = $el.closest('a, area');
+                            }
 
-                        if ($el.isExternalLink()) {
-                            return true;
-                        } else {
-                            return false;
+                            if ($el.isExternalLink()) {
+                                return true;
+                            }
                         }
+                        
+                        return false;
+                        
                     });
 
                     // This additionally gets rid of form focusses
                     $body.mousedown(function(e) {
                         var timeDiff = (new Date()).getTime() - lastAnimationTime;
-                        if (timeDiff < 200) {
+                        if (timeDiff < tapBuffer) {
                             return false;
                         }
                     });
@@ -196,6 +201,11 @@
         // PUBLIC FUNCTIONS
         function goBack(to) {
             // Init the param
+            if (hist.length <= 1)
+            {
+                window.history.go(-2);
+            }
+            
             var numberOfPages = Math.min(parseInt(to || 1, 10), hist.length-1),
                 curPage = hist[0];
 
@@ -227,9 +237,6 @@
         function goTo(toPage, animation, reverse) {
             var fromPage = hist[0].page;
 
-            if (typeof(toPage) === 'string') {
-                toPage = $(toPage);
-            }
             if (typeof(animation) === 'string') {
                 for (var i = animations.length - 1; i >= 0; i--) {
                     if (animations[i].name === animation) {
@@ -237,6 +244,21 @@
                         break;
                     }
                 }
+            }
+            if (typeof(toPage) === 'string') {
+                nextPage = $(toPage);
+                if (nextPage.length < 1)
+                {
+                    showPageByHref(toPage, {
+                        'animation': animation
+                    });
+                    return;
+                }
+                else
+                {
+                    toPage = nextPage;
+                }
+                
             }
             if (animatePages(fromPage, toPage, animation, reverse)) {
                 addPageToHistory(toPage, animation, reverse);
@@ -341,23 +363,28 @@
             $(':focus').blur();
 
             // Make sure we are scrolled up to hide location bar
-            scrollTo(0, 0);
+            toPage.css('top', window.pageYOffset);
 
             // Define callback to run after animation completes
             var callback = function animationEnd(event) {
+
+                fromPage[0].removeEventListener('webkitTransitionEnd', callback);
+                fromPage[0].removeEventListener('webkitAnimationEnd', callback);
+
                 if (animation) {
-                    toPage.removeClass('in ' + animation.name);
-                    fromPage.removeClass('current out ' + animation.name);
+                        toPage.removeClass('start in ' + animation.name);
+                        fromPage.removeClass('start out current ' + animation.name);
                     if (backwards) {
                         toPage.toggleClass('reverse');
                         fromPage.toggleClass('reverse');
                     }
+                    toPage.css('top', 0);
                 } else {
                     fromPage.removeClass('current');
                 }
 
-                toPage.trigger('pageAnimationEnd', { direction: 'in' });
-                fromPage.trigger('pageAnimationEnd', { direction: 'out' });
+                toPage.trigger('pageAnimationEnd', { direction: 'in', reverse: backwards });
+                fromPage.trigger('pageAnimationEnd', { direction: 'out', reverse: backwards });
 
                 clearInterval(hashCheckInterval);
                 currentPage = toPage;
@@ -370,20 +397,31 @@
                 }
                 lastAnimationTime = (new Date()).getTime();
                 tapReady = true;
+
             }
 
             fromPage.trigger('pageAnimationStart', { direction: 'out' });
             toPage.trigger('pageAnimationStart', { direction: 'in' });
 
             if ($.support.WebKitAnimationEvent && animation && jQTSettings.useAnimations) {
-                toPage.one('webkitAnimationEnd', callback);
                 tapReady = false;
                 if (backwards) {
                     toPage.toggleClass('reverse');
                     fromPage.toggleClass('reverse');
                 }
-                toPage.addClass(animation.name + ' in current ');
+
+                // Support both transitions and animations
+                fromPage[0].addEventListener('webkitTransitionEnd', callback);
+                fromPage[0].addEventListener('webkitAnimationEnd', callback);
+
+                toPage.addClass(animation.name + ' in current');
                 fromPage.addClass(animation.name + ' out');
+                
+                setTimeout(function(){
+                    toPage.addClass('start');
+                    fromPage.addClass('start');
+                }, 0);
+                
 
             } else {
                 toPage.addClass('current');
@@ -394,12 +432,13 @@
         }
         function hashCheck() {
             var curid = currentPage.attr('id');
-            if (location.hash == '') {
-                location.hash = '#' + curid;
-            } else if (location.hash != '#' + curid) {
+            if (location.hash != '#' + curid) {
                 clearInterval(hashCheckInterval);
                 goBack(location.hash);
             }
+            else if (location.hash == '') {
+                location.hash = '#' + curid;
+            } 
         }
         function startHashCheck() {
             hashCheckInterval = setInterval(hashCheck, 100);
@@ -483,7 +522,7 @@
         function submitParentForm(e) {
             var $form = $(this).closest('form');
             if ($form.length) {
-                evt = jQuery.Event("submit");
+                var evt = $.Event("submit");
                 evt.preventDefault();
                 $form.trigger(evt);
                 return false;
@@ -498,13 +537,12 @@
             }
         }
         function updateOrientation() {
-            orientation = window.innerWidth < window.innerHeight ? 'profile' : 'landscape';
-            $body.removeClass('profile landscape').addClass(orientation).trigger('turn', {orientation: orientation});
-            // scrollTo(0, 0);
+            orientation = Math.abs(window.orientation) == 90 ? 'landscape' : 'portrait';
+            $body.removeClass('portrait landscape').addClass(orientation).trigger('turn', {orientation: orientation});
         }
         function handleTouch(e) {
             var $el = $(e.target);
-
+            
             // Only handle touchSelectors
             if (!$(e.target).is(touchSelectors.join(', '))) {
                 var $link = $(e.target).closest('a, area');
@@ -515,7 +553,7 @@
                     return;
                 }
             }
-
+            
             if (e) {
                 var hoverTimeout = null,
                     startX = event.changedTouches[0].clientX,
@@ -543,7 +581,7 @@
 
                 // Check for swipe
                 if (absX > absY && (absX > 35) && deltaT < 1000) {
-                    $el.trigger('swipe', {direction: (deltaX < 0) ? 'left' : 'right', deltaX: deltaX, deltaY: deltaY }).unbind('touchmove touchend');
+                    $el.trigger('swipe', {direction: (deltaX < 0) ? 'left' : 'right', deltaX: deltaX, deltaY: deltaY }).unbind('touchmove',touchmove).unbind('touchend',touchend);
                 } else if (absY > 1) {
                     $el.removeClass('active');
                 }
@@ -560,7 +598,7 @@
                 } else {
                     $el.removeClass('active');
                 }
-                $el.unbind('touchmove touchend');
+                $el.unbind('touchmove',touchmove).unbind('touchend',touchend);
                 clearTimeout(hoverTimeout);
             }
 
@@ -586,7 +624,7 @@
         }
         $.fn.swipe = function(fn) {
             if ($.isFunction(fn)) {
-                return $(this).bind('swipe', fn);
+                return $(this).live('swipe', fn);
             } else {
                 return $(this).trigger('swipe');
             }
@@ -601,7 +639,7 @@
         }
         $.fn.isExternalLink = function() {
             var $el = $(this);
-            return ($el.attr('target') == '_blank' || $el.attr('rel') == 'external' || $el.is('input[type="checkbox"], input[type="radio"], a[href^="http://maps.google.com:"], a[href^="mailto:"], a[href^="tel:"], a[href^="javascript:"], a[href*="youtube.com/v"], a[href*="youtube.com/watch"]'));
+            return ($el.attr('target') == '_blank' || $el.attr('rel') == 'external' || $el.is('input[type="checkbox"], input[type="radio"], a[href^="http://maps.google.com"], a[href^="mailto:"], a[href^="tel:"], a[href^="javascript:"], a[href*="youtube.com/v"], a[href*="youtube.com/watch"]'));
         }
 
         publicObj = {
