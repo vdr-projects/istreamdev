@@ -2,6 +2,8 @@ iStreamdev History
 ------------------
 xx.xx.xxx - dev
 
+- fix problem with long path for ffmpeg & segmenter binaries ( thx Mattes )
+- added some fix for ipad & ios4
 - fixed some path & filename bug with special characters for music.
 - removed AT dependency
 

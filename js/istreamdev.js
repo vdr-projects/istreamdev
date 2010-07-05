@@ -151,12 +151,13 @@ function reinitDivs() {
 $(document).ready(function(e){ 
 $('div').bind('pageAnimationEnd', function(event, info){ 
 	if (info.direction == 'in') {
-		$('#loader').removeClass("loader");
+		//$('#loader').removeClass("loader");
 		$(this).find('li[rel="toggle"]').show();
 		}
 		
 	})
 $('div').bind('pageAnimationStart', function(event, info){ 
+	$('#loader').removeClass("loader");
 	if (info.direction == 'in') {
 		$(this).find('li[rel="toggle"]').hide();
 		}
