@@ -80,7 +80,7 @@ class SVDRP
 			 
 			 $number = $data[1];
 			 // TODO: Fehlernummer bearbeiten
-			 $ret[] = $data[3];
+			 $ret[] = str_replace(array("\r", "\r\n", "\n"), '', $data[3]);
 			 if($data[2] != "-" && $nline == 1) $ret =  $data[3] ;
  			 if($data[2] != "-") break; 
 			 $s = "";
