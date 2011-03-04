@@ -51,6 +51,11 @@ jQT = new $.jQTouch({
 $(document).ready(function(e){ 
 	dataString = "action=getGlobals";
 	showStatus( 0,"Getting configuration data" );
+	if ( navigator.userAgent.match(/iPad/i))  { 
+     	is_ipad = true;
+	} else {
+	is_ipad = false;
+	}
 	$.getJSON("bin/backend.php",
 				dataString,
 				function(data){	
@@ -599,7 +604,8 @@ function playvideo(session,name) {
 		streaming.find('ul[class="streamstatus"]').find('span[class="mode"]').html(message);
 		if ( status == "ready" || status == "error" ) {
 		streaming.find('#player').removeAttr("style");	
-		streaming.find('#player').html('<video id="videofeed" width="' + thumbwidth + '" height="' + thumbheight + '" poster="ram/session' + session + '/thumb.png?' + time + '" src="' + url + '" controls autoplay ></video><span rel="ready"></span>');
+		streaming.find('#player').html('<video id="videofeed" src="' + url + '" controls autoplay ></video><span rel="ready"></span>');
+
 			return false;
 			}
 		prevmsg = message;

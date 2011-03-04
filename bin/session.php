@@ -326,7 +326,7 @@ function sessiongetstatus($session, $prevmsg)
 		}
 
 		// Check session creation timeout
-		if ($checkstart && ((time() - $time) >= 10))
+		if ($checkstart && ((time() - $time) >= 15))
 		{
 			$status['status'] = "error";
 			$status['message'] = "Error: session could not start";
