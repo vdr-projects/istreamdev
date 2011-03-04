@@ -125,7 +125,7 @@ $('#home_but').tap(function(event) {
 		$('#home').unbind('pageAnimationEnd');
 		}
 	});
-	jQT.goTo('#home','flip');
+	jQT.goTo('#home','dissolve');
 });
 
 //JSON query loading handler
@@ -242,7 +242,7 @@ $('#home #timers_but').tap(function(event) {
 $('#home #epg_but').tap(function(event) {
 	event.preventDefault();
 	json_start(this);
-	json_complete('#epg','cube');
+	json_complete('#epg','dissolve');
 	return false;
 });
 
@@ -359,7 +359,7 @@ function gen_categories() {
 			cat_menu.append('<li class="arrow" rel="' + togglestatus + '"><a class="cat_but" href="#">' + categories.name  + '</a><small class="counter">' + categories.channels + '</small></li>');
 			});
 		cat_menu.find('li[rel="toggle"]').hide();
-		json_complete('#categories','cube');
+		json_complete('#categories','dissolve');
 		})
 }
 
@@ -382,7 +382,7 @@ function gen_channels(category) {
 					}
 				});
 				chan_menu.find('li[rel="toggle"]').hide();
-				json_complete('#channels','cube');
+				json_complete('#channels','dissolve');
 		})
 }
 
@@ -471,7 +471,7 @@ function gen_streamchannel(channame,channumber) {
             stream_channel.find('span[rel="type"]').html('tv');
 			stream_channel.find('span[rel="number"]').html(channumber);
 			stream_channel.find('span[rel="channame"]').html(channame);
-			json_complete('#streamchannel','cube');
+			json_complete('#streamchannel','dissolve');
 		});
 }
 
@@ -490,7 +490,7 @@ function gen_streamrec(folder,path) {
 			stream_rec.find('span[class="desc_now"]').html( program.desc );
 			stream_rec.find('span[rel="url"]').html(path);
             stream_rec.find('span[rel="type"]').html('rec');
-			json_complete('#streamrec','cube');
+			json_complete('#streamrec','dissolve');
 		});
 }
 
@@ -511,7 +511,7 @@ function gen_streamvid(filename,path) {
 			stream_vid.find('span[class="desc_now"]').html( desc );
 			stream_vid.find('span[rel="url"]').html( path );
             stream_vid.find('span[rel="type"]').html('vid');
-			json_complete('#streamvid','cube');
+			json_complete('#streamvid','dissolve');
 			});
 }
 //Gen streaming page
@@ -560,7 +560,7 @@ function gen_streaming(session) {
 				}
 			streaming.find('ul[class="streamstatus"]').find('span[class="mode"]').html('Please wait.'); 
 			streaming.find('span[rel="name"]').html(stream.name);
-			json_complete('#streaming','cube');
+			json_complete('#streaming','dissolve');
 		});
 }
 
@@ -738,7 +738,7 @@ function gen_browser(path,browser,name,foldertype) {
 				}
 			});
 			$('li[rel="toggle"]').hide();
-			json_complete('#browser' + browser,'cube');
+			json_complete('#browser' + browser,'dissolve');
     });
 }
 
@@ -847,7 +847,7 @@ function gen_timers(edit) {
 		jQT.goBack();
 		}
 		else {
-		json_complete('#timers','cube');
+		json_complete('#timers','dissolve');
 		}
 	});
 }
@@ -921,7 +921,7 @@ function gen_edittimer(id,name,active,channumber,channame,date,starttime,endtime
 	$('#timer').append(submitbutton);
 	}
 	$('.formerror').hide(); 
-	json_complete('#edittimer','cube');
+	json_complete('#edittimer','dissolve');
 }
 //get full chanlist for timer page ( doing it one time on document load ).
 function gen_formchanlist() {
@@ -1218,7 +1218,7 @@ function parse_epg(data,selectedvalue,type,day){
 
 	});
 		if ( $('div[class="current"]').attr('id') == "epg" || $('div[class="current reverse"]').attr('id') == "epg") {
-		json_complete('#epglist','cube');
+		json_complete('#epglist','dissolve');
 		}
 		else {
 		epg_list.find('li[rel="toggle"]').show();
@@ -1252,11 +1252,11 @@ function get_epgdetails(channum,startingtime,day) {
 	epg_details.find('div[rel="dataholder"] span[rel="etime"]').html(etime);
 	epg_details.find('div[rel="dataholder"] span[rel="url"]').html(streamdev_server + channum);
 	if ( running == "yes" ) {
-		epg_details.find('#epgdetails_buttons').html('<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="cube"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="cube">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');		
+		epg_details.find('#epgdetails_buttons').html('<span class="streamButton"><a id="edge" href="#">Edge</a></span><span class="streamButton"><a id="3g" href="#" class="dissolve"> 3G </a></span><span class="streamButton"><a id="wifi" href="#" class="dissolve">Wifi</a></span><span class="recButton"><a id="rec" href="#" class="dissolve">Rec.</a></span>');		
 	} else {
-		epg_details.find('#epgdetails_buttons').html('<span class="recButton"><a id="rec" href="#" class="cube">Rec.</a></span>');
+		epg_details.find('#epgdetails_buttons').html('<span class="recButton"><a id="rec" href="#" class="dissolve">Rec.</a></span>');
 	}
-	json_complete('#epgdetails','cube');
+	json_complete('#epgdetails','dissolve');
 	});
 }
 //   [/EPG SECTION]
