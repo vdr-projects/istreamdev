@@ -65,8 +65,9 @@ class SVDRP
 		fputs($this->handle, $cmd . "\n");
 		$s = "";
 		$nline = 0;
-		while($s .= fgets($this->handle,4096))
-		{
+		while(!feof($this->handle))
+		{	
+			$s .= fgets($this->handle,4096))
 			$nline++;
 			 
                          $this->DebugMessage($s);
