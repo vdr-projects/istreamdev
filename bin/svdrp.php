@@ -67,9 +67,8 @@ class SVDRP
 		$nline = 0;
 		while(!feof($this->handle))
 		{	
-			$s .= fgets($this->handle,4096))
-			$nline++;
-			 
+			 $s .= fgets($this->handle);
+			 $nline++;
                          $this->DebugMessage($s);
 			 if(!preg_match("/^(\\d{3})([ -])(.*)$/", $s, $data))
 			 {
