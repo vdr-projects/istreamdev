@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2009 Chase Douglas
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License version 2
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+* Copyright (c) 2009 Chase Douglas
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public License version 2
+* as published by the Free Software Foundation.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -50,7 +50,11 @@ static AVStream *add_output_stream(AVFormatContext *output_format_context, AVStr
     }
 
     switch (input_codec_context->codec_type) {
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
+        case AVMEDIA_TYPE_AUDIO:
+#else
         case CODEC_TYPE_AUDIO:
+#endif
             output_codec_context->channel_layout = input_codec_context->channel_layout;
             output_codec_context->sample_rate = input_codec_context->sample_rate;
             output_codec_context->channels = input_codec_context->channels;
@@ -62,7 +66,11 @@ static AVStream *add_output_stream(AVFormatContext *output_format_context, AVStr
                 output_codec_context->block_align = input_codec_context->block_align;
             }
             break;
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
+        case AVMEDIA_TYPE_VIDEO:
+#else
         case CODEC_TYPE_VIDEO:
+#endif
             output_codec_context->pix_fmt = input_codec_context->pix_fmt;
             output_codec_context->width = input_codec_context->width;
             output_codec_context->height = input_codec_context->height;
@@ -257,12 +265,20 @@ int main(int argc, char **argv)
 
     for (i = 0; i < ic->nb_streams && (video_index < 0 || audio_index < 0); i++) {
         switch (ic->streams[i]->codec->codec_type) {
-            case CODEC_TYPE_VIDEO:
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
+        case AVMEDIA_TYPE_VIDEO:
+#else
+        case CODEC_TYPE_VIDEO:
+#endif
                 video_index = i;
                 ic->streams[i]->discard = AVDISCARD_NONE;
                 video_st = add_output_stream(oc, ic->streams[i]);
                 break;
-            case CODEC_TYPE_AUDIO:
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
+        case AVMEDIA_TYPE_AUDIO:
+#else
+        case CODEC_TYPE_AUDIO:
+#endif
                 audio_index = i;
                 ic->streams[i]->discard = AVDISCARD_NONE;
                 audio_st = add_output_stream(oc, ic->streams[i]);
@@ -317,7 +333,11 @@ int main(int argc, char **argv)
             break;
         }
 
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(52, 64, 0)
+        if (packet.stream_index == video_index && (packet.flags & AV_PKT_FLAG_KEY)) {
+#else
         if (packet.stream_index == video_index && (packet.flags & PKT_FLAG_KEY)) {
+#endif
             segment_time = (double)video_st->pts.val * video_st->time_base.num / video_st->time_base.den;
         }
         else if (video_index < 0) {
@@ -403,3 +423,5 @@ int main(int argc, char **argv)
 }
 
 // vim:sw=4:tw=4:ts=4:ai:expandtab
+
+
